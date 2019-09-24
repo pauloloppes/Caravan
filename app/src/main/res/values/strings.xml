@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Caravan</string>
+
+    <string name="button_list_trips">Consultar viagens</string>
+    <string name="button_add_trip">Cadastrar nova viagem</string>
+    <string name="button_list_all_passengers">Consultar passageiros cadastrados</string>
+    <string name="button_add_passenger">Cadastrar novo passageiro</string>
+    <string name="button_preferences">Configurar opções do aplicativo</string>
+    <string name="button_add">Adicionar</string>
+
+    <string name="label_trips">Viagens</string>
+    <string name="label_passengers">Passageiros</string>
+    <string name="label_name">Nome</string>
+    <string name="label_identity">Identidade</string>
+    <string name="label_identitytipe">Tipo da Identidade</string>
+    <string name="label_birthdate">Data de nascimento</string>
+    <string name="label_phone">Telefone</string>
+    <string name="label_address">Endereço</string>
+
+    <string name="hint_passengername">Nome do passageiro...</string>
+    <string name="hint_passengeridentity">Identidade do passageiro...</string>
+    <string name="hint_passengerphone">Telefone...</string>
+    <string name="hint_passengerbirthdate">Data de nascimento...</string>
+    <string name="hint_passengeraddress">Endereço do passageiro...</string>
+</resources>

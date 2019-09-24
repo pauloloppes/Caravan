@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="9dp"
+        tools:layout_editor_absoluteY="165dp">
+
+        <TextView
+            android:id="@+id/labelViagens"
+            style="@style/MainScreenLabelTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_trips" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonListTrips"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/blueDark"
+                android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
+                android:text="@string/button_list_trips" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAddTrip"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/blue"
+                android:drawableLeft="@drawable/ic_add_black_24dp"
+                android:text="@string/button_add_trip" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/labelPassengers"
+            style="@style/MainScreenLabelTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_passengers" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonListPassengers"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/blue2"
+                android:drawableLeft="@drawable/ic_people_black_24dp"
+                android:text="@string/button_list_all_passengers" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAddPassenger"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/blueLight"
+                android:drawableLeft="@drawable/ic_person_add_black_24dp"
+                android:text="@string/button_add_passenger" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonPreferences"
+            style="@style/MainScreenButtonTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:drawableLeft="@drawable/ic_settings_black_32dp"
+            android:backgroundTint="@color/blueNavy"
+            android:text="@string/button_preferences" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
