@@ -22,4 +22,16 @@
         <item name="android:layout_marginBottom">15dp</item>
     </style>
 
+    <style name="ListLabelThemePrimary">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ListLabelThemeDark">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
 </resources>

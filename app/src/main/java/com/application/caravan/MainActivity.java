@@ -22,5 +22,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PassengerAdd.class));
             }
         });
+
+        //Setting up button to open Passenger List screen
+        final AppCompatButton passengerList = (AppCompatButton)findViewById(R.id.buttonListPassengers);
+        passengerList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PassengerList.class));
+            }
+        });
     }
 }

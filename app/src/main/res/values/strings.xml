@@ -7,6 +7,7 @@
     <string name="button_add_passenger">Cadastrar novo passageiro</string>
     <string name="button_preferences">Configurar opções do aplicativo</string>
     <string name="button_add">Adicionar</string>
+    <string name="button_search">Buscar</string>
 
     <string name="label_trips">Viagens</string>
     <string name="label_passengers">Passageiros</string>

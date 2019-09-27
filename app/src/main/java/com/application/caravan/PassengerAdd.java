@@ -23,14 +23,14 @@ import java.util.Map;
 
 public class PassengerAdd extends AppCompatActivity {
 
-    EditText editPassengerName;
-    EditText editPassengerIdentity;
-    Spinner spinnerPassengerIdType;
-    EditText editPassengerBirth;
-    EditText editPassengerPhone;
-    EditText editPassengerAddress;
-    AppCompatButton buttonPassengerAdd;
-    FirebaseFirestore databasePassengers;
+    private EditText editPassengerName;
+    private EditText editPassengerIdentity;
+    private Spinner spinnerPassengerIdType;
+    private EditText editPassengerBirth;
+    private EditText editPassengerPhone;
+    private EditText editPassengerAddress;
+    private AppCompatButton buttonPassengerAdd;
+    private FirebaseFirestore databasePassengers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class PassengerAdd extends AppCompatActivity {
         buttonPassengerAdd = (AppCompatButton) findViewById(R.id.buttonPassengerAdd);
 
         //Setting up Identity type ID spinner
-        String arrayId[] = {"A","B","C"};
+        String arrayId[] = {"RG","CPF","Certidão de Nascimento","RNE","Outro"};
         ArrayAdapter<String> spinnerAdapterId = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,arrayId);
         spinnerAdapterId.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPassengerIdType.setAdapter(spinnerAdapterId);
@@ -95,7 +95,7 @@ public class PassengerAdd extends AppCompatActivity {
 
     }
 
-    public void toastShow (String message) {
+    private void toastShow (String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
