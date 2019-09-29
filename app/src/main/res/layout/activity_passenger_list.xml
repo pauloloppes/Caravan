@@ -24,7 +24,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/editPassengerNameSearch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -33,7 +33,7 @@
                     android:inputType="textPersonName" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button"
+                    android:id="@+id/buttonSearchPassenger"
                     android:backgroundTint="@color/blue"
                     style="@style/MainScreenButtonTheme"
                     android:layout_width="wrap_content"
