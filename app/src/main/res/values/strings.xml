@@ -13,10 +13,11 @@
     <string name="label_passengers">Passageiros</string>
     <string name="label_name">Nome</string>
     <string name="label_identity">Identidade</string>
-    <string name="label_identitytipe">Tipo da Identidade</string>
+    <string name="label_identitytype">Tipo da Identidade</string>
     <string name="label_birthdate">Data de nascimento</string>
     <string name="label_phone">Telefone</string>
     <string name="label_address">Endereço</string>
+    <string name="label_type">Tipo</string>
 
     <string name="hint_passengername">Nome do passageiro...</string>
     <string name="hint_passengeridentity">Identidade do passageiro...</string>

@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -63,6 +65,18 @@ public class PassengerList extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 toastShow("Erro ao acessar documentos: "+e.getMessage());
+            }
+        });
+
+        listPassengers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Passenger p  = listAll.get(i);
+                Intent details = new Intent(getApplicationContext(), PassengerDetails.class);
+                Bundle b = new Bundle();
+                b.putParcelable("passenger", p);
+                details.putExtras(b);
+                startActivity(details);
             }
         });
 

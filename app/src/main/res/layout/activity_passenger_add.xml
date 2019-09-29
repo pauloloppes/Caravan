@@ -48,7 +48,7 @@
             android:id="@+id/labelPassengerIdType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_identitytipe" />
+            android:text="@string/label_identitytype" />
 
         <Spinner
             android:id="@+id/spinnerPassengerIdType"
