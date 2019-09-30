@@ -61,5 +61,32 @@
             style="@style/DetailsLabelThemeSecondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonEditPassenger"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_editPassenger" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonAddPassengerToTrip"
+            style="@style/MainScreenButtonTheme"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_addPassengerToTrip" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonDeletePassenger"
+            style="@style/MainScreenButtonTheme"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/redAchtung"
+            android:text="@string/button_deletePassenger" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

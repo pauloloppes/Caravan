@@ -39,6 +39,8 @@ public class PassengerList extends AppCompatActivity {
     private AppCompatButton buttonSearchPassenger;
     private CustomAdapterPassenger adapter;
     private CustomAdapterPassenger aSearched;
+    private final int OPEN_PASSENGER_REQUEST = 1;
+    private boolean searched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,33 +52,42 @@ public class PassengerList extends AppCompatActivity {
         buttonSearchPassenger = (AppCompatButton) findViewById(R.id.buttonSearchPassenger);
 
         listAll = new ArrayList<>();
+        searched = false;
 
         databasePassengers = FirebaseFirestore.getInstance();
-        databasePassengers.collection("passageiros").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    listAll.addAll(queryDocumentSnapshots.toObjects(Passenger.class));
-                    adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
-                    listPassengers.setAdapter(adapter);
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                toastShow("Erro ao acessar documentos: "+e.getMessage());
-            }
-        });
+
+        databasePassengers.collection("passageiros")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Passenger p = document.toObject(Passenger.class);
+                                p.setId(document.getId());
+                                listAll.add(p);
+                            }
+                            adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
+                            listPassengers.setAdapter(adapter);
+                        } else
+                            toastShow("Erro ao acessar documentos: "+task.getException());
+                    }
+                });
 
         listPassengers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Passenger p  = listAll.get(i);
+                Passenger p;
+                if (searched) {
+                    p = listSearched.get(i);
+                } else {
+                    p = listAll.get(i);
+                }
                 Intent details = new Intent(getApplicationContext(), PassengerDetails.class);
                 Bundle b = new Bundle();
                 b.putParcelable("passenger", p);
                 details.putExtras(b);
-                startActivity(details);
+                startActivityForResult(details,OPEN_PASSENGER_REQUEST);
             }
         });
 
@@ -88,10 +99,53 @@ public class PassengerList extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OPEN_PASSENGER_REQUEST) {
+            if (data != null) {
+                Passenger p = (Passenger) data.getParcelableExtra("passenger");
+                if (p!=null) {
+                    replacePassengerOnLists(p);
+                }
+            }
+        }
+    }
+
+    private void replacePassengerOnLists(Passenger p) {
+        String newId = p.getId();
+
+        if (listAll != null) {
+            boolean notFound = true;
+            for (int i = 0; notFound && i < listAll.size(); i++) {
+                Passenger pas = listAll.get(i);
+                if (pas.getId().equals(newId)) {
+                    listAll.remove(i);
+                    listAll.add(p);
+                    notFound = false;
+                }
+            }
+        }
+
+        if (searched && listSearched != null) {
+            boolean notFound = true;
+            for (int i = 0; notFound && i < listSearched.size(); i++) {
+                Passenger pas = listSearched.get(i);
+                if (pas.getId().equals(newId)) {
+                    listSearched.remove(pas);
+                    listSearched.add(p);
+                }
+            }
+        }
+
+        listPassengers.invalidateViews();
+    }
+
     private void searchPassenger() {
         String name = editPassengerNameSearch.getText().toString();
         if (name.isEmpty()) {
             listPassengers.setAdapter(adapter);
+            searched = false;
         } else {
             listSearched = new ArrayList<>();
             for (Passenger p : listAll) {
@@ -101,6 +155,7 @@ public class PassengerList extends AppCompatActivity {
             }
             aSearched = new CustomAdapterPassenger(listSearched, getApplicationContext());
             listPassengers.setAdapter(aSearched);
+            searched = true;
         }
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PassengerAdd">
+    tools:context=".PassengerEdit">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,20 +14,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/labelPassengerName"
+                android:id="@+id/labelPassengerNameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_name" />
 
             <EditText
-                android:id="@+id/editPassengerName"
+                android:id="@+id/editPassengerNameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -35,13 +35,13 @@
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/labelPassengerIdentity"
+                android:id="@+id/labelPassengerIdentityEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_identity" />
 
             <EditText
-                android:id="@+id/editPassengerIdentity"
+                android:id="@+id/editPassengerIdentityEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -49,13 +49,13 @@
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/labelPassengerIdType"
+                android:id="@+id/labelPassengerIdTypeEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_identitytype" />
 
             <Spinner
-                android:id="@+id/spinnerPassengerIdType"
+                android:id="@+id/spinnerPassengerIdTypeEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -71,13 +71,13 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/labelPassengerBirth"
+                        android:id="@+id/labelPassengerBirthEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_birthdate" />
 
                     <EditText
-                        android:id="@+id/editPassengerBirth"
+                        android:id="@+id/editPassengerBirthEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -92,13 +92,13 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/labelPassengerPhone"
+                        android:id="@+id/labelPassengerPhoneEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_phone" />
 
                     <EditText
-                        android:id="@+id/editPassengerPhone"
+                        android:id="@+id/editPassengerPhoneEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -110,13 +110,13 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/labelPassengerAddress"
+                android:id="@+id/labelPassengerAddressEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_address" />
 
             <EditText
-                android:id="@+id/editPassengerAddress"
+                android:id="@+id/editPassengerAddressEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -124,13 +124,12 @@
                 android:inputType="textPersonName" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonPassengerAdd"
+                android:id="@+id/buttonPassengerSave"
+                style="@style/MainScreenButtonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_add"
-                style="@style/MainScreenButtonTheme"
-                android:backgroundTint="@color/colorPrimary"/>
-
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_save" />
         </LinearLayout>
     </ScrollView>
 
