@@ -27,6 +27,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PassengerList extends AppCompatActivity {
@@ -67,6 +69,9 @@ public class PassengerList extends AppCompatActivity {
                                 p.setId(document.getId());
                                 listAll.add(p);
                             }
+
+                            sortLists();
+
                             adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
                             listPassengers.setAdapter(adapter);
                         } else
@@ -105,8 +110,13 @@ public class PassengerList extends AppCompatActivity {
         if (requestCode == OPEN_PASSENGER_REQUEST) {
             if (data != null) {
                 Passenger p = (Passenger) data.getParcelableExtra("passenger");
+                boolean deleted = data.getBooleanExtra("deleted",false);
+                boolean edited = data.getBooleanExtra("edited",false);
                 if (p!=null) {
-                    replacePassengerOnLists(p);
+                    if (deleted)
+                        removePassengerOnLists(p);
+                    else if (edited)
+                        replacePassengerOnLists(p);
                 }
             }
         }
@@ -134,10 +144,41 @@ public class PassengerList extends AppCompatActivity {
                 if (pas.getId().equals(newId)) {
                     listSearched.remove(pas);
                     listSearched.add(p);
+                    notFound = false;
                 }
             }
         }
 
+        sortLists();
+        listPassengers.invalidateViews();
+    }
+
+    private void removePassengerOnLists(Passenger p) {
+        String newId = p.getId();
+
+        if (listAll != null) {
+            boolean notFound = true;
+            for (int i = 0; notFound && i < listAll.size(); i++) {
+                Passenger pas = listAll.get(i);
+                if (pas.getId().equals(newId)) {
+                    listAll.remove(i);
+                    notFound = false;
+                }
+            }
+        }
+
+        if (searched && listSearched != null) {
+            boolean notFound = true;
+            for (int i = 0; notFound && i < listSearched.size(); i++) {
+                Passenger pas = listSearched.get(i);
+                if (pas.getId().equals(newId)) {
+                    listSearched.remove(pas);
+                    notFound = false;
+                }
+            }
+        }
+
+        sortLists();
         listPassengers.invalidateViews();
     }
 
@@ -157,6 +198,27 @@ public class PassengerList extends AppCompatActivity {
             listPassengers.setAdapter(aSearched);
             searched = true;
         }
+    }
+
+    private void sortLists() {
+        if (listAll != null) {
+            Collections.sort(listAll, new Comparator<Passenger>() {
+                @Override
+                public int compare(Passenger p1, Passenger p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
+        }
+
+        if (searched && listSearched != null) {
+            Collections.sort(listSearched, new Comparator<Passenger>() {
+                @Override
+                public int compare(Passenger p1, Passenger p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
+        }
+
     }
 
     private void toastShow (String message) {

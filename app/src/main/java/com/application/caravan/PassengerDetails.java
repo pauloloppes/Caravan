@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +25,7 @@ public class PassengerDetails extends AppCompatActivity {
     private TextView labelPassengerDetailsPhone;
     private TextView labelPassengerDetailsAddress;
     private AppCompatButton buttonEditPassenger;
+    private AppCompatButton buttonDeletePassenger;
     Intent returnIntent;
     private final int EDIT_PASSENGER_REQUEST = 1;
 
@@ -37,6 +40,7 @@ public class PassengerDetails extends AppCompatActivity {
         labelPassengerDetailsPhone = (TextView) findViewById(R.id.labelPassengerDetailsPhone);
         labelPassengerDetailsAddress = (TextView) findViewById(R.id.labelPassengerDetailsAddress);
         buttonEditPassenger = (AppCompatButton) findViewById(R.id.buttonEditPassenger);
+        buttonDeletePassenger = (AppCompatButton) findViewById(R.id.buttonDeletePassenger);
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
 
@@ -66,6 +70,13 @@ public class PassengerDetails extends AppCompatActivity {
                 startActivityForResult(edit,EDIT_PASSENGER_REQUEST);
             }
         });
+
+        buttonDeletePassenger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePassengerConfirmation();
+            }
+        });
     }
 
     @Override
@@ -76,6 +87,7 @@ public class PassengerDetails extends AppCompatActivity {
                 if (data.getParcelableExtra("passenger")!=null) {
                     p = data.getParcelableExtra("passenger");
                     returnIntent.putExtra("passenger",p);
+                    returnIntent.putExtra("edited",true);
                     updateInfo();
                 }
             }
@@ -91,6 +103,29 @@ public class PassengerDetails extends AppCompatActivity {
             labelPassengerDetailsPhone.setText("Telefone: "+p.getTelefone());
             labelPassengerDetailsAddress.setText("Endereço: "+p.getEndereco());
         }
+    }
+
+    private void deletePassengerConfirmation() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Excluir passageiro")
+                .setMessage("Tem certeza que deseja excluir este passageiro?")
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deletePassenger();
+                    }
+                })
+                .setNegativeButton("Não", null)
+                .show();
+
+    }
+
+    private void deletePassenger() {
+        toastShow("Passageiro excluído");
+        returnIntent.putExtra("deleted", true);
+        finish();
+
     }
 
     private void toastShow (String message) {
