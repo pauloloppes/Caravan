@@ -1,5 +1,6 @@
 package com.application.caravan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -13,9 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.entities.Passenger;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class PassengerDetails extends AppCompatActivity {
 
+    private FirebaseFirestore databasePassengers;
     private Passenger p;
     private int listPosition;
     private TextView labelPassengerDetailsName;
@@ -43,6 +48,8 @@ public class PassengerDetails extends AppCompatActivity {
         buttonDeletePassenger = (AppCompatButton) findViewById(R.id.buttonDeletePassenger);
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
+
+        databasePassengers = FirebaseFirestore.getInstance();
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -122,10 +129,21 @@ public class PassengerDetails extends AppCompatActivity {
     }
 
     private void deletePassenger() {
-        toastShow("Passageiro excluído");
+        databasePassengers.collection("passageiros").document(p.getId()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                toastShow("Passageiro excluído com sucesso");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toastShow("Erro ao excluir: "+e.getMessage());
+            }
+        });
         returnIntent.putExtra("deleted", true);
         finish();
-
     }
 
     private void toastShow (String message) {
