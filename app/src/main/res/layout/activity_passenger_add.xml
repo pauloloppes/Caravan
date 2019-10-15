@@ -22,6 +22,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerName"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_name" />
@@ -36,6 +37,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerIdentity"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_identity" />
@@ -50,6 +52,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerIdType"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_identitytype" />
@@ -72,6 +75,7 @@
 
                     <TextView
                         android:id="@+id/labelPassengerBirth"
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_birthdate" />
@@ -93,6 +97,7 @@
 
                     <TextView
                         android:id="@+id/labelPassengerPhone"
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_phone" />
@@ -111,6 +116,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerAddress"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_address" />
@@ -125,6 +131,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonPassengerAdd"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/button_add"

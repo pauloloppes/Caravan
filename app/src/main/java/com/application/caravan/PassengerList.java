@@ -183,7 +183,7 @@ public class PassengerList extends AppCompatActivity {
     }
 
     private void searchPassenger() {
-        String name = editPassengerNameSearch.getText().toString();
+        String name = editPassengerNameSearch.getText().toString().trim();
         if (name.isEmpty()) {
             listPassengers.setAdapter(adapter);
             searched = false;

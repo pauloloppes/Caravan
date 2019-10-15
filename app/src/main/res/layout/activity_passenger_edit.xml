@@ -22,6 +22,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerNameEdit"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_name" />
@@ -36,6 +37,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerIdentityEdit"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_identity" />
@@ -50,6 +52,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerIdTypeEdit"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_identitytype" />
@@ -72,6 +75,7 @@
 
                     <TextView
                         android:id="@+id/labelPassengerBirthEdit"
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_birthdate" />
@@ -93,6 +97,7 @@
 
                     <TextView
                         android:id="@+id/labelPassengerPhoneEdit"
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_phone" />
@@ -111,6 +116,7 @@
 
             <TextView
                 android:id="@+id/labelPassengerAddressEdit"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_address" />
@@ -125,6 +131,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonPassengerSave"
+                android:layout_marginTop="10dp"
                 style="@style/MainScreenButtonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
