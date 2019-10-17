@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,7 +35,9 @@ import java.util.List;
 
 public class PassengerList extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private FirebaseFirestore databasePassengers;
+    private FirebaseUser currentUser;
     private ArrayList<Passenger> listAll;
     private ArrayList<Passenger> listSearched;
     private ListView listPassengers;
@@ -56,28 +60,38 @@ public class PassengerList extends AppCompatActivity {
         listAll = new ArrayList<>();
         searched = false;
 
+        mAuth = FirebaseAuth.getInstance();
         databasePassengers = FirebaseFirestore.getInstance();
 
-        databasePassengers.collection("passageiros")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Passenger p = document.toObject(Passenger.class);
-                                p.setId(document.getId());
-                                listAll.add(p);
-                            }
+        currentUser = mAuth.getCurrentUser();
 
-                            sortLists();
+        if (currentUser!=null) {
+            databasePassengers.collection(currentUser.getUid())
+                    .document("dados")
+                    .collection("passageiros")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
 
-                            adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
-                            listPassengers.setAdapter(adapter);
-                        } else
-                            toastShow("Erro ao acessar documentos: "+task.getException());
-                    }
-                });
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Passenger p = document.toObject(Passenger.class);
+                                    p.setId(document.getId());
+                                    listAll.add(p);
+                                }
+
+                                sortLists();
+
+                                adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
+                                listPassengers.setAdapter(adapter);
+                            } else
+                                toastShow("Erro ao acessar documentos: "+task.getException());
+                        }
+                    });
+        } else {
+            toastShow("Erro ao carregar usuário");
+        }
 
         listPassengers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -201,7 +215,7 @@ public class PassengerList extends AppCompatActivity {
     }
 
     private void sortLists() {
-        if (listAll != null) {
+        if (listAll != null && listAll.size() > 1) {
             Collections.sort(listAll, new Comparator<Passenger>() {
                 @Override
                 public int compare(Passenger p1, Passenger p2) {
@@ -210,7 +224,7 @@ public class PassengerList extends AppCompatActivity {
             });
         }
 
-        if (searched && listSearched != null) {
+        if (searched && listSearched != null && listSearched.size() > 1) {
             Collections.sort(listSearched, new Comparator<Passenger>() {
                 @Override
                 public int compare(Passenger p1, Passenger p2) {

@@ -18,6 +18,8 @@ import com.application.utils.MaskEditUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,6 +36,8 @@ public class PassengerEdit extends AppCompatActivity {
     private EditText editPassengerAddressEdit;
     private AppCompatButton buttonPassengerSave;
     private FirebaseFirestore databasePassengers;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
     private Passenger p;
 
     @Override
@@ -67,6 +71,14 @@ public class PassengerEdit extends AppCompatActivity {
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if (currentUser==null) {
+            toastShow("Erro ao carregar usuário. Não é possível gravar dados.");
+            finish();
+        }
+
         //Setting up existing information on fields
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -83,6 +95,7 @@ public class PassengerEdit extends AppCompatActivity {
         }
 
         databasePassengers = FirebaseFirestore.getInstance();
+
     }
 
     private void savePassenger() {
@@ -123,7 +136,12 @@ public class PassengerEdit extends AppCompatActivity {
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("passenger",p);
-        databasePassengers.collection("passageiros").document(p.getId()).update(updatedDocument);
+
+
+
+        databasePassengers.collection(currentUser.getUid())
+                .document("dados")
+                .collection("passageiros").document(p.getId()).update(updatedDocument);
 
         setResult(Activity.RESULT_OK, returnIntent);
 

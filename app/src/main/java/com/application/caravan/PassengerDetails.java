@@ -16,11 +16,15 @@ import android.widget.Toast;
 import com.application.entities.Passenger;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class PassengerDetails extends AppCompatActivity {
 
     private FirebaseFirestore databasePassengers;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
     private Passenger p;
     private int listPosition;
     private TextView labelPassengerDetailsName;
@@ -50,6 +54,8 @@ public class PassengerDetails extends AppCompatActivity {
         setResult(Activity.RESULT_OK, returnIntent);
 
         databasePassengers = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -129,7 +135,9 @@ public class PassengerDetails extends AppCompatActivity {
     }
 
     private void deletePassenger() {
-        databasePassengers.collection("passageiros").document(p.getId()).delete()
+        databasePassengers.collection(currentUser.getUid())
+                .document("dados")
+                .collection("passageiros").document(p.getId()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

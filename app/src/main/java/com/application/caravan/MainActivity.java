@@ -35,58 +35,36 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser = mAuth.getCurrentUser();
 
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            currentUser = mAuth.getCurrentUser();
-                            //toastShow("Usuário logado: "+currentUser.getUid());
-                        } else {
-                            toastShow("Erro ao logar: "+task.getException());
+        if (currentUser == null) {
+            mAuth.signInAnonymously()
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                currentUser = mAuth.getCurrentUser();
+                                toastShow("Usuário logado: "+currentUser.getUid());
+                                databasePassengers.collection(currentUser.getUid())
+                                        .document("exists")
+                                        .update(new HashMap<String, Object>())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    //USER EXISTE
+                                                } else {
+                                                    //USER NAO EXISTE, ENTÃO CRIA O DOCUMENTO DELE
+                                                    databasePassengers.collection(currentUser.getUid()).document("exists").set(new HashMap<String, Object>());
+                                                }
+                                            }
+                                        });
+                            } else {
+                                toastShow("Erro ao logar: "+task.getException());
+                            }
                         }
-                    }
-                });
-
-
-        databasePassengers.collection(currentUser.getUid())
-                .document("exists")
-                .update(new HashMap<String, Object>())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            //USER EXISTE
-                        } else {
-                            //USER NAO EXISTE, ENTÃO CRIA O DOCUMENTO DELE
-                            databasePassengers.collection(currentUser.getUid()).document("exists").set(new HashMap<String, Object>());
-                        }
-                    }
-                });
-
-        databasePassengers.collection("users").document("a").get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            toastShow("conseguiu ler outra collection");
-                        } else {
-                            toastShow("DEU ERRO, ISSO AÍ GAROTO! "+task.getException());
-                        }
-                    }
-                });
-
-        databasePassengers.collection(currentUser.getUid()).document("exists").get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful())
-                            System.out.println("            CONSEGUIU LER DA SUA PERMISSÃO");
-                        else
-                            System.out.println("            DEU RUIM MOLEQUE: "+task.getException());
-                    }
-                });
-
+                    });
+        } else {
+            toastShow("Usuário existente "+currentUser.getUid());
+        }
 
         //Setting up button to open Passenger Add screen
         final AppCompatButton passengerAdd = (AppCompatButton)findViewById(R.id.buttonAddPassenger);
