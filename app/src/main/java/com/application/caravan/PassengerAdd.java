@@ -13,8 +13,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.application.utils.MaskEditUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -92,17 +94,15 @@ public class PassengerAdd extends AppCompatActivity {
                 .document("dados")
                 .collection("passageiros")
                 .add(passenger)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .addOnCompleteListener(new OnCompleteListener() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        toastShow("Passageiro adicionado com sucesso");
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        toastShow("Erro: "+e.getMessage());
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            toastShow("Passageiro adicionado com sucesso");
+                            finish();
+                        } else {
+                            toastShow("Erro: "+task.getException().getMessage());
+                        }
                     }
                 });
 

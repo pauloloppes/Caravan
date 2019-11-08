@@ -35,7 +35,7 @@ public class PassengerDetails extends AppCompatActivity {
     private TextView labelPassengerDetailsAddress;
     private AppCompatButton buttonEditPassenger;
     private AppCompatButton buttonDeletePassenger;
-    Intent returnIntent;
+    private Intent returnIntent;
     private final int EDIT_PASSENGER_REQUEST = 1;
 
     @Override

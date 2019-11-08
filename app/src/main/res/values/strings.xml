@@ -9,9 +9,11 @@
     <string name="button_add">Adicionar</string>
     <string name="button_save">Salvar</string>
     <string name="button_search">Buscar</string>
+    <string name="button_enter">Entrar</string>
     <string name="button_editPassenger">Editar detalhes do passageiro</string>
     <string name="button_deletePassenger">Excluir passageiro</string>
     <string name="button_addPassengerToTrip">Adicionar passageiro a viagem</string>
+
 
     <string name="label_trips">Viagens</string>
     <string name="label_passengers">Passageiros</string>
@@ -22,6 +24,8 @@
     <string name="label_phone">Telefone</string>
     <string name="label_address">Endereço</string>
     <string name="label_type">Tipo</string>
+    <string name="label_pinscreen">Digite a sua senha de 4 dígitos para entrar no aplicativo.</string>
+    <string name="label_pinscreeninit">Tipo</string>
 
     <string name="hint_passengername">Nome do passageiro...</string>
     <string name="hint_passengeridentity">Identidade do passageiro...</string>
