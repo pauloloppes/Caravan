@@ -23,18 +23,16 @@ public class Splash extends AppCompatActivity {
     private FirebaseFirestore databasePassengers;
     private FirebaseUser currentUser;
     private final int ENTER_PIN_REQUEST = 1;
+    private final int CREATE_PIN_REQUEST = 2;
     private String pass;
     private String passBase;
+    private boolean createPIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        //PASSAR ISSO AQUI PARA APÓS LER O PIN
-        //SE SENHA EXISTIR NO BANCO, ASKFORPIN
-        //SE NÃO EXISTIR, PEDE PRA CRIAR PIN
-        askForPin();
         pass = null;
         passBase = null;
 
@@ -73,12 +71,20 @@ public class Splash extends AppCompatActivity {
             toastShow("Usuário existente "+currentUser.getUid());
         }
 
+        createPIN = true;
         databasePassengers.collection(currentUser.getUid()).document("key").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            passBase = task.getResult().get("key").toString();
+                            Object rawPassBase = task.getResult().get("key");
+                            if (rawPassBase != null) {
+                                passBase = rawPassBase.toString();
+                                createPIN = false;
+                            }
+                            askForPin();
+                        } else {
+                            askForPin();
                         }
                     }
                 });
@@ -87,7 +93,11 @@ public class Splash extends AppCompatActivity {
 
     private void askForPin() {
         Intent i = new Intent(getApplicationContext(), PIN.class);
-        startActivityForResult(i, ENTER_PIN_REQUEST);
+        i.putExtra("create",createPIN);
+        if (createPIN)
+            startActivityForResult(i, CREATE_PIN_REQUEST);
+        else
+            startActivityForResult(i, ENTER_PIN_REQUEST);
     }
 
     private void startSystem() {
@@ -109,6 +119,24 @@ public class Splash extends AppCompatActivity {
         }
     }
 
+    private void recordPassword() {
+        HashMap<String, String> h = new HashMap<>();
+        h.put("key",pass);
+        databasePassengers.collection(currentUser.getUid()).document("key").set(h)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            toastShow("Senha gravada com sucesso");
+                            startSystem();
+                        } else {
+                            toastShow("Erro ao gravar senha");
+                            finish();
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -122,6 +150,15 @@ public class Splash extends AppCompatActivity {
                 }
             } else {
                 finish();
+            }
+        } else if (requestCode == CREATE_PIN_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                pass = data.getStringExtra("password");
+                if (pass != null) {
+                    recordPassword();
+                } else {
+                    toastShow("Erro ao carregar senha");
+                }
             }
         }
     }

@@ -30,12 +30,14 @@ public class PIN extends AppCompatActivity {
     private TextView txtPinNo2;
     private TextView txtPinNo3;
     private TextView txtPinNo4;
+    private TextView txtPinLabel;
     private String pin1;
     private String pin2;
     private String pin3;
     private String pin4;
     private int numberPosition;
     private Intent returnIntent;
+    private boolean create;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +64,24 @@ public class PIN extends AppCompatActivity {
         txtPinNo2 = (TextView) findViewById(R.id.txtPinNo2);
         txtPinNo3 = (TextView) findViewById(R.id.txtPinNo3);
         txtPinNo4 = (TextView) findViewById(R.id.txtPinNo4);
+        txtPinLabel = (TextView) findViewById(R.id.txtPinLabel);
         pin1 = "X";
         pin2 = "X";
         pin3 = "X";
         pin4 = "X";
 
         setButtonListeners();
+
+        create = true;
+        Bundle b = getIntent().getExtras();
+        if (b!=null) {
+            create = b.getBoolean("create");
+            if (create) {
+                txtPinLabel.setText("Crie uma senha de 4 dígitos para autorizar acesso ao aplicativo");
+            } else {
+                txtPinLabel.setText("Digite sua senha de 4 dígitos");
+            }
+        }
 
     }
 
@@ -208,8 +222,7 @@ public class PIN extends AppCompatActivity {
             String encPass = Encryption.generatePassword(pin1+pin2+pin3+pin4);
             returnIntent.putExtra("password",encPass);
             setResult(Activity.RESULT_OK, returnIntent);
-            onBackPressed();
-            //finish();
+            finish();
         }
     }
 

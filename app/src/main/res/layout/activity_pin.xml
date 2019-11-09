@@ -20,13 +20,13 @@
             android:layout_marginLeft="30dp"
             android:layout_marginBottom="30dp"
             android:layout_gravity="center"
-            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtPinLabel"
-                style="@style/MainScreenLabelTheme"
+                style="@style/DetailsLabelThemePrimary"
                 android:layout_width="match_parent"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="@string/label_pinscreen" />
 
@@ -40,7 +40,8 @@
                     android:id="@+id/txtPinNo1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/MainScreenLabelTheme"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:gravity="center"
                     android:layout_weight="1"
                     android:text="" />
 
@@ -49,7 +50,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/MainScreenLabelTheme"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:gravity="center"
                     android:text="" />
 
                 <TextView
@@ -57,7 +59,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/MainScreenLabelTheme"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:gravity="center"
                     android:text="" />
 
                 <TextView
@@ -65,7 +68,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/MainScreenLabelTheme"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:gravity="center"
                     android:text="" />
             </LinearLayout>
 
@@ -90,31 +94,22 @@
                         android:text="1" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPin2"
+                        android:id="@+id/btnPin4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
-                        android:text="2" />
+                        android:text="4" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPin3"
+                        android:id="@+id/btnPin7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
-                        android:text="3" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPinErase"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorPrimary"
-                        style="@style/MainScreenButtonTheme"
-                        android:text="x" />
+                        android:text="7" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -124,13 +119,13 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPin4"
+                        android:id="@+id/btnPin2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
-                        android:text="4" />
+                        android:text="2" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnPin5"
@@ -142,13 +137,13 @@
                         android:text="5" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPin6"
+                        android:id="@+id/btnPin8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
-                        android:text="6" />
+                        android:text="8" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnPin0"
@@ -167,22 +162,22 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPin7"
+                        android:id="@+id/btnPin3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
-                        android:text="7" />
+                        android:text="3" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnPin8"
+                        android:id="@+id/btnPin6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
-                        android:text="8" />
+                        android:text="6" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnPin9"
@@ -192,6 +187,15 @@
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="9" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnPinErase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/colorPrimary"
+                        style="@style/MainScreenButtonTheme"
+                        android:text="‹" />
                 </LinearLayout>
             </LinearLayout>
 
