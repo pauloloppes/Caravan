@@ -13,6 +13,8 @@
     <string name="button_editPassenger">Editar detalhes do passageiro</string>
     <string name="button_deletePassenger">Excluir passageiro</string>
     <string name="button_addPassengerToTrip">Adicionar passageiro a viagem</string>
+    <string name="button_editTrip">Editar detalhes da viagem</string>
+    <string name="button_deleteTrip">Excluir viagem</string>
     <string name="button_createAccount">Criar nova conta</string>
     <string name="button_loginAccount">Entrar em conta existente</string>
     <string name="button_logoutAccount">Sair da conta</string>

@@ -6,4 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".TripDetails">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        tools:layout_editor_absoluteX="145dp"
+        tools:layout_editor_absoluteY="317dp">
+
+        <TextView
+            android:id="@+id/labelTripDetailsName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DetailsLabelThemePrimary"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/labelTripDetailsDestination"
+            style="@style/DetailsLabelThemeSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelTripDetailsDepartureDate"
+                style="@style/DetailsLabelThemeSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/labelTripDetailsDepartureTime"
+                style="@style/DetailsLabelThemeSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelTripDetailsReturnDate"
+                style="@style/DetailsLabelThemeSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/labelTripDetailsReturnTime"
+                style="@style/DetailsLabelThemeSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/labelTripDetailsSeatQuantity"
+            style="@style/DetailsLabelThemeSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonEditTrip"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_editTrip" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonDeleteTrip"
+            style="@style/MainScreenButtonTheme"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/redAchtung"
+            android:text="@string/button_deleteTrip" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
