@@ -192,14 +192,14 @@ public class TripList extends AppCompatActivity {
     }
 
     private void searchTrip() {
-        String name = editTripNameSearch.getText().toString().trim();
+        String name = editTripNameSearch.getText().toString().trim().toLowerCase();
         if (name.isEmpty()) {
             listTrips.setAdapter(adapter);
             searched = false;
         } else {
             listSearched = new ArrayList<>();
             for (Trip t : listAll) {
-                if (t.getNome().contains(name)) {
+                if (t.getNome().toLowerCase().contains(name)) {
                     listSearched.add(t);
                 }
             }
