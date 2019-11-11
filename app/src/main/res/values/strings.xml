@@ -21,17 +21,30 @@
     <string name="label_passengers">Passageiros</string>
     <string name="label_name">Nome</string>
     <string name="label_identity">Identidade</string>
+    <string name="label_destination">Destino</string>
     <string name="label_identitytype">Tipo da Identidade</string>
     <string name="label_birthdate">Data de nascimento</string>
     <string name="label_phone">Telefone</string>
     <string name="label_address">Endereço</string>
     <string name="label_type">Tipo</string>
+    <string name="label_seatquantity">Quantidade de vagas</string>
     <string name="label_pinscreen">Digite a sua senha de 4 dígitos para entrar no aplicativo.</string>
     <string name="label_pinscreeninit">Tipo</string>
+    <string name="label_departuredate">Data de partida</string>
+    <string name="label_returndate">Data de retorno</string>
+    <string name="label_departurehour">Hora de partida</string>
+    <string name="label_returnhour">Hora de retorno</string>
 
     <string name="hint_passengername">Nome do passageiro...</string>
     <string name="hint_passengeridentity">Identidade do passageiro...</string>
     <string name="hint_passengerphone">Telefone...</string>
     <string name="hint_passengerbirthdate">Data de nascimento...</string>
     <string name="hint_passengeraddress">Endereço do passageiro...</string>
+    <string name="hint_tripname">Nome da viagem...</string>
+    <string name="hint_tripdestination">Destino da viagem...</string>
+    <string name="hint_tripdeparturedate">Data de partida...</string>
+    <string name="hint_tripdeparturehour">Hora de partida...</string>
+    <string name="hint_tripreturndate">Data de retorno...</string>
+    <string name="hint_tripreturnhour">Hora de retorno...</string>
+    <string name="hint_tripseatquantity">Quantidade de vagas disponibilizadas...</string>
 </resources>

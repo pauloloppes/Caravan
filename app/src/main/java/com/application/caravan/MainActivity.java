@@ -58,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final AppCompatButton tripAdd = (AppCompatButton)findViewById(R.id.buttonAddTrip);
+        tripAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TripAdd.class));
+            }
+        });
+
         final AppCompatButton settings = (AppCompatButton) findViewById(R.id.buttonPreferences);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override

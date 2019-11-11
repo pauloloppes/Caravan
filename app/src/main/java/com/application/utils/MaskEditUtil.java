@@ -16,7 +16,7 @@ public abstract class MaskEditUtil {
         return s.replaceAll("[.]", "").replaceAll("[-]", "")
                 .replaceAll("[/]", "").replaceAll("[(]", "")
                 .replaceAll("[)]", "").replaceAll(" ", "")
-                .replaceAll(",", "");
+                .replaceAll(",", "").replaceAll(":", "");
     }
 
     public static boolean isASign(char c) {
