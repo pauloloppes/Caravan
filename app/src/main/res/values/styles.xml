@@ -34,6 +34,12 @@
         <item name="android:gravity">right</item>
     </style>
 
+    <style name="ListLabelThemeSecondary">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
     <style name="DetailsLabelThemePrimary">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">30dp</item>

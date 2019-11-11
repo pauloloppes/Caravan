@@ -66,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final AppCompatButton tripList = (AppCompatButton)findViewById(R.id.buttonListTrips);
+        tripList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TripList.class));
+            }
+        });
+
         final AppCompatButton settings = (AppCompatButton) findViewById(R.id.buttonPreferences);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override

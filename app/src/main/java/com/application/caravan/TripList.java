@@ -6,56 +6,51 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.application.entities.Passenger;
+import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPassenger;
+import com.application.utils.CustomAdapterTrip;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
-public class PassengerList extends AppCompatActivity {
+public class TripList extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore databasePassengers;
     private FirebaseUser currentUser;
-    private ArrayList<Passenger> listAll;
-    private ArrayList<Passenger> listSearched;
-    private ListView listPassengers;
-    private EditText editPassengerNameSearch;
-    private AppCompatButton buttonSearchPassenger;
-    private CustomAdapterPassenger adapter;
-    private CustomAdapterPassenger aSearched;
-    private final int OPEN_PASSENGER_REQUEST = 1;
+    private ListView listTrips;
+    private EditText editTripNameSearch;
+    private AppCompatButton buttonSearchTrip;
+    private ArrayList<Trip> listAll;
+    private ArrayList<Trip> listSearched;
+    private CustomAdapterTrip adapter;
+    private CustomAdapterTrip aSearched;
+    private final int OPEN_TRIP_REQUEST = 1;
     private boolean searched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passenger_list);
+        setContentView(R.layout.activity_trip_list);
 
-        listPassengers = (ListView) findViewById(R.id.listPassengers);
-        editPassengerNameSearch = (EditText) findViewById(R.id.editPassengerNameSearch);
-        buttonSearchPassenger = (AppCompatButton) findViewById(R.id.buttonSearchPassenger);
+        listTrips = (ListView) findViewById(R.id.listTrips);
+        editTripNameSearch = (EditText) findViewById(R.id.editTripNameSearch);
+        buttonSearchTrip = (AppCompatButton) findViewById(R.id.buttonSearchTrip);
 
         listAll = new ArrayList<>();
         searched = false;
@@ -67,7 +62,7 @@ public class PassengerList extends AppCompatActivity {
         if (currentUser!=null) {
             databasePassengers.collection(currentUser.getUid())
                     .document("dados")
-                    .collection("passageiros")
+                    .collection("viagens")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -75,15 +70,15 @@ public class PassengerList extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Passenger p = document.toObject(Passenger.class);
-                                    p.setId(document.getId());
-                                    listAll.add(p);
+                                    Trip t = document.toObject(Trip.class);
+                                    t.setId(document.getId());
+                                    listAll.add(t);
                                 }
 
                                 sortLists();
 
-                                adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
-                                listPassengers.setAdapter(adapter);
+                                adapter = new CustomAdapterTrip(listAll, getApplicationContext());
+                                listTrips.setAdapter(adapter);
                             } else
                                 toastShow("Erro ao acessar documentos: "+task.getException());
                         }
@@ -92,59 +87,60 @@ public class PassengerList extends AppCompatActivity {
             toastShow("Erro ao carregar usuário");
         }
 
-        listPassengers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listTrips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Passenger p;
+                Trip t;
                 if (searched) {
-                    p = listSearched.get(i);
+                    t = listSearched.get(i);
                 } else {
-                    p = listAll.get(i);
+                    t = listAll.get(i);
                 }
-                Intent details = new Intent(getApplicationContext(), PassengerDetails.class);
+                Intent details = new Intent(getApplicationContext(), TripDetails.class);
                 Bundle b = new Bundle();
-                b.putParcelable("passenger", p);
+                b.putParcelable("trip", t);
                 details.putExtras(b);
-                startActivityForResult(details,OPEN_PASSENGER_REQUEST);
+                startActivityForResult(details,OPEN_TRIP_REQUEST);
             }
         });
 
-        buttonSearchPassenger.setOnClickListener(new View.OnClickListener() {
+        buttonSearchTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchPassenger();
+                searchTrip();
             }
         });
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == OPEN_PASSENGER_REQUEST) {
+        if (requestCode == OPEN_TRIP_REQUEST) {
             if (data != null) {
-                Passenger p = (Passenger) data.getParcelableExtra("passenger");
+                Trip t = (Trip) data.getParcelableExtra("trip");
                 boolean deleted = data.getBooleanExtra("deleted",false);
                 boolean edited = data.getBooleanExtra("edited",false);
-                if (p!=null) {
+                if (t!=null) {
                     if (deleted)
-                        removePassengerOnLists(p);
+                        removeTripOnLists(t);
                     else if (edited)
-                        replacePassengerOnLists(p);
+                        replaceTripOnLists(t);
                 }
             }
         }
     }
 
-    private void replacePassengerOnLists(Passenger p) {
-        String newId = p.getId();
+    private void replaceTripOnLists(Trip t) {
+        String newId = t.getId();
 
         if (listAll != null) {
             boolean notFound = true;
             for (int i = 0; notFound && i < listAll.size(); i++) {
-                Passenger pas = listAll.get(i);
-                if (pas.getId().equals(newId)) {
+                Trip tri = listAll.get(i);
+                if (tri.getId().equals(newId)) {
                     listAll.remove(i);
-                    listAll.add(p);
+                    listAll.add(t);
                     notFound = false;
                 }
             }
@@ -153,27 +149,27 @@ public class PassengerList extends AppCompatActivity {
         if (searched && listSearched != null) {
             boolean notFound = true;
             for (int i = 0; notFound && i < listSearched.size(); i++) {
-                Passenger pas = listSearched.get(i);
-                if (pas.getId().equals(newId)) {
-                    listSearched.remove(pas);
-                    listSearched.add(p);
+                Trip tri = listSearched.get(i);
+                if (tri.getId().equals(newId)) {
+                    listSearched.remove(tri);
+                    listSearched.add(t);
                     notFound = false;
                 }
             }
         }
 
         sortLists();
-        listPassengers.invalidateViews();
+        listTrips.invalidateViews();
     }
 
-    private void removePassengerOnLists(Passenger p) {
-        String newId = p.getId();
+    private void removeTripOnLists(Trip t) {
+        String newId = t.getId();
 
         if (listAll != null) {
             boolean notFound = true;
             for (int i = 0; notFound && i < listAll.size(); i++) {
-                Passenger pas = listAll.get(i);
-                if (pas.getId().equals(newId)) {
+                Trip tri = listAll.get(i);
+                if (tri.getId().equals(newId)) {
                     listAll.remove(i);
                     notFound = false;
                 }
@@ -183,51 +179,51 @@ public class PassengerList extends AppCompatActivity {
         if (searched && listSearched != null) {
             boolean notFound = true;
             for (int i = 0; notFound && i < listSearched.size(); i++) {
-                Passenger pas = listSearched.get(i);
-                if (pas.getId().equals(newId)) {
-                    listSearched.remove(pas);
+                Trip tri = listSearched.get(i);
+                if (tri.getId().equals(newId)) {
+                    listSearched.remove(tri);
                     notFound = false;
                 }
             }
         }
 
         sortLists();
-        listPassengers.invalidateViews();
+        listTrips.invalidateViews();
     }
 
-    private void searchPassenger() {
-        String name = editPassengerNameSearch.getText().toString().trim();
+    private void searchTrip() {
+        String name = editTripNameSearch.getText().toString().trim();
         if (name.isEmpty()) {
-            listPassengers.setAdapter(adapter);
+            listTrips.setAdapter(adapter);
             searched = false;
         } else {
             listSearched = new ArrayList<>();
-            for (Passenger p : listAll) {
-                if (p.getNome().contains(name)) {
-                    listSearched.add(p);
+            for (Trip t : listAll) {
+                if (t.getNome().contains(name)) {
+                    listSearched.add(t);
                 }
             }
-            aSearched = new CustomAdapterPassenger(listSearched, getApplicationContext());
-            listPassengers.setAdapter(aSearched);
+            aSearched = new CustomAdapterTrip(listSearched, getApplicationContext());
+            listTrips.setAdapter(aSearched);
             searched = true;
         }
     }
 
     private void sortLists() {
         if (listAll != null && listAll.size() > 1) {
-            Collections.sort(listAll, new Comparator<Passenger>() {
+            Collections.sort(listAll, new Comparator<Trip>() {
                 @Override
-                public int compare(Passenger p1, Passenger p2) {
-                    return p1.getNome().compareTo(p2.getNome());
+                public int compare(Trip t1, Trip t2) {
+                    return t1.getNome().compareTo(t2.getNome());
                 }
             });
         }
 
         if (searched && listSearched != null && listSearched.size() > 1) {
-            Collections.sort(listSearched, new Comparator<Passenger>() {
+            Collections.sort(listSearched, new Comparator<Trip>() {
                 @Override
-                public int compare(Passenger p1, Passenger p2) {
-                    return p1.getNome().compareTo(p2.getNome());
+                public int compare(Trip t1, Trip t2) {
+                    return t1.getNome().compareTo(t2.getNome());
                 }
             });
         }
@@ -237,5 +233,4 @@ public class PassengerList extends AppCompatActivity {
     private void toastShow (String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
-
 }
