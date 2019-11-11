@@ -26,9 +26,8 @@
                 android:id="@+id/txtPinLabel"
                 style="@style/DetailsLabelThemePrimary"
                 android:layout_width="match_parent"
-                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:text="@string/label_pinscreen" />
+                android:gravity="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,37 +37,37 @@
 
                 <TextView
                     android:id="@+id/txtPinNo1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     style="@style/DetailsLabelThemePrimary"
-                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="" />
 
                 <TextView
                     android:id="@+id/txtPinNo2"
-                    android:layout_width="wrap_content"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/DetailsLabelThemePrimary"
                     android:gravity="center"
                     android:text="" />
 
                 <TextView
                     android:id="@+id/txtPinNo3"
-                    android:layout_width="wrap_content"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/DetailsLabelThemePrimary"
                     android:gravity="center"
                     android:text="" />
 
                 <TextView
                     android:id="@+id/txtPinNo4"
-                    android:layout_width="wrap_content"
+                    style="@style/DetailsLabelThemePrimary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/DetailsLabelThemePrimary"
                     android:gravity="center"
                     android:text="" />
             </LinearLayout>

@@ -40,6 +40,12 @@ public class Splash extends AppCompatActivity {
         databasePassengers = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        loginAnonymously();
+        createPIN = true;
+
+    }
+
+    private void loginAnonymously() {
         if (currentUser == null) {
             mAuth.signInAnonymously()
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -56,22 +62,27 @@ public class Splash extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     //USER EXISTE
+                                                    askForPassword();
                                                 } else {
                                                     //USER NAO EXISTE, ENTÃO CRIA O DOCUMENTO DELE
                                                     databasePassengers.collection(currentUser.getUid()).document("exists").set(new HashMap<String, Object>());
+                                                    askForPassword();
                                                 }
                                             }
                                         });
                             } else {
                                 toastShow("Erro ao logar: "+task.getException());
+                                finish();
                             }
                         }
                     });
         } else {
             toastShow("Usuário existente "+currentUser.getUid());
+            askForPassword();
         }
+    }
 
-        createPIN = true;
+    private void askForPassword() {
         databasePassengers.collection(currentUser.getUid()).document("key").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -82,13 +93,10 @@ public class Splash extends AppCompatActivity {
                                 passBase = rawPassBase.toString();
                                 createPIN = false;
                             }
-                            askForPin();
-                        } else {
-                            askForPin();
                         }
+                        askForPin();
                     }
                 });
-
     }
 
     private void askForPin() {

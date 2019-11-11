@@ -58,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final AppCompatButton settings = (AppCompatButton) findViewById(R.id.buttonPreferences);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, Settings.class));
+            }
+        });
     }
 
     private void toastShow (String message) {
