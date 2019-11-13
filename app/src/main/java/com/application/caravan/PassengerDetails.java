@@ -34,6 +34,7 @@ public class PassengerDetails extends AppCompatActivity {
     private TextView labelPassengerDetailsPhone;
     private TextView labelPassengerDetailsAddress;
     private AppCompatButton buttonEditPassenger;
+    private AppCompatButton buttonAddPassengerToTrip;
     private AppCompatButton buttonDeletePassenger;
     private Intent returnIntent;
     private final int EDIT_PASSENGER_REQUEST = 1;
@@ -49,6 +50,7 @@ public class PassengerDetails extends AppCompatActivity {
         labelPassengerDetailsPhone = (TextView) findViewById(R.id.labelPassengerDetailsPhone);
         labelPassengerDetailsAddress = (TextView) findViewById(R.id.labelPassengerDetailsAddress);
         buttonEditPassenger = (AppCompatButton) findViewById(R.id.buttonEditPassenger);
+        buttonAddPassengerToTrip = (AppCompatButton) findViewById(R.id.buttonAddPassengerToTrip);
         buttonDeletePassenger = (AppCompatButton) findViewById(R.id.buttonDeletePassenger);
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
@@ -81,6 +83,17 @@ public class PassengerDetails extends AppCompatActivity {
                 e.putParcelable("passenger",p);
                 edit.putExtras(e);
                 startActivityForResult(edit,EDIT_PASSENGER_REQUEST);
+            }
+        });
+
+        buttonAddPassengerToTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent add = new Intent(getApplicationContext(), TripAddPassenger.class);
+                Bundle a = new Bundle();
+                a.putParcelable("passenger",p);
+                add.putExtras(a);
+                startActivity(add);
             }
         });
 

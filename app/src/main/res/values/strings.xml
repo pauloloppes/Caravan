@@ -18,6 +18,8 @@
     <string name="button_createAccount">Criar nova conta</string>
     <string name="button_loginAccount">Entrar em conta existente</string>
     <string name="button_logoutAccount">Sair da conta</string>
+    <string name="button_selectPassenger">Selecionar passageiro</string>
+    <string name="button_selectTrip">Selecionar viagem</string>
 
     <string name="label_trips">Viagens</string>
     <string name="label_passengers">Passageiros</string>
