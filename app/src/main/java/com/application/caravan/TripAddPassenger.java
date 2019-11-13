@@ -109,7 +109,7 @@ public class TripAddPassenger extends AppCompatActivity {
     }
 
     private void openSelectPassenger() {
-        Intent i = new Intent(getApplicationContext(), Passenger.class);
+        Intent i = new Intent(getApplicationContext(), PassengerAddSelect.class);
         startActivityForResult(i, SELECT_PASSENGER_REQUEST);
     }
 
@@ -120,7 +120,7 @@ public class TripAddPassenger extends AppCompatActivity {
 
     private void updateInfo() {
         if (p != null)
-            labelAddPassengerName.setText("Passageiro:"+p.getNome());
+            labelAddPassengerName.setText("Passageiro: "+p.getNome());
         else
             labelAddPassengerName.setText("Passageiro não definido");
         if (t != null)
@@ -138,6 +138,16 @@ public class TripAddPassenger extends AppCompatActivity {
                     Trip tri = (Trip) data.getParcelableExtra("trip");
                     if (tri != null) {
                         t = tri;
+                        updateInfo();
+                    }
+                }
+            }
+        } else if (requestCode == SELECT_PASSENGER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Passenger pas = (Passenger) data.getParcelableExtra("passenger");
+                    if (pas != null) {
+                        p = pas;
                         updateInfo();
                     }
                 }

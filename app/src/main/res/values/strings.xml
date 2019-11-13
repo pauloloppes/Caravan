@@ -20,6 +20,7 @@
     <string name="button_logoutAccount">Sair da conta</string>
     <string name="button_selectPassenger">Selecionar passageiro</string>
     <string name="button_selectTrip">Selecionar viagem</string>
+    <string name="button_passengerList">Lista de passageiros</string>
 
     <string name="label_trips">Viagens</string>
     <string name="label_passengers">Passageiros</string>

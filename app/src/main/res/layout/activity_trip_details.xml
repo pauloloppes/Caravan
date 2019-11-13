@@ -78,6 +78,15 @@
             android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonTripPassengerList"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_passengerList" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonEditTrip"
             style="@style/MainScreenButtonTheme"
             android:layout_marginTop="30dp"
