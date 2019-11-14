@@ -44,7 +44,7 @@ public class PackagesList extends AppCompatActivity {
     private CustomAdapterPackage adapter;
     private CustomAdapterPackage aSearched;
     private final int EDIT_PASSENGER_REQUEST = 1;
-    private final int ADD_PASSENGER_REQUEST = 2;
+    private final int ADD_PACKAGE_REQUEST = 2;
     private Trip t;
     private boolean searched;
 
@@ -101,7 +101,7 @@ public class PackagesList extends AppCompatActivity {
         buttonPackageAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //addPackage();
+                addPackage();
             }
         });
     }
@@ -121,14 +121,11 @@ public class PackagesList extends AppCompatActivity {
                         replacePackageOnLists(p);
                 }
             }
-        } else if (requestCode == ADD_PASSENGER_REQUEST) {
+        } else if (requestCode == ADD_PACKAGE_REQUEST) {
             if (data != null && resultCode == RESULT_OK) {
-                Trip tripResponse = (Trip) data.getParcelableExtra("trip");
-                PackageTrip pasResponse = (PackageTrip) data.getParcelableExtra("passenger");
-                if (tripResponse != null && tripResponse.getId().equals(t.getId())) {
-                    if (pasResponse!= null) {
-                        addPackageOnLists(pasResponse);
-                    }
+                PackageTrip packResponse = (PackageTrip) data.getParcelableExtra("pack");
+                if (packResponse!= null) {
+                    addPackageOnLists(packResponse);
                 }
             }
         }
@@ -215,8 +212,8 @@ public class PackagesList extends AppCompatActivity {
         if (currentUser!=null) {
             databasePassengers.collection(currentUser.getUid())
                     .document("dados")
-                    .collection("viagens")
-                    .whereEqualTo("viagem",t.getId())
+                    .collection("pacotes")
+                    .whereEqualTo("viagemID",t.getId())
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -283,11 +280,11 @@ public class PackagesList extends AppCompatActivity {
     }
 
     private void addPackage() {
-        Intent add = new Intent(getApplicationContext(), TripAddPassenger.class);
+        Intent add = new Intent(getApplicationContext(), PackageAdd.class);
         Bundle a = new Bundle();
         a.putParcelable("trip",t);
         add.putExtras(a);
-        startActivityForResult(add,ADD_PASSENGER_REQUEST);
+        startActivityForResult(add,ADD_PACKAGE_REQUEST);
     }
 
     private void toastShow (String message) {

@@ -55,7 +55,7 @@ public class CustomAdapterPackage extends ArrayAdapter<PackageTrip> implements V
 
         lastPosition = position;
         viewHolder.labelPackageListName.setText(p.getNome());
-        viewHolder.labelPackageListPrice.setText(p.getPreco());
+        viewHolder.labelPackageListPrice.setText("R$ "+p.getPreco());
 
         return convertView;
     }

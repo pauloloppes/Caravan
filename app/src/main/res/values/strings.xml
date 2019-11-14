@@ -34,6 +34,8 @@
     <string name="label_phone">Telefone</string>
     <string name="label_address">Endereço</string>
     <string name="label_type">Tipo</string>
+    <string name="label_price">Preço</string>
+    <string name="label_description">Descrição</string>
     <string name="label_seatquantity">Quantidade de vagas</string>
     <string name="label_pinscreen">Digite a sua senha de 4 dígitos para entrar no aplicativo.</string>
     <string name="label_pinscreeninit">Tipo</string>
@@ -55,4 +57,6 @@
     <string name="hint_tripreturnhour">Hora de retorno...</string>
     <string name="hint_tripseatquantity">Quantidade de vagas disponibilizadas...</string>
     <string name="hint_packagename">Nome do pacote...</string>
+    <string name="hint_packagedescription">Descrição do pacote...</string>
+    <string name="hint_packageprice">Preço do pacote por passageiro...</string>
 </resources>
