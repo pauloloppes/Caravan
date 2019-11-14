@@ -23,15 +23,6 @@
             style="@style/DetailsLabelThemePrimary"
             android:text="" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonEditPassengerSelect"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_selectPassenger" />
-
         <TextView
             android:id="@+id/labelEditTripName"
             android:layout_width="match_parent"
@@ -40,22 +31,13 @@
             android:text="" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonEditTripSelect"
+            android:id="@+id/buttonDeletePassengerTrip"
             style="@style/MainScreenButtonTheme"
             android:layout_width="match_parent"
             android:layout_marginTop="30dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_selectTrip" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonConfirmPassengerTripEdit"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_save" />
+            android:backgroundTint="@color/redAchtung"
+            android:text="Remover passageiro da viagem" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
