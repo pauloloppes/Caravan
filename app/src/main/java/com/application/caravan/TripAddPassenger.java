@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +13,15 @@ import android.widget.Toast;
 
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
+import com.application.utils.CustomAdapterPassenger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +40,7 @@ public class TripAddPassenger extends AppCompatActivity {
     private AppCompatButton buttonConfirmPassengerTrip;
     private final int SELECT_PASSENGER_REQUEST = 1;
     private final int SELECT_TRIP_REQUEST = 2;
+    private Intent returnIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,9 @@ public class TripAddPassenger extends AppCompatActivity {
         databasePassengers = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -87,25 +96,56 @@ public class TripAddPassenger extends AppCompatActivity {
         } else if (t == null) {
             toastShow("Você deve selecionar uma viagem");
         } else {
-            Map dados = new HashMap<>();
-            dados.put("passageiro",p.getId());
-            dados.put("viagem",t.getId());
+
             databasePassengers.collection(currentUser.getUid())
                     .document("dados")
                     .collection("pasviagem")
-                    .add(dados)
-                    .addOnCompleteListener(new OnCompleteListener() {
+                    .whereEqualTo("viagem",t.getId())
+                    .whereEqualTo("passageiro",p.getId())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task task) {
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                toastShow("Dados gravados com sucesso");
-                                finish();
-                            } else {
-                                toastShow("Erro ao gravar dados: "+task.getException().getMessage());
-                            }
+                                QuerySnapshot query = task.getResult();
+                                if (query.size() == 0) {
+                                    recordDB();
+                                } else {
+                                    toastShow("Passageiro já presente nesta viagem. Tente outros");
+                                }
+                            } else
+                                toastShow("Erro ao conectar com o banco de dados");
                         }
                     });
         }
+    }
+
+    private void recordDB() {
+        Map dados = new HashMap<>();
+        dados.put("passageiro",p.getId());
+        dados.put("viagem",t.getId());
+        databasePassengers.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .add(dados)
+                .addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            setResultInfo();
+                        } else {
+                            toastShow("Erro ao gravar dados: "+task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    private void setResultInfo() {
+        returnIntent.putExtra("passenger",p);
+        returnIntent.putExtra("trip",t);
+        setResult(Activity.RESULT_OK, returnIntent);
+        toastShow("Dados gravados com sucesso");
+        finish();
     }
 
     private void openSelectPassenger() {

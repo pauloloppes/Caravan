@@ -43,6 +43,15 @@
             </LinearLayout>
         </LinearLayout>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonPassengerListAdd"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_addPassengerToTrip" />
+
         <ListView
             android:id="@+id/listPassengersTrip"
             android:layout_width="match_parent"

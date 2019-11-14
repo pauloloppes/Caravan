@@ -38,9 +38,11 @@ public class TripPassengersList extends AppCompatActivity {
     private ListView listPassengersTrip;
     private EditText editPassengerNameSearchTrip;
     private AppCompatButton buttonSearchPassengerTrip;
+    private AppCompatButton buttonPassengerListAdd;
     private CustomAdapterPassenger adapter;
     private CustomAdapterPassenger aSearched;
     private final int EDIT_PASSENGER_REQUEST = 1;
+    private final int ADD_PASSENGER_REQUEST = 2;
     private Trip t;
     private boolean searched;
 
@@ -52,6 +54,7 @@ public class TripPassengersList extends AppCompatActivity {
         listPassengersTrip = (ListView) findViewById(R.id.listPassengersTrip);
         editPassengerNameSearchTrip = (EditText) findViewById(R.id.editPassengerNameSearchTrip);
         buttonSearchPassengerTrip = (AppCompatButton) findViewById(R.id.buttonSearchPassengerTrip);
+        buttonPassengerListAdd = (AppCompatButton) findViewById(R.id.buttonPassengerListAdd);
 
         listAll = new ArrayList<>();
         searched = false;
@@ -93,6 +96,13 @@ public class TripPassengersList extends AppCompatActivity {
             }
         });
 
+        buttonPassengerListAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addPassenger();
+            }
+        });
+
     }
 
     @Override
@@ -110,6 +120,33 @@ public class TripPassengersList extends AppCompatActivity {
                         replacePassengerOnLists(p);
                 }
             }
+        } else if (requestCode == ADD_PASSENGER_REQUEST) {
+            if (data != null && resultCode == RESULT_OK) {
+                Trip tripResponse = (Trip) data.getParcelableExtra("trip");
+                Passenger pasResponse = (Passenger) data.getParcelableExtra("passenger");
+                if (tripResponse != null && tripResponse.getId().equals(t.getId())) {
+                    if (pasResponse!= null) {
+                        addPassengerOnLists(pasResponse);
+                    }
+                }
+            }
+        }
+    }
+
+    private void addPassengerOnLists(Passenger p) {
+        if (p != null) {
+            listAll.add(p);
+
+            if (searched) {
+                String name = editPassengerNameSearchTrip.getText().toString().trim().toLowerCase();
+                if (!name.isEmpty()) {
+                    if (p.getNome().toLowerCase().contains(name)) {
+                        listSearched.add(p);
+                    }
+                }
+            }
+            sortLists();
+            listPassengersTrip.invalidateViews();
         }
     }
 
@@ -259,6 +296,14 @@ public class TripPassengersList extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void addPassenger() {
+        Intent add = new Intent(getApplicationContext(), TripAddPassenger.class);
+        Bundle a = new Bundle();
+        a.putParcelable("trip",t);
+        add.putExtras(a);
+        startActivityForResult(add,ADD_PASSENGER_REQUEST);
     }
 
     private void toastShow (String message) {
