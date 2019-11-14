@@ -48,6 +48,22 @@
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/button_selectTrip" />
 
+        <TextView
+            android:id="@+id/labelAddPackName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DetailsLabelThemePrimary"
+            android:text="" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonAddPackSelect"
+            style="@style/MainScreenButtonTheme"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Selecionar pacote de viagem" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonConfirmPassengerTrip"
             style="@style/MainScreenButtonTheme"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.application.entities.PackageTrip;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPassenger;
@@ -33,13 +34,17 @@ public class TripAddPassenger extends AppCompatActivity {
     private FirebaseUser currentUser;
     private Passenger p;
     private Trip t;
+    private PackageTrip pck;
     private TextView labelAddPassengerName;
     private TextView labelAddTripName;
+    private TextView labelAddPackName;
     private AppCompatButton buttonAddPassengerSelect;
     private AppCompatButton buttonAddTripSelect;
+    private AppCompatButton buttonAddPackSelect;
     private AppCompatButton buttonConfirmPassengerTrip;
     private final int SELECT_PASSENGER_REQUEST = 1;
     private final int SELECT_TRIP_REQUEST = 2;
+    private final int SELECT_PACK_REQUEST = 3;
     private Intent returnIntent;
 
     @Override
@@ -49,8 +54,10 @@ public class TripAddPassenger extends AppCompatActivity {
 
         labelAddPassengerName = (TextView) findViewById(R.id.labelAddPassengerName);
         labelAddTripName = (TextView) findViewById(R.id.labelAddTripName);
+        labelAddPackName = (TextView) findViewById(R.id.labelAddPackName);
         buttonAddPassengerSelect = (AppCompatButton) findViewById(R.id.buttonAddPassengerSelect);
         buttonAddTripSelect = (AppCompatButton) findViewById(R.id.buttonAddTripSelect);
+        buttonAddPackSelect = (AppCompatButton) findViewById(R.id.buttonAddPackSelect);
         buttonConfirmPassengerTrip = (AppCompatButton) findViewById(R.id.buttonConfirmPassengerTrip);
 
         databasePassengers = FirebaseFirestore.getInstance();
@@ -79,6 +86,16 @@ public class TripAddPassenger extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openSelectTrip();
+            }
+        });
+
+        buttonAddPackSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (t != null)
+                    openSelectPack();
+                else
+                    toastShow("Escolha uma viagem antes de escolher pacote");
             }
         });
 
@@ -124,6 +141,9 @@ public class TripAddPassenger extends AppCompatActivity {
         Map dados = new HashMap<>();
         dados.put("passageiro",p.getId());
         dados.put("viagem",t.getId());
+        if (pck != null) {
+            dados.put("pacote",pck.getId());
+        }
         databasePassengers.collection(currentUser.getUid())
                 .document("dados")
                 .collection("pasviagem")
@@ -158,6 +178,12 @@ public class TripAddPassenger extends AppCompatActivity {
         startActivityForResult(i, SELECT_TRIP_REQUEST);
     }
 
+    private void openSelectPack() {
+        Intent i = new Intent(getApplicationContext(), PackageAddSelect.class);
+        i.putExtra("trip",t);
+        startActivityForResult(i, SELECT_PACK_REQUEST);
+    }
+
     private void updateInfo() {
         if (p != null)
             labelAddPassengerName.setText("Passageiro: "+p.getNome());
@@ -167,6 +193,10 @@ public class TripAddPassenger extends AppCompatActivity {
             labelAddTripName.setText("Viagem: "+t.getNome());
         else
             labelAddTripName.setText("Viagem não definida");
+        if (pck != null)
+            labelAddPackName.setText("Pacote de viagem: "+pck.getNome());
+        else
+            labelAddPackName.setText("Pacote de viagem não definido");
     }
 
     @Override
@@ -188,6 +218,16 @@ public class TripAddPassenger extends AppCompatActivity {
                     Passenger pas = (Passenger) data.getParcelableExtra("passenger");
                     if (pas != null) {
                         p = pas;
+                        updateInfo();
+                    }
+                }
+            }
+        } else if (requestCode == SELECT_PACK_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    PackageTrip packa = (PackageTrip) data.getParcelableExtra("package");
+                    if (packa != null) {
+                        pck = packa;
                         updateInfo();
                     }
                 }
