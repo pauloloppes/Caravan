@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "296999902701-jhtfeolrr6tl7farm0d415l14bnqeh6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.application.caravan",
+            "certificate_hash": "c081efa11aa3ec68072d4daaa62c1c5fa4faae17"
+          }
+        },
+        {
           "client_id": "296999902701-tlt8f7sa1vdkdg56u17iogfaturpgfmm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

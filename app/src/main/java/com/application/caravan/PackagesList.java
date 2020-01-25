@@ -43,7 +43,7 @@ public class PackagesList extends AppCompatActivity {
     private AppCompatButton buttonPackageAdd;
     private CustomAdapterPackage adapter;
     private CustomAdapterPackage aSearched;
-    private final int EDIT_PASSENGER_REQUEST = 1;
+    private final int EDIT_PACKAGE_REQUEST = 1;
     private final int ADD_PACKAGE_REQUEST = 2;
     private Trip t;
     private boolean searched;
@@ -82,12 +82,12 @@ public class PackagesList extends AppCompatActivity {
                 } else {
                     p = listAll.get(i);
                 }
-                Intent details = new Intent(getApplicationContext(), TripEditPassenger.class);
+                Intent details = new Intent(getApplicationContext(), PackageDetails.class);
                 Bundle b = new Bundle();
-                b.putParcelable("package", p);
+                b.putParcelable("pack", p);
                 b.putParcelable("trip",t);
                 details.putExtras(b);
-                startActivityForResult(details,EDIT_PASSENGER_REQUEST);
+                startActivityForResult(details,EDIT_PACKAGE_REQUEST);
             }
         });
 
@@ -109,9 +109,9 @@ public class PackagesList extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_PASSENGER_REQUEST) {
+        if (requestCode == EDIT_PACKAGE_REQUEST) {
             if (data != null) {
-                PackageTrip p = (PackageTrip) data.getParcelableExtra("passenger");
+                PackageTrip p = (PackageTrip) data.getParcelableExtra("pack");
                 boolean deleted = data.getBooleanExtra("deleted",false);
                 boolean edited = data.getBooleanExtra("edited",false);
                 if (p!=null) {

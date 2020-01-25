@@ -110,6 +110,7 @@ public class PackageAdd extends AppCompatActivity {
 
     private void setReturn() {
         returnIntent.putExtra("pack",p);
+        setResult(RESULT_OK, returnIntent);
         toastShow("Pacote adicionado com sucesso");
         finish();
     }

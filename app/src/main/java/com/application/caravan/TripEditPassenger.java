@@ -13,14 +13,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.application.entities.PackageTrip;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
+import com.application.utils.CustomAdapterPassenger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,8 +35,11 @@ public class TripEditPassenger extends AppCompatActivity {
     private FirebaseUser currentUser;
     private Passenger p;
     private Trip t;
+    private PackageTrip pt;
     private TextView labelEditPassengerName;
     private TextView labelEditTripName;
+    private TextView labelEditPackageName;
+    private AppCompatButton button_changePackageTrip;
     private AppCompatButton buttonDeletePassengerTrip;
     private Intent returnIntent;
 
@@ -44,6 +50,7 @@ public class TripEditPassenger extends AppCompatActivity {
 
         labelEditPassengerName = (TextView) findViewById(R.id.labelEditPassengerName);
         labelEditTripName = (TextView) findViewById(R.id.labelEditTripName);
+        labelEditPackageName = (TextView) findViewById(R.id.labelEditPackageName);
         buttonDeletePassengerTrip = (AppCompatButton) findViewById(R.id.buttonDeletePassengerTrip);
 
         databasePassengers = FirebaseFirestore.getInstance();
@@ -57,6 +64,7 @@ public class TripEditPassenger extends AppCompatActivity {
         if (b != null) {
             p = (Passenger) b.getParcelable("passenger");
             t = (Trip) b.getParcelable("trip");
+            searchPackage();
         }
 
         updateInfo();
@@ -69,6 +77,54 @@ public class TripEditPassenger extends AppCompatActivity {
         });
     }
 
+    private void searchPackage() {
+        if (currentUser!=null) {
+            databasePassengers.collection(currentUser.getUid())
+                    .document("dados")
+                    .collection("pasviagem")
+                    .whereEqualTo("passageiro",p.getId())
+                    .whereEqualTo("viagem",t.getId())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    searchPackageById(document.get("pacote").toString());
+                                }
+
+                            } else
+                                toastShow("Erro ao acessar documentos: "+task.getException());
+                        }
+                    });
+
+        } else {
+            toastShow("Erro ao carregar usuário");
+        }
+    }
+
+    private void searchPackageById(String packID) {
+        databasePassengers.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pacotes")
+                .document(packID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            pt = doc.toObject(PackageTrip.class);
+                            if (pt != null) {
+                                pt.setId(doc.getId());
+                                updateInfo();
+                            }
+                        }
+                    }
+                });
+    }
+
     private void updateInfo() {
         if (p != null)
             labelEditPassengerName.setText("Passageiro: "+p.getNome());
@@ -78,6 +134,10 @@ public class TripEditPassenger extends AppCompatActivity {
             labelEditTripName.setText("Viagem: "+t.getNome());
         else
             labelEditTripName.setText("Viagem não definida");
+        if (pt != null)
+            labelEditPackageName.setText("Pacote: "+pt.getNome());
+        else
+            labelEditPackageName.setText("Pacote não definido");
     }
 
     private void deletePassengerConfirmation() {

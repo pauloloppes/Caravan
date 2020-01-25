@@ -23,6 +23,10 @@
     <string name="button_passengerList">Lista de passageiros</string>
     <string name="button_packagesManage">Gerenciar pacotes de viagem</string>
     <string name="button_addPackageToTrip">Adicionar pacote à viagem</string>
+    <string name="button_editPackage">Editar detalhes do pacote</string>
+    <string name="button_deletePackage">Excluir pacote</string>
+    <string name="button_changePackageTrip">Trocar pacote de viagem</string>
+    <string name="button_removePassengerTrip">Remover passageiro da viagem</string>
 
     <string name="label_trips">Viagens</string>
     <string name="label_passengers">Passageiros</string>

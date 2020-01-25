@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TripEditPassenger">
+    tools:context=".PackageDetails">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,43 +17,41 @@
         tools:layout_editor_absoluteY="317dp">
 
         <TextView
-            android:id="@+id/labelEditPassengerName"
+            android:id="@+id/labelPackageDetailsName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/DetailsLabelThemePrimary"
             android:text="" />
 
         <TextView
-            android:id="@+id/labelEditTripName"
+            android:id="@+id/labelPackageDetailsPrice"
+            style="@style/DetailsLabelThemeSecondary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/labelEditPackageName"
+            android:id="@+id/labelPackageDetailsDescription"
+            style="@style/DetailsLabelThemeSecondary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonChangePackageTrip"
+            android:id="@+id/buttonEditPackage"
             style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
             android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
-            android:text="@string/button_changePackageTrip" />
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_editPackage" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonDeletePassengerTrip"
+            android:id="@+id/buttonDeletePackage"
             style="@style/MainScreenButtonTheme"
             android:layout_width="match_parent"
             android:layout_marginTop="30dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/redAchtung"
-            android:text="@string/button_removePassengerTrip" />
+            android:text="@string/button_deletePackage" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
