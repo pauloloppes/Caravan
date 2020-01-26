@@ -39,9 +39,10 @@ public class TripEditPassenger extends AppCompatActivity {
     private TextView labelEditPassengerName;
     private TextView labelEditTripName;
     private TextView labelEditPackageName;
-    private AppCompatButton button_changePackageTrip;
+    private AppCompatButton buttonChangePackageTrip;
     private AppCompatButton buttonDeletePassengerTrip;
     private Intent returnIntent;
+    private final int EDIT_PACKAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class TripEditPassenger extends AppCompatActivity {
         labelEditPassengerName = (TextView) findViewById(R.id.labelEditPassengerName);
         labelEditTripName = (TextView) findViewById(R.id.labelEditTripName);
         labelEditPackageName = (TextView) findViewById(R.id.labelEditPackageName);
+        buttonChangePackageTrip = (AppCompatButton) findViewById(R.id.buttonChangePackageTrip);
         buttonDeletePassengerTrip = (AppCompatButton) findViewById(R.id.buttonDeletePassengerTrip);
 
         databasePassengers = FirebaseFirestore.getInstance();
@@ -63,6 +65,7 @@ public class TripEditPassenger extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if (b != null) {
             p = (Passenger) b.getParcelable("passenger");
+            System.out.println("\t\t"+p.getPasviagemId());
             t = (Trip) b.getParcelable("trip");
             searchPackage();
         }
@@ -73,6 +76,19 @@ public class TripEditPassenger extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 deletePassengerConfirmation();
+            }
+        });
+
+        buttonChangePackageTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent edit = new Intent(getApplicationContext(), TripEditPassengerPack.class);
+                Bundle e = new Bundle();
+                e.putParcelable("passenger",p);
+                e.putParcelable("trip",t);
+                e.putParcelable("pack",pt);
+                edit.putExtras(e);
+                startActivityForResult(edit,EDIT_PACKAGE_REQUEST);
             }
         });
     }
@@ -91,7 +107,9 @@ public class TripEditPassenger extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    searchPackageById(document.get("pacote").toString());
+                                    Object pkt = document.get("pacote");
+                                    if (pkt != null)
+                                        searchPackageById(pkt.toString());
                                 }
 
                             } else
@@ -123,6 +141,23 @@ public class TripEditPassenger extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_PACKAGE_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data.getParcelableExtra("pack")!=null) {
+                    pt = data.getParcelableExtra("pack");
+                } else {
+                    if (data.getBooleanExtra("packDelete",false)) {
+                        pt = null;
+                    }
+                }
+                updateInfo();
+            }
+        }
     }
 
     private void updateInfo() {

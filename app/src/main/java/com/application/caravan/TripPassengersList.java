@@ -223,7 +223,7 @@ public class TripPassengersList extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    searchPassengerByID(document.get("passageiro").toString());
+                                    searchPassengerByID(document.get("passageiro").toString(),document.getId());
                                 }
 
                                 sortLists();
@@ -239,7 +239,7 @@ public class TripPassengersList extends AppCompatActivity {
         }
     }
 
-    private void searchPassengerByID(String pasID) {
+    private void searchPassengerByID(String pasID, final String dbID) {
         databasePassengers.collection(currentUser.getUid())
                 .document("dados")
                 .collection("passageiros")
@@ -252,6 +252,8 @@ public class TripPassengersList extends AppCompatActivity {
                             DocumentSnapshot doc = task.getResult();
                             Passenger p = doc.toObject(Passenger.class);
                             p.setId(doc.getId());
+                            p.setPasviagemId(dbID);
+                            System.out.println("\t\t"+dbID);
                             listAll.add(p);
                             listPassengersTrip.invalidateViews();
                         }

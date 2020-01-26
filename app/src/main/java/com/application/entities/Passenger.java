@@ -12,6 +12,7 @@ public class Passenger implements Parcelable {
     private String dataNascimento;
     private String telefone;
     private String endereco;
+    private String pasviagemId;
 
     public Passenger(String nome, String identidade, String tipoIdentidade, String dataNascimento, String telefone) {
         this.nome = nome;
@@ -102,6 +103,7 @@ public class Passenger implements Parcelable {
         dataNascimento = in.readString();
         telefone = in.readString();
         endereco = in.readString();
+        pasviagemId = in.readString();
     }
 
     @Override
@@ -118,6 +120,7 @@ public class Passenger implements Parcelable {
         dest.writeString(dataNascimento);
         dest.writeString(telefone);
         dest.writeString(endereco);
+        dest.writeString(pasviagemId);
     }
 
     @SuppressWarnings("unused")
@@ -133,4 +136,11 @@ public class Passenger implements Parcelable {
         }
     };
 
+    public String getPasviagemId() {
+        return pasviagemId;
+    }
+
+    public void setPasviagemId(String pasviagemId) {
+        this.pasviagemId = pasviagemId;
+    }
 }
