@@ -20,6 +20,7 @@
     <string name="button_logoutAccount">Sair da conta</string>
     <string name="button_selectPassenger">Selecionar passageiro</string>
     <string name="button_selectTrip">Selecionar viagem</string>
+    <string name="button_selectPack">Selecionar pacote de viagem</string>
     <string name="button_passengerList">Lista de passageiros</string>
     <string name="button_packagesManage">Gerenciar pacotes de viagem</string>
     <string name="button_addPackageToTrip">Adicionar pacote à viagem</string>
@@ -41,6 +42,11 @@
     <string name="label_type">Tipo</string>
     <string name="label_price">Preço</string>
     <string name="label_description">Descrição</string>
+    <string name="label_boarding">Embarque</string>
+    <string name="label_landing">Desembarque</string>
+    <string name="label_vehicle">Veículo</string>
+    <string name="label_seat">Assento</string>
+    <string name="label_paidamount">Valor pago</string>
     <string name="label_seatquantity">Quantidade de vagas</string>
     <string name="label_pinscreen">Digite a sua senha de 4 dígitos para entrar no aplicativo.</string>
     <string name="label_pinscreeninit">Tipo</string>
@@ -54,6 +60,11 @@
     <string name="hint_passengerphone">Telefone...</string>
     <string name="hint_passengerbirthdate">Data de nascimento...</string>
     <string name="hint_passengeraddress">Endereço do passageiro...</string>
+    <string name="hint_passengervehicle">Veículo do passageiro...</string>
+    <string name="hint_passengerseat">Assento do passageiro...</string>
+    <string name="hint_passengerboarding">Local de embarque...</string>
+    <string name="hint_passengerlanding">Local de desembarque...</string>
+    <string name="hint_passengerpaidamount">Valor pago pelo passageiro...</string>
     <string name="hint_tripname">Nome da viagem...</string>
     <string name="hint_tripdestination">Destino da viagem...</string>
     <string name="hint_tripdeparturedate">Data de partida...</string>

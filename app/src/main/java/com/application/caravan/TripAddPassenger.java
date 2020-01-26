@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,11 @@ public class TripAddPassenger extends AppCompatActivity {
     private TextView labelAddPassengerName;
     private TextView labelAddTripName;
     private TextView labelAddPackName;
+    private EditText editAddPassengerVehicle;
+    private EditText editAddPassengerSeat;
+    private EditText editAddPassengerBoarding;
+    private EditText editAddPassengerLanding;
+    private EditText editAddPassengerPaid;
     private AppCompatButton buttonAddPassengerSelect;
     private AppCompatButton buttonAddTripSelect;
     private AppCompatButton buttonAddPackSelect;
@@ -55,6 +61,11 @@ public class TripAddPassenger extends AppCompatActivity {
         labelAddPassengerName = (TextView) findViewById(R.id.labelAddPassengerName);
         labelAddTripName = (TextView) findViewById(R.id.labelAddTripName);
         labelAddPackName = (TextView) findViewById(R.id.labelAddPackName);
+        editAddPassengerVehicle = (EditText) findViewById(R.id.editAddPassengerVehicle);
+        editAddPassengerSeat = (EditText) findViewById(R.id.editAddPassengerSeat);
+        editAddPassengerBoarding = (EditText) findViewById(R.id.editAddPassengerBoarding);
+        editAddPassengerLanding = (EditText) findViewById(R.id.editAddPassengerLanding);
+        editAddPassengerPaid = (EditText) findViewById(R.id.editAddPassengerPaid);
         buttonAddPassengerSelect = (AppCompatButton) findViewById(R.id.buttonAddPassengerSelect);
         buttonAddTripSelect = (AppCompatButton) findViewById(R.id.buttonAddTripSelect);
         buttonAddPackSelect = (AppCompatButton) findViewById(R.id.buttonAddPackSelect);
@@ -141,6 +152,16 @@ public class TripAddPassenger extends AppCompatActivity {
         Map dados = new HashMap<>();
         dados.put("passageiro",p.getId());
         dados.put("viagem",t.getId());
+        p.setPasviagemVeiculo(editAddPassengerVehicle.getText().toString().trim());
+        dados.put("veiculo",p.getPasviagemVeiculo());
+        p.setPasviagemAssento(editAddPassengerSeat.getText().toString().trim());
+        dados.put("assento",p.getPasviagemAssento());
+        p.setPasviagemEmbarque(editAddPassengerBoarding.getText().toString().trim());
+        dados.put("embarque",p.getPasviagemEmbarque());
+        p.setPasviagemDesembarque(editAddPassengerLanding.getText().toString().trim());
+        dados.put("desembarque",p.getPasviagemDesembarque());
+        p.setPasviagemValorPago(editAddPassengerPaid.getText().toString().trim());
+        dados.put("valorpago",p.getPasviagemValorPago());
         if (pck != null) {
             dados.put("pacote",pck.getId());
         }

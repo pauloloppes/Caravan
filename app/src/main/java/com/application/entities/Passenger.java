@@ -13,6 +13,11 @@ public class Passenger implements Parcelable {
     private String telefone;
     private String endereco;
     private String pasviagemId;
+    private String pasviagemVeiculo;
+    private String pasviagemAssento;
+    private String pasviagemEmbarque;
+    private String pasviagemDesembarque;
+    private String pasviagemValorPago;
 
     public Passenger(String nome, String identidade, String tipoIdentidade, String dataNascimento, String telefone) {
         this.nome = nome;
@@ -104,6 +109,11 @@ public class Passenger implements Parcelable {
         telefone = in.readString();
         endereco = in.readString();
         pasviagemId = in.readString();
+        pasviagemVeiculo = in.readString();
+        pasviagemAssento = in.readString();
+        pasviagemEmbarque = in.readString();
+        pasviagemDesembarque = in.readString();
+        pasviagemValorPago = in.readString();
     }
 
     @Override
@@ -121,6 +131,11 @@ public class Passenger implements Parcelable {
         dest.writeString(telefone);
         dest.writeString(endereco);
         dest.writeString(pasviagemId);
+        dest.writeString(pasviagemVeiculo);
+        dest.writeString(pasviagemAssento);
+        dest.writeString(pasviagemEmbarque);
+        dest.writeString(pasviagemDesembarque);
+        dest.writeString(pasviagemValorPago);
     }
 
     @SuppressWarnings("unused")
@@ -142,5 +157,45 @@ public class Passenger implements Parcelable {
 
     public void setPasviagemId(String pasviagemId) {
         this.pasviagemId = pasviagemId;
+    }
+
+    public String getPasviagemVeiculo() {
+        return pasviagemVeiculo;
+    }
+
+    public void setPasviagemVeiculo(String pasviagemVeiculo) {
+        this.pasviagemVeiculo = pasviagemVeiculo;
+    }
+
+    public String getPasviagemAssento() {
+        return pasviagemAssento;
+    }
+
+    public void setPasviagemAssento(String pasviagemAssento) {
+        this.pasviagemAssento = pasviagemAssento;
+    }
+
+    public String getPasviagemEmbarque() {
+        return pasviagemEmbarque;
+    }
+
+    public void setPasviagemEmbarque(String pasviagemEmbarque) {
+        this.pasviagemEmbarque = pasviagemEmbarque;
+    }
+
+    public String getPasviagemDesembarque() {
+        return pasviagemDesembarque;
+    }
+
+    public void setPasviagemDesembarque(String pasviagemDesembarque) {
+        this.pasviagemDesembarque = pasviagemDesembarque;
+    }
+
+    public String getPasviagemValorPago() {
+        return pasviagemValorPago;
+    }
+
+    public void setPasviagemValorPago(String pasviagemValorPago) {
+        this.pasviagemValorPago = pasviagemValorPago;
     }
 }

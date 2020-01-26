@@ -223,7 +223,14 @@ public class TripPassengersList extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    searchPassengerByID(document.get("passageiro").toString(),document.getId());
+                                    searchPassengerByID(document.get("passageiro").toString(),
+                                            document.getId(),
+                                            document.get("veiculo").toString(),
+                                            document.get("assento").toString(),
+                                            document.get("embarque").toString(),
+                                            document.get("desembarque").toString(),
+                                            document.get("valorpago").toString()
+                                    );
                                 }
 
                                 sortLists();
@@ -239,7 +246,7 @@ public class TripPassengersList extends AppCompatActivity {
         }
     }
 
-    private void searchPassengerByID(String pasID, final String dbID) {
+    private void searchPassengerByID(String pasID, final String dbID, final String vehicle, final String seat, final String boarding, final String landing, final String paidAmount) {
         databasePassengers.collection(currentUser.getUid())
                 .document("dados")
                 .collection("passageiros")
@@ -253,6 +260,11 @@ public class TripPassengersList extends AppCompatActivity {
                             Passenger p = doc.toObject(Passenger.class);
                             p.setId(doc.getId());
                             p.setPasviagemId(dbID);
+                            p.setPasviagemVeiculo(vehicle);
+                            p.setPasviagemAssento(seat);
+                            p.setPasviagemEmbarque(boarding);
+                            p.setPasviagemDesembarque(landing);
+                            p.setPasviagemValorPago(paidAmount);
                             System.out.println("\t\t"+dbID);
                             listAll.add(p);
                             listPassengersTrip.invalidateViews();

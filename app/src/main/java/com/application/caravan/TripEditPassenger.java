@@ -39,6 +39,11 @@ public class TripEditPassenger extends AppCompatActivity {
     private TextView labelEditPassengerName;
     private TextView labelEditTripName;
     private TextView labelEditPackageName;
+    private TextView labelEditVehicle;
+    private TextView labelEditSeat;
+    private TextView labelEditBoarding;
+    private TextView labelEditLanding;
+    private TextView labelEditPaidAmount;
     private AppCompatButton buttonChangePackageTrip;
     private AppCompatButton buttonDeletePassengerTrip;
     private Intent returnIntent;
@@ -52,6 +57,11 @@ public class TripEditPassenger extends AppCompatActivity {
         labelEditPassengerName = (TextView) findViewById(R.id.labelEditPassengerName);
         labelEditTripName = (TextView) findViewById(R.id.labelEditTripName);
         labelEditPackageName = (TextView) findViewById(R.id.labelEditPackageName);
+        labelEditVehicle = (TextView) findViewById(R.id.labelEditVehicle);
+        labelEditSeat = (TextView) findViewById(R.id.labelEditSeat);
+        labelEditBoarding = (TextView) findViewById(R.id.labelEditBoarding);
+        labelEditLanding = (TextView) findViewById(R.id.labelEditLanding);
+        labelEditPaidAmount = (TextView) findViewById(R.id.labelEditPaidAmount);
         buttonChangePackageTrip = (AppCompatButton) findViewById(R.id.buttonChangePackageTrip);
         buttonDeletePassengerTrip = (AppCompatButton) findViewById(R.id.buttonDeletePassengerTrip);
 
@@ -161,10 +171,22 @@ public class TripEditPassenger extends AppCompatActivity {
     }
 
     private void updateInfo() {
-        if (p != null)
-            labelEditPassengerName.setText("Passageiro: "+p.getNome());
-        else
+        if (p != null) {
+            labelEditPassengerName.setText("Passageiro: " + p.getNome());
+            labelEditVehicle.setText("Veículo: "+p.getPasviagemVeiculo());
+            labelEditSeat.setText("Assento: "+p.getPasviagemAssento());
+            labelEditBoarding.setText("Embarque: "+p.getPasviagemEmbarque());
+            labelEditLanding.setText("Desembarque: "+p.getPasviagemDesembarque());
+            labelEditPaidAmount.setText("Valor pago: "+p.getPasviagemValorPago());
+        }
+        else {
             labelEditPassengerName.setText("Passageiro não definido");
+            labelEditVehicle.setText("Veículo: ");
+            labelEditSeat.setText("Assento: ");
+            labelEditBoarding.setText("Embarque: ");
+            labelEditLanding.setText("Desembarque: ");
+            labelEditPaidAmount.setText("Valor pago: ");
+        }
         if (t != null)
             labelEditTripName.setText("Viagem: "+t.getNome());
         else

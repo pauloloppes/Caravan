@@ -6,72 +6,166 @@
     android:layout_height="match_parent"
     tools:context=".TripAddPassenger">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        tools:layout_editor_absoluteX="145dp"
-        tools:layout_editor_absoluteY="317dp">
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="451dp">
 
-        <TextView
-            android:id="@+id/labelAddPassengerName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            android:orientation="vertical" >
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonAddPassengerSelect"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_selectPassenger" />
+            <TextView
+                android:id="@+id/labelAddPassengerName"
+                style="@style/DetailsLabelThemePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
-        <TextView
-            android:id="@+id/labelAddTripName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAddPassengerSelect"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_selectPassenger" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonAddTripSelect"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_selectTrip" />
+            <TextView
+                android:id="@+id/labelAddTripName"
+                style="@style/DetailsLabelThemePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
-        <TextView
-            android:id="@+id/labelAddPackName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAddTripSelect"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_selectTrip" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonAddPackSelect"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Selecionar pacote de viagem" />
+            <TextView
+                android:id="@+id/labelAddPackName"
+                style="@style/DetailsLabelThemePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonConfirmPassengerTrip"
-            style="@style/MainScreenButtonTheme"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAddPackSelect"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_selectPack" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/labelAddPassengerVehicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_vehicle" />
+
+                    <EditText
+                        android:id="@+id/editAddPassengerVehicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="@string/hint_passengervehicle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/labelAddPassengerSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_seat" />
+
+                    <EditText
+                        android:id="@+id/editAddPassengerSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="@string/hint_passengerseat" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/labelAddPassengerBoarding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_boarding" />
+
+            <EditText
+                android:id="@+id/editAddPassengerBoarding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_passengerboarding" />
+
+            <TextView
+            android:id="@+id/labelAddPassengerLanding"
             android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_save" />
-    </LinearLayout>
+            android:text="@string/label_landing" />
+
+            <EditText
+                android:id="@+id/editAddPassengerLanding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_passengerlanding" />
+
+            <TextView
+                android:id="@+id/labelAddPassengerPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_paidamount" />
+
+            <EditText
+                android:id="@+id/editAddPassengerPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_passengerpaidamount"
+                android:inputType="number" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonConfirmPassengerTrip"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_save" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
