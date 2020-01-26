@@ -165,6 +165,11 @@ public class TripEditPassenger extends AppCompatActivity {
                         pt = null;
                     }
                 }
+                if (data.getParcelableExtra("passenger")!=null) {
+                    p = data.getParcelableExtra("passenger");
+                    returnIntent.putExtra("passenger",p);
+                    returnIntent.putExtra("edited",true);
+                }
                 updateInfo();
             }
         }

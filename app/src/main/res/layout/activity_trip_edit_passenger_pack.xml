@@ -6,63 +6,158 @@
     android:layout_height="match_parent"
     tools:context=".TripEditPassengerPack">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        tools:layout_editor_absoluteX="145dp"
-        tools:layout_editor_absoluteY="317dp">
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="659dp">
 
-        <TextView
-            android:id="@+id/labelEditPassengerNamePack"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/labelEditTripNamePack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            <TextView
+                android:id="@+id/labelEditPassengerNamePack"
+                style="@style/DetailsLabelThemePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
-        <TextView
-            android:id="@+id/labelEditPackNamePack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsLabelThemePrimary"
-            android:text="" />
+            <TextView
+                android:id="@+id/labelEditTripNamePack"
+                style="@style/DetailsLabelThemePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonEditPackSelectPack"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Selecionar pacote de viagem" />
+            <TextView
+                android:id="@+id/labelEditPackNamePack"
+                style="@style/DetailsLabelThemePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonRemovePassengerTripPack"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/redAchtung"
-            android:text="@string/button_removePassengerTripPackage" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonEditPackSelectPack"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Selecionar pacote de viagem" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonConfirmPassengerTripPack"
-            style="@style/MainScreenButtonTheme"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/button_save" />
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonRemovePassengerTripPack"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/redAchtung"
+                android:text="@string/button_removePassengerTripPackage" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/labelEditPassengerVehicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_vehicle" />
+
+                    <EditText
+                        android:id="@+id/editEditPassengerVehicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/hint_passengervehicle"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/labelEditPassengerSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_seat" />
+
+                    <EditText
+                        android:id="@+id/editEditPassengerSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/hint_passengerseat"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/labelEditPassengerBoarding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_boarding" />
+
+            <EditText
+                android:id="@+id/editEditPassengerBoarding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_passengerboarding"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/labelEditPassengerLanding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_landing" />
+
+            <EditText
+                android:id="@+id/editEditPassengerLanding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_passengerlanding"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/labelEditPassengerPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_paidamount" />
+
+            <EditText
+                android:id="@+id/editEditPassengerPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_passengerpaidamount"
+                android:inputType="number|numberDecimal" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonConfirmPassengerTripPack"
+                style="@style/MainScreenButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_save" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

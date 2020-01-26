@@ -135,6 +135,8 @@ public class TripPassengersList extends AppCompatActivity {
 
     private void addPassengerOnLists(Passenger p) {
         if (p != null) {
+
+            addPasViagemID(p);
             listAll.add(p);
 
             if (searched) {
@@ -243,6 +245,25 @@ public class TripPassengersList extends AppCompatActivity {
                     });
         } else {
             toastShow("Erro ao carregar usuário");
+        }
+    }
+
+    private void addPasViagemID(final Passenger p) {
+        if (currentUser!=null) {
+            databasePassengers.collection(currentUser.getUid())
+                    .document("dados")
+                    .collection("pasviagem")
+                    .whereEqualTo("viagem", t.getId())
+                    .whereEqualTo("passageiro", p.getId())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                p.setPasviagemId(document.getId());
+                            }
+                        }
+                    });
         }
     }
 

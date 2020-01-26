@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,11 @@ public class TripEditPassengerPack extends AppCompatActivity {
     private TextView labelEditPassengerNamePack;
     private TextView labelEditTripNamePack;
     private TextView labelEditPackNamePack;
+    private EditText editEditPassengerVehicle;
+    private EditText editEditPassengerSeat;
+    private EditText editEditPassengerBoarding;
+    private EditText editEditPassengerLanding;
+    private EditText editEditPassengerPaid;
     private AppCompatButton buttonEditPackSelectPack;
     private AppCompatButton buttonConfirmPassengerTripPack;
     private AppCompatButton buttonRemovePassengerTripPack;
@@ -56,6 +62,11 @@ public class TripEditPassengerPack extends AppCompatActivity {
         labelEditPassengerNamePack = (TextView) findViewById(R.id.labelEditPassengerNamePack);
         labelEditTripNamePack = (TextView) findViewById(R.id.labelEditTripNamePack);
         labelEditPackNamePack = (TextView) findViewById(R.id.labelEditPackNamePack);
+        editEditPassengerVehicle = (EditText) findViewById(R.id.editEditPassengerVehicle);
+        editEditPassengerSeat = (EditText) findViewById(R.id.editEditPassengerSeat);
+        editEditPassengerBoarding = (EditText) findViewById(R.id.editEditPassengerBoarding);
+        editEditPassengerLanding = (EditText) findViewById(R.id.editEditPassengerLanding);
+        editEditPassengerPaid = (EditText) findViewById(R.id.editEditPassengerPaid);
         buttonEditPackSelectPack = (AppCompatButton) findViewById(R.id.buttonEditPackSelectPack);
         buttonRemovePassengerTripPack = (AppCompatButton) findViewById(R.id.buttonRemovePassengerTripPack);
         buttonConfirmPassengerTripPack = (AppCompatButton) findViewById(R.id.buttonConfirmPassengerTripPack);
@@ -99,10 +110,22 @@ public class TripEditPassengerPack extends AppCompatActivity {
     }
 
     private void updateInfo() {
-        if (p != null)
-            labelEditPassengerNamePack.setText("Passageiro: "+p.getNome());
-        else
+        if (p != null) {
+            labelEditPassengerNamePack.setText("Passageiro: " + p.getNome());
+            editEditPassengerVehicle.setText(p.getPasviagemVeiculo());
+            editEditPassengerSeat.setText(p.getPasviagemAssento());
+            editEditPassengerBoarding.setText(p.getPasviagemEmbarque());
+            editEditPassengerLanding.setText(p.getPasviagemDesembarque());
+            editEditPassengerPaid.setText(p.getPasviagemValorPago());
+        }
+        else {
             labelEditPassengerNamePack.setText("Passageiro não definido");
+            editEditPassengerVehicle.setText("Veículo: ");
+            editEditPassengerSeat.setText("Assento: ");
+            editEditPassengerBoarding.setText("Embarque: ");
+            editEditPassengerLanding.setText("Desembarque: ");
+            editEditPassengerPaid.setText("Valor pago: ");
+        }
         if (t != null)
             labelEditTripNamePack.setText("Viagem: "+t.getNome());
         else
@@ -149,12 +172,24 @@ public class TripEditPassengerPack extends AppCompatActivity {
             returnIntent.putExtra("packDelete",true);
         }
 
+        p.setPasviagemVeiculo(editEditPassengerVehicle.getText().toString().trim());
+        dados.put("veiculo",p.getPasviagemVeiculo());
+        p.setPasviagemAssento(editEditPassengerSeat.getText().toString().trim());
+        dados.put("assento",p.getPasviagemAssento());
+        p.setPasviagemEmbarque(editEditPassengerBoarding.getText().toString().trim());
+        dados.put("embarque",p.getPasviagemEmbarque());
+        p.setPasviagemDesembarque(editEditPassengerLanding.getText().toString().trim());
+        dados.put("desembarque",p.getPasviagemDesembarque());
+        p.setPasviagemValorPago(editEditPassengerPaid.getText().toString().trim());
+        dados.put("valorpago",p.getPasviagemValorPago());
+
         databasePassengers.collection(currentUser.getUid())
                 .document("dados")
                 .collection("pasviagem")
                 .document(p.getPasviagemId())
                 .update(dados);
         returnIntent.putExtra("pack",pt);
+        returnIntent.putExtra("passenger",p);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

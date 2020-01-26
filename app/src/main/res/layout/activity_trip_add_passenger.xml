@@ -67,10 +67,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -89,8 +89,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="textPersonName"
-                        android:hint="@string/hint_passengervehicle" />
+                        android:hint="@string/hint_passengervehicle"
+                        android:inputType="textPersonName" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -110,8 +110,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="textPersonName"
-                        android:hint="@string/hint_passengerseat" />
+                        android:hint="@string/hint_passengerseat"
+                        android:inputType="textPersonName" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_passengerpaidamount"
-                android:inputType="number" />
+                android:inputType="number|numberDecimal" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonConfirmPassengerTrip"
