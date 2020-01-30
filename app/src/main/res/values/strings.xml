@@ -75,4 +75,8 @@
     <string name="hint_packagename">Nome do pacote...</string>
     <string name="hint_packagedescription">Descrição do pacote...</string>
     <string name="hint_packageprice">Preço do pacote por passageiro...</string>
+    <string name="hint_email">E-mail...</string>
+    <string name="hint_password">Senha...</string>
+    <string name="hint_passwordconfirm">Confirme a senha...</string>
+
 </resources>

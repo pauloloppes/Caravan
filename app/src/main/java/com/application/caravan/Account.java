@@ -36,10 +36,8 @@ public class Account extends AppCompatActivity {
         create = true;
         Bundle b = getIntent().getExtras();
         if (b!=null) {
-            create = b.getBoolean("create");
-            if (create) {
-                //SLA
-            } else {
+            create = b.getBoolean("create",false);
+            if (!create) {
                 accountConfirmPass.setVisibility(View.GONE);
             }
         }

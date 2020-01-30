@@ -155,6 +155,7 @@ public class Settings extends AppCompatActivity {
                                     } else {
                                         System.out.println("                DEU RUIM");
                                         System.out.println("                "+task.getException().getMessage());
+                                        toastShow("Erro ao criar conta: "+task.getException().getMessage());
                                     }
                                 }
                             });
