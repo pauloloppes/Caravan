@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -30,6 +33,9 @@ public class Settings extends AppCompatActivity {
     private AppCompatButton btnSettingsLogout;
     private AppCompatButton btnSettingsSignup;
     private TextView labelLoginStatus;
+    private RadioButton rdbInitMethodPin;
+    private RadioButton rdbInitMethodEmail;
+    private RadioGroup rdgInitMethod;
     private FirebaseAuth mAuth;
     private FirebaseFirestore databasePassengers;
     private FirebaseUser currentUser;
@@ -45,11 +51,28 @@ public class Settings extends AppCompatActivity {
         btnSettingsSignup = (AppCompatButton) findViewById(R.id.btnSettingsSignup);
         btnSettingsLogout = (AppCompatButton) findViewById(R.id.btnSettingsLogout);
         labelLoginStatus = (TextView) findViewById(R.id.labelLoginStatus);
+        rdbInitMethodPin = (RadioButton) findViewById(R.id.rdbInitMethodPin);
+        rdbInitMethodEmail = (RadioButton) findViewById(R.id.rdbInitMethodEmail);
+        rdgInitMethod = (RadioGroup) findViewById(R.id.rdgInitMethod);
 
         mAuth = FirebaseAuth.getInstance();
         databasePassengers = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        databasePassengers.collection(currentUser.getUid())
+                .document("login")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Object loginMethod = task.getResult().get("method");
+                            if (loginMethod != null) {
+                                updateInitMethod(loginMethod.toString());
+                            }
+                        }
+                    }
+                });
         updateScreen();
 
         btnSettingsLogin.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +96,24 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void updateInitMethod(String method) {
+        if (method.equals("0")) {
+            rdbInitMethodPin.toggle();
+        } else {
+            rdbInitMethodEmail.toggle();
+        }
+        rdgInitMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rdbInitMethodPin) {
+                    setInitMethod("0");
+                } else {
+                    setInitMethod("1");
+                }
+            }
+        });
     }
 
     private void updateScreen() {
@@ -129,6 +170,24 @@ public class Settings extends AppCompatActivity {
                         } else {
                             toastShow("Erro ao logar: "+task.getException());
                             finish();
+                        }
+                    }
+                });
+    }
+
+    private void setInitMethod(String method) {
+        HashMap<String, String> login = new HashMap<>();
+        login.put("method",method);
+        databasePassengers.collection(currentUser.getUid())
+                .document("login")
+                .set(login)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            toastShow("Método de entrada alterado com sucesso.");
+                        } else {
+                            toastShow("Erro ao alterar método de entrada: "+task.getException().getMessage());
                         }
                     }
                 });

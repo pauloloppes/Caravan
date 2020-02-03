@@ -22,10 +22,9 @@
 
             <TextView
                 android:id="@+id/labelLoginStatus"
-                android:layout_width="match_parent"
                 style="@style/ListLabelThemePrimary"
-                android:layout_height="wrap_content"
-                android:text="Aaaaa" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSettingsSignup"
@@ -54,6 +53,39 @@
                 android:backgroundTint="@color/redAchtung"
                 android:layout_height="wrap_content"
                 android:text="@string/button_logoutAccount" />
+
+            <RadioGroup
+                android:id="@+id/rdgInitMethod"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtInitMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ListLabelThemePrimary"
+                    android:text="@string/label_initmethod" />
+
+                <RadioButton
+                    android:id="@+id/rdbInitMethodPin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:checked="false"
+                    style="@style/ListLabelThemePrimary"
+                    android:text="@string/label_pin" />
+
+                <RadioButton
+                    android:id="@+id/rdbInitMethodEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    style="@style/ListLabelThemePrimary"
+                    android:text="@string/label_email" />
+
+            </RadioGroup>
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

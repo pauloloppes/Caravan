@@ -42,6 +42,8 @@
     <string name="label_type">Tipo</string>
     <string name="label_price">Preço</string>
     <string name="label_description">Descrição</string>
+    <string name="label_pin">PIN</string>
+    <string name="label_email">E-mail</string>
     <string name="label_boarding">Embarque</string>
     <string name="label_landing">Desembarque</string>
     <string name="label_vehicle">Veículo</string>
@@ -54,6 +56,7 @@
     <string name="label_returndate">Data de retorno</string>
     <string name="label_departurehour">Hora de partida</string>
     <string name="label_returnhour">Hora de retorno</string>
+    <string name="label_initmethod">Método de entrada no aplicativo</string>
 
     <string name="hint_passengername">Nome do passageiro...</string>
     <string name="hint_passengeridentity">Identidade do passageiro...</string>
