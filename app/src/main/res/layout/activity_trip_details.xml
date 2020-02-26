@@ -87,6 +87,15 @@
             android:text="@string/button_passengerList" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonTripPassengerConfirmation"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_passengerConfirmation" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonTripPackages"
             style="@style/MainScreenButtonTheme"
             android:layout_marginTop="30dp"

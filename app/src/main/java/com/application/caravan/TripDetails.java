@@ -36,6 +36,7 @@ public class TripDetails extends AppCompatActivity {
     private TextView labelTripDetailsReturnTime;
     private TextView labelTripDetailsSeatQuantity;
     private AppCompatButton buttonTripPassengerList;
+    private AppCompatButton buttonTripPassengerConfirmation;
     private AppCompatButton buttonTripPackages;
     private AppCompatButton buttonEditTrip;
     private AppCompatButton buttonDeleteTrip;
@@ -56,6 +57,7 @@ public class TripDetails extends AppCompatActivity {
         labelTripDetailsReturnTime = (TextView) findViewById(R.id.labelTripDetailsReturnTime);
         labelTripDetailsSeatQuantity = (TextView) findViewById(R.id.labelTripDetailsSeatQuantity);
         buttonTripPassengerList = (AppCompatButton) findViewById(R.id.buttonTripPassengerList);
+        buttonTripPassengerConfirmation = (AppCompatButton) findViewById(R.id.buttonTripPassengerConfirmation);
         buttonTripPackages = (AppCompatButton) findViewById(R.id.buttonTripPackages);
         buttonEditTrip = (AppCompatButton) findViewById(R.id.buttonEditTrip);
         buttonDeleteTrip = (AppCompatButton) findViewById(R.id.buttonDeleteTrip);
@@ -87,6 +89,15 @@ public class TripDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent pasList = new Intent(getApplicationContext(), TripPassengersList.class);
+                pasList.putExtra("trip",t);
+                startActivity(pasList);
+            }
+        });
+
+        buttonTripPassengerConfirmation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pasList = new Intent(getApplicationContext(), TripPassengersConfirmation.class);
                 pasList.putExtra("trip",t);
                 startActivity(pasList);
             }

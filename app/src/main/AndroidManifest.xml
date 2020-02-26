@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TripEditPassengerPack"></activity>
+        <activity android:name="com.application.utils.CustomAdapterConfirmation"></activity>
+        <activity android:name=".TripPassengersConfirmation" />
+        <activity android:name=".TripEditPassengerPack" />
         <activity android:name=".PackageDetails" />
         <activity android:name=".PackageEdit" />
         <activity android:name=".PackageAddSelect" />

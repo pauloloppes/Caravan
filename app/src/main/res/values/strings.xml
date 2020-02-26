@@ -22,6 +22,7 @@
     <string name="button_selectTrip">Selecionar viagem</string>
     <string name="button_selectPack">Selecionar pacote de viagem</string>
     <string name="button_passengerList">Lista de passageiros</string>
+    <string name="button_passengerConfirmation">Confirmar presenças</string>
     <string name="button_packagesManage">Gerenciar pacotes de viagem</string>
     <string name="button_addPackageToTrip">Adicionar pacote à viagem</string>
     <string name="button_editPackage">Editar detalhes do pacote</string>
