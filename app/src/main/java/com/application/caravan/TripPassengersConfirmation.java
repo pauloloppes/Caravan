@@ -37,6 +37,8 @@ public class TripPassengersConfirmation extends AppCompatActivity {
     private FirebaseUser currentUser;
     private Trip t;
     private AppCompatButton buttonSelectAll;
+    private AppCompatButton buttonDeselectAll;
+    private AppCompatButton buttonConfirmationBack;
     private final List<ConfirmationPassengerItemDTO> initItemList = new ArrayList<ConfirmationPassengerItemDTO>();
     private final CustomAdapterConfirmation listViewDataAdapter = new CustomAdapterConfirmation(this, initItemList);
 
@@ -57,6 +59,8 @@ public class TripPassengersConfirmation extends AppCompatActivity {
         // Get listview checkbox.
         final ListView listViewWithCheckbox = (ListView)findViewById(R.id.listConfirmation);
         buttonSelectAll = (AppCompatButton)findViewById(R.id.buttonSelectAll);
+        buttonDeselectAll = (AppCompatButton)findViewById(R.id.buttonDeselectAll);
+        buttonConfirmationBack = (AppCompatButton)findViewById(R.id.buttonConfirmationBack);
         searchPassengersOnDB(listViewWithCheckbox);
 
         // Initiate listview data.
@@ -100,16 +104,34 @@ public class TripPassengersConfirmation extends AppCompatActivity {
         buttonSelectAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int size = initItemList.size();
-                for(int i=0;i<size;i++)
-                {
-                    ConfirmationPassengerItemDTO dto = initItemList.get(i);
-                    dto.setChecked(true);
-                }
-
-                listViewDataAdapter.notifyDataSetChanged();
+                setAllPassengers(true);
             }
         });
+
+        buttonDeselectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAllPassengers(false);
+            }
+        });
+
+        buttonConfirmationBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void setAllPassengers(boolean status) {
+        int size = initItemList.size();
+        for(int i=0;i<size;i++)
+        {
+            ConfirmationPassengerItemDTO dto = initItemList.get(i);
+            dto.setChecked(status);
+        }
+
+        listViewDataAdapter.notifyDataSetChanged();
     }
 
     private void searchPassengersOnDB(final ListView listViewWithCheckbox) {

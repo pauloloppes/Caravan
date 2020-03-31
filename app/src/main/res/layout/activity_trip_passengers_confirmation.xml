@@ -9,6 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical">
 
         <ListView
@@ -26,6 +29,24 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/button_selectAll" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonDeselectAll"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_deselectAll" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonConfirmationBack"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/button_back" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
