@@ -61,6 +61,8 @@
     <string name="label_departurehour">Hora de partida</string>
     <string name="label_returnhour">Hora de retorno</string>
     <string name="label_initmethod">Método de entrada no aplicativo</string>
+    <string name="label_totalvalue">Valor total</string>
+    <string name="label_valueperpassenger">Valor por passageiro</string>
 
     <string name="hint_passengername">Nome do passageiro...</string>
     <string name="hint_passengeridentity">Identidade do passageiro...</string>
@@ -85,5 +87,7 @@
     <string name="hint_email">E-mail...</string>
     <string name="hint_password">Senha...</string>
     <string name="hint_passwordconfirm">Confirme a senha...</string>
+    <string name="hint_goalname">Nome da meta financeira...</string>
+    <string name="hint_goaldescription">Descrição da meta financeira...</string>
 
 </resources>

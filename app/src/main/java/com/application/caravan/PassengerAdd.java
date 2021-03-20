@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.application.utils.DBLink;
 import com.application.utils.MaskEditUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,23 +35,27 @@ public class PassengerAdd extends AppCompatActivity {
     private EditText editPassengerPhone;
     private EditText editPassengerAddress;
     private AppCompatButton buttonPassengerAdd;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+    private DBLink dbLink;
+    private OnCompleteListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_add);
 
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        dbLink = new DBLink(this);
 
-        if (currentUser==null) {
-            toastShow("Erro ao carregar usuário. Não é possível gravar dados.");
-            finish();
-        }
+        listener = new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    toastShow("Passageiro adicionado com sucesso.");
+                    finish();
+                } else {
+                    toastShow("Erro: "+task.getException().getMessage());
+                }
+            }
+        };
 
         //Setting up screen elements
         editPassengerName = (EditText) findViewById(R.id.editPassengerName);
@@ -82,29 +87,14 @@ public class PassengerAdd extends AppCompatActivity {
 
     private void addPassenger() {
 
-        Map passenger = new HashMap<>();
-        passenger.put("nome", editPassengerName.getText().toString().trim());
-        passenger.put("dataNascimento", editPassengerBirth.getText().toString().trim());
-        passenger.put("identidade", editPassengerIdentity.getText().toString().trim());
-        passenger.put("tipoIdentidade", spinnerPassengerIdType.getSelectedItem().toString());
-        passenger.put("telefone", editPassengerPhone.getText().toString().trim());
-        passenger.put("endereco", editPassengerAddress.getText().toString().trim());
+        String name = editPassengerName.getText().toString().trim();
+        String birth = editPassengerBirth.getText().toString().trim();
+        String identity = editPassengerIdentity.getText().toString().trim();
+        String idType = spinnerPassengerIdType.getSelectedItem().toString();
+        String phone = editPassengerPhone.getText().toString().trim();
+        String address = editPassengerAddress.getText().toString().trim();
 
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("passageiros")
-                .add(passenger)
-                .addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            toastShow("Passageiro adicionado com sucesso");
-                            finish();
-                        } else {
-                            toastShow("Erro: "+task.getException().getMessage());
-                        }
-                    }
-                });
+        dbLink.addPassenger(name,birth,identity,idType,phone,address,listener);
 
     }
 
