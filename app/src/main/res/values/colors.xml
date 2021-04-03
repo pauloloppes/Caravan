@@ -10,4 +10,5 @@
     <color name="blue2">#3B639C</color>
     <color name="blueNavy">#20293C</color>
     <color name="redAchtung">#E9100A</color>
+    <color name="greyDisabled">#8C8C8C</color>
 </resources>

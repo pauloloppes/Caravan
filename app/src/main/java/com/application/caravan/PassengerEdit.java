@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.application.entities.Passenger;
+import com.application.utils.DBLink;
 import com.application.utils.MaskEditUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,10 +38,11 @@ public class PassengerEdit extends AppCompatActivity {
     private EditText editPassengerPhoneEdit;
     private EditText editPassengerAddressEdit;
     private AppCompatButton buttonPassengerSave;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+    private ProgressBar loadEditPassenger;
     private Passenger p;
+    private OnCompleteListener listener;
+    private DBLink dbLink;
+    private boolean canReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class PassengerEdit extends AppCompatActivity {
         editPassengerPhoneEdit = (EditText) findViewById(R.id.editPassengerPhoneEdit);
         editPassengerAddressEdit = (EditText) findViewById(R.id.editPassengerAddressEdit);
         buttonPassengerSave = (AppCompatButton) findViewById(R.id.buttonPassengerSave);
+        loadEditPassenger = (ProgressBar) findViewById(R.id.loadEditPassenger);
 
         //Setting up Identity type ID spinner
         String arrayId[] = {"RG","CPF","Certidão de Nascimento","RNE","Outro"};
@@ -71,13 +76,8 @@ public class PassengerEdit extends AppCompatActivity {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-        if (currentUser==null) {
-            toastShow("Erro ao carregar usuário. Não é possível gravar dados.");
-            finish();
-        }
+        dbLink = new DBLink();
+        canReturn =  true;
 
         //Setting up existing information on fields
         Bundle b = getIntent().getExtras();
@@ -94,8 +94,27 @@ public class PassengerEdit extends AppCompatActivity {
             finish();
         }
 
-        databasePassengers = FirebaseFirestore.getInstance();
+        listener = new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("passenger",p);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                } else {
+                    toastShow("Erro: "+task.getException().getMessage());
+                }
+                changeSaveButton();
+            }
+        };
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
     }
 
     private void savePassenger() {
@@ -134,19 +153,23 @@ public class PassengerEdit extends AppCompatActivity {
             p.setEndereco(address);
         }
 
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("passenger",p);
+        changeSaveButton();
+        dbLink.updatePassenger(updatedDocument,p.getId(),listener);
 
+    }
 
-
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("passageiros").document(p.getId()).update(updatedDocument);
-
-        setResult(Activity.RESULT_OK, returnIntent);
-
-        finish();
-
+    private void changeSaveButton() {
+        if (buttonPassengerSave.isEnabled()) {
+            buttonPassengerSave.setEnabled(false);
+            buttonPassengerSave.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadEditPassenger.setVisibility(View.VISIBLE);
+        } else {
+            buttonPassengerSave.setEnabled(true);
+            buttonPassengerSave.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
+            canReturn = true;
+            loadEditPassenger.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,15 +36,18 @@ public class PassengerAdd extends AppCompatActivity {
     private EditText editPassengerPhone;
     private EditText editPassengerAddress;
     private AppCompatButton buttonPassengerAdd;
+    private ProgressBar loadAddPassenger;
     private DBLink dbLink;
     private OnCompleteListener listener;
+    private boolean canReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_add);
 
-        dbLink = new DBLink(this);
+        dbLink = new DBLink();
+        canReturn =  true;
 
         listener = new OnCompleteListener() {
             @Override
@@ -54,6 +58,7 @@ public class PassengerAdd extends AppCompatActivity {
                 } else {
                     toastShow("Erro: "+task.getException().getMessage());
                 }
+                changeSaveButton();
             }
         };
 
@@ -65,6 +70,7 @@ public class PassengerAdd extends AppCompatActivity {
         editPassengerPhone = (EditText) findViewById(R.id.editPassengerPhone);
         editPassengerAddress = (EditText) findViewById(R.id.editPassengerAddress);
         buttonPassengerAdd = (AppCompatButton) findViewById(R.id.buttonPassengerAdd);
+        loadAddPassenger = (ProgressBar) findViewById(R.id.loadAddPassenger);
 
         //Setting up Identity type ID spinner
         String arrayId[] = {"RG","CPF","Certidão de Nascimento","RNE","Outro"};
@@ -85,6 +91,12 @@ public class PassengerAdd extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
+    }
+
     private void addPassenger() {
 
         String name = editPassengerName.getText().toString().trim();
@@ -94,8 +106,23 @@ public class PassengerAdd extends AppCompatActivity {
         String phone = editPassengerPhone.getText().toString().trim();
         String address = editPassengerAddress.getText().toString().trim();
 
+        changeSaveButton();
         dbLink.addPassenger(name,birth,identity,idType,phone,address,listener);
 
+    }
+
+    private void changeSaveButton() {
+        if (buttonPassengerAdd.isEnabled()) {
+            buttonPassengerAdd.setEnabled(false);
+            buttonPassengerAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadAddPassenger.setVisibility(View.VISIBLE);
+        } else {
+            buttonPassengerAdd.setEnabled(true);
+            buttonPassengerAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
+            canReturn = true;
+            loadAddPassenger.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {
