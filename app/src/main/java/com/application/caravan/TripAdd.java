@@ -1,4 +1,4 @@
-package com.application.caravan;
+                                                                                                                                                                                                                            package com.application.caravan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,8 +7,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.application.utils.DBLink;
 import com.application.utils.MaskEditUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,9 +23,9 @@ import java.util.Map;
 
 public class TripAdd extends AppCompatActivity {
 
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+    //private FirebaseFirestore databasePassengers;
+    //private FirebaseAuth mAuth;
+    //private FirebaseUser currentUser;
     private EditText editTripName;
     private EditText editTripDestination;
     private EditText editTripDepartureDate;
@@ -31,21 +33,42 @@ public class TripAdd extends AppCompatActivity {
     private EditText editTripReturnDate;
     private EditText editTripReturnHour;
     private EditText editTripSeatQuantity;
+    private ProgressBar loadAddTrip;
     private AppCompatButton buttonTripAdd;
+    private OnCompleteListener listener;
+    private boolean canReturn;
+    private DBLink dbLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add);
 
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        //databasePassengers = FirebaseFirestore.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
+        //currentUser = mAuth.getCurrentUser();
 
+        /*
         if (currentUser==null) {
             toastShow("Erro ao carregar usuário. Não é possível gravar dados.");
             finish();
-        }
+        }*/
+
+        dbLink = new DBLink();
+        canReturn =  true;
+
+        listener = new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    toastShow("Viagem adicionada com sucesso");
+                    finish();
+                } else {
+                    toastShow("Erro: "+task.getException().getMessage());
+                }
+                changeSaveButton();
+            }
+        };
 
         editTripName = (EditText) findViewById(R.id.editTripName);
         editTripDestination = (EditText) findViewById(R.id.editTripDestination);
@@ -55,6 +78,7 @@ public class TripAdd extends AppCompatActivity {
         editTripReturnHour = (EditText) findViewById(R.id.editTripReturnHour);
         editTripSeatQuantity = (EditText) findViewById(R.id.editTripSeatQuantity);
         buttonTripAdd = (AppCompatButton) findViewById(R.id.buttonTripAdd);
+        loadAddTrip = (ProgressBar) findViewById(R.id.loadAddTrip);
 
         //adding listener to apply mask
         editTripDepartureDate.addTextChangedListener(MaskEditUtil.insert(MaskEditUtil.FORMAT_DATE, editTripDepartureDate));
@@ -70,8 +94,27 @@ public class TripAdd extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
+    }
+
     private void addTrip() {
-        Map trip = new HashMap<>();
+        String name = editTripName.getText().toString().trim();
+        String destination = editTripDestination.getText().toString().trim();
+        String departureDate = editTripDepartureDate.getText().toString().trim();
+        String departureHour = editTripDepartureHour.getText().toString().trim();
+        String returnDate = editTripReturnDate.getText().toString().trim();
+        String returnHour = editTripReturnHour.getText().toString().trim();
+        String seatLimit = editTripSeatQuantity.getText().toString().trim();
+
+        changeSaveButton();
+        dbLink.addTrip(name,destination,departureDate,departureHour,returnDate,returnHour,seatLimit,listener);
+
+
+
+        /*Map trip = new HashMap<>();
         trip.put("nome", editTripName.getText().toString().trim());
         trip.put("destino", editTripDestination.getText().toString().trim());
         trip.put("partida_data", editTripDepartureDate.getText().toString().trim());
@@ -94,7 +137,22 @@ public class TripAdd extends AppCompatActivity {
                             toastShow("Erro: "+task.getException().getMessage());
                         }
                     }
-                });
+                });*/
+
+    }
+
+    private void changeSaveButton() {
+        if (buttonTripAdd.isEnabled()) {
+            buttonTripAdd.setEnabled(false);
+            buttonTripAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadAddTrip.setVisibility(View.VISIBLE);
+        } else {
+            buttonTripAdd.setEnabled(true);
+            buttonTripAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
+            canReturn = true;
+            loadAddTrip.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {

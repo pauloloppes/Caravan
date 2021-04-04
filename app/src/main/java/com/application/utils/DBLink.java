@@ -71,6 +71,42 @@ public class DBLink {
                 .addOnFailureListener(listenerFailure);
     }
 
+    public void addTrip(String name, String destiny, String departureDate, String departureHour, String returnDate, String returnHour, String seatLimit, OnCompleteListener listener) {
+        Map trip = new HashMap<>();
+        trip.put("nome", name);
+        trip.put("destino", destiny);
+        trip.put("partida_data", departureDate);
+        trip.put("partida_hora", departureHour);
+        trip.put("retorno_data", returnDate);
+        trip.put("retorno_hora", returnHour);
+        trip.put("limite", seatLimit);
+
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("viagens")
+                .add(trip)
+                .addOnCompleteListener(listener);
+    }
+
+    public void updateTrip(Map updatedDocument, String tripId, OnCompleteListener<QuerySnapshot> listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("viagens")
+                .document(tripId)
+                .update(updatedDocument)
+                .addOnCompleteListener(listener);
+    }
+
+    public void deleteTrip(String tripId, OnSuccessListener listenerSuccess, OnFailureListener listenerFailure) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("viagens")
+                .document(tripId)
+                .delete()
+                .addOnSuccessListener(listenerSuccess)
+                .addOnFailureListener(listenerFailure);
+    }
+
     public void getAllPassengers(OnCompleteListener<QuerySnapshot> listener) {
         database.collection(currentUser.getUid())
             .document("dados")

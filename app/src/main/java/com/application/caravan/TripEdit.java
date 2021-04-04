@@ -1,5 +1,6 @@
 package com.application.caravan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -8,10 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.application.entities.Trip;
+import com.application.utils.DBLink;
 import com.application.utils.MaskEditUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,10 +34,11 @@ public class TripEdit extends AppCompatActivity {
     private EditText editTripReturnHourEdit;
     private EditText editTripSeatQuantityEdit;
     private AppCompatButton buttonTripSave;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private Trip t;
+    private ProgressBar loadEditTrip;
+    private OnCompleteListener listener;
+    private DBLink dbLink;
+    private boolean canReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class TripEdit extends AppCompatActivity {
         editTripReturnHourEdit = (EditText) findViewById(R.id.editTripReturnHourEdit);
         editTripSeatQuantityEdit = (EditText) findViewById(R.id.editTripSeatQuantityEdit);
         buttonTripSave = (AppCompatButton) findViewById(R.id.buttonTripSave);
+        loadEditTrip = (ProgressBar) findViewById(R.id.loadEditTrip);
 
         editTripDepartureDateEdit.addTextChangedListener(MaskEditUtil.insert(MaskEditUtil.FORMAT_DATE, editTripDepartureDateEdit));
         editTripDepartureHourEdit.addTextChangedListener(MaskEditUtil.insert(MaskEditUtil.FORMAT_HOUR, editTripDepartureHourEdit));
@@ -59,14 +66,6 @@ public class TripEdit extends AppCompatActivity {
                 saveTrip();
             }
         });
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-        if (currentUser==null) {
-            toastShow("Erro ao carregar usuário. Não é possível gravar dados.");
-            finish();
-        }
 
         //Setting up existing information on fields
         Bundle b = getIntent().getExtras();
@@ -84,7 +83,29 @@ public class TripEdit extends AppCompatActivity {
             finish();
         }
 
-        databasePassengers = FirebaseFirestore.getInstance();
+        dbLink = new DBLink();
+        canReturn =  true;
+
+        listener = new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("trip",t);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                } else {
+                    toastShow("Erro: "+task.getException().getMessage());
+                }
+                changeSaveButton();
+            }
+        };
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
     }
 
     private void saveTrip() {
@@ -131,16 +152,23 @@ public class TripEdit extends AppCompatActivity {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("trip",t);
 
+        changeSaveButton();
+        dbLink.updateTrip(updatedDocument,t.getId(),listener);
 
+    }
 
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("viagens").document(t.getId()).update(updatedDocument);
-
-        setResult(Activity.RESULT_OK, returnIntent);
-
-        finish();
-
+    private void changeSaveButton() {
+        if (buttonTripSave.isEnabled()) {
+            buttonTripSave.setEnabled(false);
+            buttonTripSave.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadEditTrip.setVisibility(View.VISIBLE);
+        } else {
+            buttonTripSave.setEnabled(true);
+            buttonTripSave.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
+            canReturn = true;
+            loadEditTrip.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {

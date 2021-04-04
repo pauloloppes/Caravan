@@ -10,11 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,9 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class TripDetails extends AppCompatActivity {
 
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+    //private FirebaseFirestore databasePassengers;
+    //private FirebaseAuth mAuth;
+    //private FirebaseUser currentUser;
     private Trip t;
     private int listPosition;
     private TextView labelTripDetailsName;
@@ -40,8 +42,11 @@ public class TripDetails extends AppCompatActivity {
     private AppCompatButton buttonTripPackages;
     private AppCompatButton buttonEditTrip;
     private AppCompatButton buttonDeleteTrip;
+    private ProgressBar loadDeleteTrip;
     private Intent returnIntent;
     private final int EDIT_TRIP_REQUEST = 1;
+    private DBLink dbLink;
+    private boolean canReturn;
 
 
     @Override
@@ -61,12 +66,16 @@ public class TripDetails extends AppCompatActivity {
         buttonTripPackages = (AppCompatButton) findViewById(R.id.buttonTripPackages);
         buttonEditTrip = (AppCompatButton) findViewById(R.id.buttonEditTrip);
         buttonDeleteTrip = (AppCompatButton) findViewById(R.id.buttonDeleteTrip);
+        loadDeleteTrip = (ProgressBar) findViewById(R.id.loadDeleteTrip);
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
 
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        //databasePassengers = FirebaseFirestore.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
+        //currentUser = mAuth.getCurrentUser();
+
+        dbLink = new DBLink();
+        canReturn =  true;
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -133,6 +142,12 @@ public class TripDetails extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_TRIP_REQUEST) {
@@ -176,6 +191,26 @@ public class TripDetails extends AppCompatActivity {
     }
 
     private void deleteTrip() {
+        OnSuccessListener listenerSuccess = new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                toastShow("Viagem excluída com sucesso");
+                returnIntent.putExtra("deleted", true);
+                finish();
+            }
+        };
+
+        OnFailureListener listenerFailure = new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toastShow("Erro ao excluir: "+e.getMessage());
+                changeDeleteButton();
+            }
+        };
+
+        changeDeleteButton();
+        dbLink.deleteTrip(t.getId(), listenerSuccess, listenerFailure);
+        /*
         databasePassengers.collection(currentUser.getUid())
                 .document("dados")
                 .collection("viagens").document(t.getId()).delete()
@@ -192,7 +227,21 @@ public class TripDetails extends AppCompatActivity {
                     }
                 });
         returnIntent.putExtra("deleted", true);
-        finish();
+        finish();*/
+    }
+
+    private void changeDeleteButton() {
+        if (buttonDeleteTrip.isEnabled()) {
+            buttonDeleteTrip.setEnabled(false);
+            buttonDeleteTrip.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadDeleteTrip.setVisibility(View.VISIBLE);
+        } else {
+            buttonDeleteTrip.setEnabled(true);
+            buttonDeleteTrip.setBackgroundTintList(this.getResources().getColorStateList(R.color.redAchtung));
+            canReturn = true;
+            loadDeleteTrip.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {
