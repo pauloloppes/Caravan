@@ -107,6 +107,29 @@ public class DBLink {
                 .addOnFailureListener(listenerFailure);
     }
 
+    public void addPackage(String name, String price, String description, String tripId, OnCompleteListener listener) {
+        Map pack = new HashMap<>();
+        pack.put("nome", name);
+        pack.put("preco", price);
+        pack.put("descricao", description);
+        pack.put("viagemID", tripId);
+
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pacotes")
+                .add(pack)
+                .addOnCompleteListener(listener);
+    }
+
+    public void updatePackage(Map updatedDocument, String packId, OnCompleteListener<QuerySnapshot> listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pacotes")
+                .document(packId)
+                .update(updatedDocument)
+                .addOnCompleteListener(listener);
+    }
+
     public void getAllPassengers(OnCompleteListener<QuerySnapshot> listener) {
         database.collection(currentUser.getUid())
             .document("dados")
