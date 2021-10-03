@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.application.entities.PackageTrip;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPassenger;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,9 +32,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class TripEditPassenger extends AppCompatActivity {
 
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private Passenger p;
     private Trip t;
     private PackageTrip pt;
@@ -46,7 +45,10 @@ public class TripEditPassenger extends AppCompatActivity {
     private TextView labelEditPaidAmount;
     private AppCompatButton buttonChangePackageTrip;
     private AppCompatButton buttonDeletePassengerTrip;
+    private ProgressBar loadDeletePassengerTrip;
     private Intent returnIntent;
+    private DBLink dbLink;
+    private boolean canReturn;
     private final int EDIT_PACKAGE_REQUEST = 1;
 
     @Override
@@ -64,10 +66,11 @@ public class TripEditPassenger extends AppCompatActivity {
         labelEditPaidAmount = (TextView) findViewById(R.id.labelEditPaidAmount);
         buttonChangePackageTrip = (AppCompatButton) findViewById(R.id.buttonChangePackageTrip);
         buttonDeletePassengerTrip = (AppCompatButton) findViewById(R.id.buttonDeletePassengerTrip);
+        loadDeletePassengerTrip = (ProgressBar) findViewById(R.id.loadDeletePassengerTrip);
 
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        dbLink = new DBLink();
+        canReturn =  true;
+
 
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
@@ -103,54 +106,50 @@ public class TripEditPassenger extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
+    }
+
     private void searchPackage() {
-        if (currentUser!=null) {
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("pasviagem")
-                    .whereEqualTo("passageiro",p.getId())
-                    .whereEqualTo("viagem",t.getId())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+            OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Object pkt = document.get("pacote");
-                                    if (pkt != null)
-                                        searchPackageById(pkt.toString());
-                                }
-
-                            } else
-                                toastShow("Erro ao acessar documentos: "+task.getException());
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Object pkt = document.get("pacote");
+                            if (pkt != null)
+                                searchPackageById(pkt.toString());
                         }
-                    });
 
-        } else {
-            toastShow("Erro ao carregar usuário");
-        }
+                    } else
+                        toastShow("Erro ao acessar documentos: "+task.getException());
+                }
+            };
+
+            dbLink.getPackageFromCustomerTrip(p.getId(),t.getId(),listenerComplete);
     }
 
     private void searchPackageById(String packID) {
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("pacotes")
-                .document(packID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            pt = doc.toObject(PackageTrip.class);
-                            if (pt != null) {
-                                pt.setId(doc.getId());
-                                updateInfo();
-                            }
-                        }
+
+        OnCompleteListener listenerComplete = new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    pt = doc.toObject(PackageTrip.class);
+                    if (pt != null) {
+                        pt.setId(doc.getId());
+                        updateInfo();
                     }
-                });
+                }
+            }
+        };
+
+        dbLink.getPackageById(packID, listenerComplete);
+
     }
 
     @Override
@@ -218,46 +217,41 @@ public class TripEditPassenger extends AppCompatActivity {
     }
 
     private void deletePassenger() {
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("pasviagem")
-                .whereEqualTo("passageiro",p.getId())
-                .whereEqualTo("viagem",t.getId())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                deletePassenger(document.getId());
-                            }
-                        } else {
-                            toastShow("Erro ao remover passageiro: "+task.getException().getMessage());
-                        }
+        OnSuccessListener listenerSuccess = new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                toastShow("Passageiro excluído da viagem com sucesso");
+                returnIntent.putExtra("passenger",p);
+                returnIntent.putExtra("deleted", true);
+                finish();
+            }
+        };
 
-                    }
-                });
+        OnFailureListener listenerFailure = new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toastShow("Erro ao excluir: "+e.getMessage());
+                changeDeleteButton();
+            }
+        };
+
+        changeDeleteButton();
+        dbLink.deletePassengerFromTrip(p.getId(), t.getId(), listenerSuccess, listenerFailure);
+
     }
 
-    private void deletePassenger(String id) {
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("pasviagem").document(id).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        toastShow("Passageiro removido da viagem com sucesso");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        toastShow("Erro ao remover: "+e.getMessage());
-                    }
-                });
-        returnIntent.putExtra("passenger",p);
-        returnIntent.putExtra("deleted", true);
-        finish();
+    private void changeDeleteButton() {
+        if (buttonDeletePassengerTrip.isEnabled()) {
+            buttonDeletePassengerTrip.setEnabled(false);
+            buttonDeletePassengerTrip.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadDeletePassengerTrip.setVisibility(View.VISIBLE);
+        } else {
+            buttonDeletePassengerTrip.setEnabled(true);
+            buttonDeletePassengerTrip.setBackgroundTintList(this.getResources().getColorStateList(R.color.redAchtung));
+            canReturn = true;
+            loadDeletePassengerTrip.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {

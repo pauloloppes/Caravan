@@ -165,6 +165,13 @@
                 android:layout_marginTop="30dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/button_save" />
+
+            <ProgressBar
+                android:id="@+id/loadAddPassengerTrip"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
         </LinearLayout>
     </ScrollView>
 

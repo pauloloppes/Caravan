@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.application.entities.Passenger;
 import com.application.utils.CustomAdapterPassenger;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,9 +30,6 @@ import java.util.Comparator;
 
 public class PassengerAddSelect extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseUser currentUser;
     private ArrayList<Passenger> listAll;
     private ArrayList<Passenger> listSearched;
     private ListView listPassengersSelect;
@@ -41,6 +39,7 @@ public class PassengerAddSelect extends AppCompatActivity {
     private CustomAdapterPassenger aSearched;
     private boolean searched;
     private Intent returnIntent;
+    private DBLink dbLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,41 +52,32 @@ public class PassengerAddSelect extends AppCompatActivity {
 
         listAll = new ArrayList<>();
         searched = false;
+        dbLink = new DBLink();
 
         returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
 
-        mAuth = FirebaseAuth.getInstance();
-        databasePassengers = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
-        if (currentUser!=null) {
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("passageiros")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Passenger p = document.toObject(Passenger.class);
+                        p.setId(document.getId());
+                        listAll.add(p);
+                    }
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Passenger p = document.toObject(Passenger.class);
-                                    p.setId(document.getId());
-                                    listAll.add(p);
-                                }
+                    sortLists();
 
-                                sortLists();
+                    adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
+                    listPassengersSelect.setAdapter(adapter);
+                } else
+                    toastShow("Erro ao acessar documentos: "+task.getException());
+            }
+        };
 
-                                adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
-                                listPassengersSelect.setAdapter(adapter);
-                            } else
-                                toastShow("Erro ao acessar documentos: "+task.getException());
-                        }
-                    });
-        } else {
-            toastShow("Erro ao carregar usuário");
-        }
+        dbLink.getAllPassengers(listenerComplete);
 
         listPassengersSelect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

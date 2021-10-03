@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.application.entities.PackageTrip;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPassenger;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +32,6 @@ import java.util.Map;
 
 public class TripAddPassenger extends AppCompatActivity {
 
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private Passenger p;
     private Trip t;
     private PackageTrip pck;
@@ -48,10 +47,13 @@ public class TripAddPassenger extends AppCompatActivity {
     private AppCompatButton buttonAddTripSelect;
     private AppCompatButton buttonAddPackSelect;
     private AppCompatButton buttonConfirmPassengerTrip;
+    private ProgressBar loadAddPassengerTrip;
     private final int SELECT_PASSENGER_REQUEST = 1;
     private final int SELECT_TRIP_REQUEST = 2;
     private final int SELECT_PACK_REQUEST = 3;
     private Intent returnIntent;
+    private DBLink dbLink;
+    private boolean canReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +72,10 @@ public class TripAddPassenger extends AppCompatActivity {
         buttonAddTripSelect = (AppCompatButton) findViewById(R.id.buttonAddTripSelect);
         buttonAddPackSelect = (AppCompatButton) findViewById(R.id.buttonAddPackSelect);
         buttonConfirmPassengerTrip = (AppCompatButton) findViewById(R.id.buttonConfirmPassengerTrip);
+        loadAddPassengerTrip = (ProgressBar) findViewById(R.id.loadAddPassengerTrip);
 
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        dbLink = new DBLink();
+        canReturn =  true;
 
         returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
@@ -113,38 +115,47 @@ public class TripAddPassenger extends AppCompatActivity {
         buttonConfirmPassengerTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                changeSaveButton();
                 confirm();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
+    }
+
     private void confirm() {
         if (p == null) {
+            changeSaveButton();
             toastShow("Você deve selecionar um passageiro");
         } else if (t == null) {
+            changeSaveButton();
             toastShow("Você deve selecionar uma viagem");
         } else {
 
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("pasviagem")
-                    .whereEqualTo("viagem",t.getId())
-                    .whereEqualTo("passageiro",p.getId())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot query = task.getResult();
-                                if (query.size() == 0) {
-                                    recordDB();
-                                } else {
-                                    toastShow("Passageiro já presente nesta viagem. Tente outros");
-                                }
-                            } else
-                                toastShow("Erro ao conectar com o banco de dados");
+            OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot query = task.getResult();
+                        if (query.size() == 0) {
+                            recordDB();
+                        } else {
+                            changeSaveButton();
+                            toastShow("Passageiro já presente nesta viagem. Tente outros");
                         }
-                    });
+                    } else {
+                        changeSaveButton();
+                        toastShow("Erro ao conectar com o banco de dados");
+                    }
+                }
+            };
+
+            dbLink.getPasviagem(p.getId(),t.getId(),listenerComplete);
+
         }
     }
 
@@ -165,20 +176,21 @@ public class TripAddPassenger extends AppCompatActivity {
         if (pck != null) {
             dados.put("pacote",pck.getId());
         }
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("pasviagem")
-                .add(dados)
-                .addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            setResultInfo();
-                        } else {
-                            toastShow("Erro ao gravar dados: "+task.getException().getMessage());
-                        }
-                    }
-                });
+
+        OnCompleteListener listenerComplete = new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    setResultInfo();
+                } else {
+                    changeSaveButton();
+                    toastShow("Erro ao gravar dados: "+task.getException().getMessage());
+                }
+            }
+        };
+
+        dbLink.addPassengerToTrip(dados, listenerComplete);
+
     }
 
     private void setResultInfo() {
@@ -253,6 +265,20 @@ public class TripAddPassenger extends AppCompatActivity {
                     }
                 }
             }
+        }
+    }
+
+    private void changeSaveButton() {
+        if (buttonConfirmPassengerTrip.isEnabled()) {
+            buttonConfirmPassengerTrip.setEnabled(false);
+            buttonConfirmPassengerTrip.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadAddPassengerTrip.setVisibility(View.VISIBLE);
+        } else {
+            buttonConfirmPassengerTrip.setEnabled(true);
+            buttonConfirmPassengerTrip.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
+            canReturn = true;
+            loadAddPassengerTrip.setVisibility(View.INVISIBLE);
         }
     }
 

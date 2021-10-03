@@ -23,9 +23,6 @@ import java.util.Map;
 
 public class TripAdd extends AppCompatActivity {
 
-    //private FirebaseFirestore databasePassengers;
-    //private FirebaseAuth mAuth;
-    //private FirebaseUser currentUser;
     private EditText editTripName;
     private EditText editTripDestination;
     private EditText editTripDepartureDate;
@@ -43,16 +40,6 @@ public class TripAdd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add);
-
-        //databasePassengers = FirebaseFirestore.getInstance();
-        //mAuth = FirebaseAuth.getInstance();
-        //currentUser = mAuth.getCurrentUser();
-
-        /*
-        if (currentUser==null) {
-            toastShow("Erro ao carregar usuário. Não é possível gravar dados.");
-            finish();
-        }*/
 
         dbLink = new DBLink();
         canReturn =  true;
@@ -112,32 +99,6 @@ public class TripAdd extends AppCompatActivity {
         changeSaveButton();
         dbLink.addTrip(name,destination,departureDate,departureHour,returnDate,returnHour,seatLimit,listener);
 
-
-
-        /*Map trip = new HashMap<>();
-        trip.put("nome", editTripName.getText().toString().trim());
-        trip.put("destino", editTripDestination.getText().toString().trim());
-        trip.put("partida_data", editTripDepartureDate.getText().toString().trim());
-        trip.put("partida_hora", editTripDepartureHour.getText().toString().trim());
-        trip.put("retorno_data", editTripReturnDate.getText().toString().trim());
-        trip.put("retorno_hora", editTripReturnHour.getText().toString().trim());
-        trip.put("limite", editTripSeatQuantity.getText().toString().trim());
-
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("viagens")
-                .add(trip)
-                .addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            toastShow("Viagem adicionada com sucesso");
-                            finish();
-                        } else {
-                            toastShow("Erro: "+task.getException().getMessage());
-                        }
-                    }
-                });*/
 
     }
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPassenger;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +31,6 @@ import java.util.Comparator;
 
 public class TripPassengersList extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseUser currentUser;
     private ArrayList<Passenger> listAll;
     private ArrayList<Passenger> listSearched;
     private ListView listPassengersTrip;
@@ -45,6 +43,7 @@ public class TripPassengersList extends AppCompatActivity {
     private final int ADD_PASSENGER_REQUEST = 2;
     private Trip t;
     private boolean searched;
+    private DBLink dbLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +57,7 @@ public class TripPassengersList extends AppCompatActivity {
 
         listAll = new ArrayList<>();
         searched = false;
-
-        mAuth = FirebaseAuth.getInstance();
-        databasePassengers = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        dbLink = new DBLink();
 
         t = (Trip) getIntent().getParcelableExtra("trip");
         if (t == null) {
@@ -213,85 +209,75 @@ public class TripPassengersList extends AppCompatActivity {
     }
 
     private void searchPassengersOnDB() {
-        if (currentUser!=null) {
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("pasviagem")
-                    .whereEqualTo("viagem",t.getId())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    searchPassengerByID(document.get("passageiro").toString(),
-                                            document.getId(),
-                                            document.get("veiculo").toString(),
-                                            document.get("assento").toString(),
-                                            document.get("embarque").toString(),
-                                            document.get("desembarque").toString(),
-                                            document.get("valorpago").toString()
-                                    );
-                                }
+        OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
-                                sortLists();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        searchPassengerByID(document.get("passageiro").toString(),
+                                document.getId(),
+                                document.get("veiculo").toString(),
+                                document.get("assento").toString(),
+                                document.get("embarque").toString(),
+                                document.get("desembarque").toString(),
+                                document.get("valorpago").toString()
+                        );
+                    }
 
-                                adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
-                                listPassengersTrip.setAdapter(adapter);
-                            } else
-                                toastShow("Erro ao acessar documentos: "+task.getException());
-                        }
-                    });
-        } else {
-            toastShow("Erro ao carregar usuário");
-        }
+                    sortLists();
+
+                    adapter = new CustomAdapterPassenger(listAll, getApplicationContext());
+                    listPassengersTrip.setAdapter(adapter);
+                } else
+                    toastShow("Erro ao acessar documentos: "+task.getException());
+            }
+        };
+
+        dbLink.getAllPassengersFromTrip(t.getId(), listenerComplete);
+
     }
 
     private void addPasViagemID(final Passenger p) {
-        if (currentUser!=null) {
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("pasviagem")
-                    .whereEqualTo("viagem", t.getId())
-                    .whereEqualTo("passageiro", p.getId())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                p.setPasviagemId(document.getId());
-                            }
-                        }
-                    });
-        }
+
+        OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    p.setPasviagemId(document.getId());
+                }
+            }
+        };
+
+        dbLink.getPasviagem(p.getId(),t.getId(),listenerComplete);
+
     }
 
     private void searchPassengerByID(String pasID, final String dbID, final String vehicle, final String seat, final String boarding, final String landing, final String paidAmount) {
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("passageiros")
-                .document(pasID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            Passenger p = doc.toObject(Passenger.class);
-                            p.setId(doc.getId());
-                            p.setPasviagemId(dbID);
-                            p.setPasviagemVeiculo(vehicle);
-                            p.setPasviagemAssento(seat);
-                            p.setPasviagemEmbarque(boarding);
-                            p.setPasviagemDesembarque(landing);
-                            p.setPasviagemValorPago(paidAmount);
-                            System.out.println("\t\t"+dbID);
-                            listAll.add(p);
-                            listPassengersTrip.invalidateViews();
-                        }
-                    }
-                });
+
+        OnCompleteListener listenerComplete = new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    Passenger p = doc.toObject(Passenger.class);
+                    p.setId(doc.getId());
+                    p.setPasviagemId(dbID);
+                    p.setPasviagemVeiculo(vehicle);
+                    p.setPasviagemAssento(seat);
+                    p.setPasviagemEmbarque(boarding);
+                    p.setPasviagemDesembarque(landing);
+                    p.setPasviagemValorPago(paidAmount);
+                    System.out.println("\t\t"+dbID);
+                    listAll.add(p);
+                    listPassengersTrip.invalidateViews();
+                }
+            }
+        };
+
+        dbLink.getPassengerById(pasID, listenerComplete);
+
     }
 
     private void searchPassenger() {

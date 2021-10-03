@@ -11,12 +11,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.entities.PackageTrip;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class PackageDetails extends AppCompatActivity {
 
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private PackageTrip p;
     private Trip t;
     private int listPosition;
@@ -36,8 +35,11 @@ public class PackageDetails extends AppCompatActivity {
     private TextView labelPackageDetailsDescription;
     private AppCompatButton buttonEditPackage;
     private AppCompatButton buttonDeletePackage;
+    private ProgressBar loadDeletePackage;
     private Intent returnIntent;
     private final int EDIT_PACKAGE_REQUEST = 1;
+    private DBLink dbLink;
+    private boolean canReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +51,13 @@ public class PackageDetails extends AppCompatActivity {
         labelPackageDetailsDescription = (TextView) findViewById(R.id.labelPackageDetailsDescription);
         buttonEditPackage = (AppCompatButton) findViewById(R.id.buttonEditPackage);
         buttonDeletePackage = (AppCompatButton) findViewById(R.id.buttonDeletePackage);
+        loadDeletePackage = (ProgressBar) findViewById(R.id.loadDeletePackage);
 
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
 
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        dbLink = new DBLink();
+        canReturn =  true;
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -89,6 +91,12 @@ public class PackageDetails extends AppCompatActivity {
                 deletePackageConfirmation();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
     }
 
     @Override
@@ -131,23 +139,41 @@ public class PackageDetails extends AppCompatActivity {
     }
 
     private void deletePackage() {
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("pacotes").document(p.getId()).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        toastShow("Pacote excluído com sucesso");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        toastShow("Erro ao excluir: "+e.getMessage());
-                    }
-                });
-        returnIntent.putExtra("deleted", true);
-        finish();
+
+        OnSuccessListener listenerSuccess = new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                toastShow("Pacote excluído com sucesso");
+                returnIntent.putExtra("deleted", true);
+                finish();
+            }
+        };
+
+        OnFailureListener listenerFailure = new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toastShow("Erro ao excluir: "+e.getMessage());
+                changeDeleteButton();
+            }
+        };
+
+        changeDeleteButton();
+        dbLink.deletePackage(p.getId(), listenerSuccess, listenerFailure);
+
+    }
+
+    private void changeDeleteButton() {
+        if (buttonDeletePackage.isEnabled()) {
+            buttonDeletePackage.setEnabled(false);
+            buttonDeletePackage.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadDeletePackage.setVisibility(View.VISIBLE);
+        } else {
+            buttonDeletePackage.setEnabled(true);
+            buttonDeletePackage.setBackgroundTintList(this.getResources().getColorStateList(R.color.redAchtung));
+            canReturn = true;
+            loadDeletePackage.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {

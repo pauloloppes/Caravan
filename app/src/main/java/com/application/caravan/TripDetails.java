@@ -25,9 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class TripDetails extends AppCompatActivity {
 
-    //private FirebaseFirestore databasePassengers;
-    //private FirebaseAuth mAuth;
-    //private FirebaseUser currentUser;
     private Trip t;
     private int listPosition;
     private TextView labelTripDetailsName;
@@ -69,10 +66,6 @@ public class TripDetails extends AppCompatActivity {
         loadDeleteTrip = (ProgressBar) findViewById(R.id.loadDeleteTrip);
         returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
-
-        //databasePassengers = FirebaseFirestore.getInstance();
-        //mAuth = FirebaseAuth.getInstance();
-        //currentUser = mAuth.getCurrentUser();
 
         dbLink = new DBLink();
         canReturn =  true;
@@ -210,24 +203,7 @@ public class TripDetails extends AppCompatActivity {
 
         changeDeleteButton();
         dbLink.deleteTrip(t.getId(), listenerSuccess, listenerFailure);
-        /*
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("viagens").document(t.getId()).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        toastShow("Viagem excluída com sucesso");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        toastShow("Erro ao excluir: "+e.getMessage());
-                    }
-                });
-        returnIntent.putExtra("deleted", true);
-        finish();*/
+
     }
 
     private void changeDeleteButton() {

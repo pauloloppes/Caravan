@@ -97,6 +97,13 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/redAchtung"
             android:text="@string/button_removePassengerTrip" />
+
+        <ProgressBar
+            android:id="@+id/loadDeletePassengerTrip"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

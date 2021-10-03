@@ -16,6 +16,7 @@ import com.application.entities.Passenger;
 import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPassenger;
 import com.application.utils.CustomAdapterTrip;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +31,6 @@ import java.util.Comparator;
 
 public class TripList extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseUser currentUser;
     private ListView listTrips;
     private EditText editTripNameSearch;
     private AppCompatButton buttonSearchTrip;
@@ -42,6 +40,7 @@ public class TripList extends AppCompatActivity {
     private CustomAdapterTrip aSearched;
     private final int OPEN_TRIP_REQUEST = 1;
     private boolean searched;
+    private DBLink dbLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,37 +54,28 @@ public class TripList extends AppCompatActivity {
         listAll = new ArrayList<>();
         searched = false;
 
-        mAuth = FirebaseAuth.getInstance();
-        databasePassengers = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
-        if (currentUser!=null) {
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("viagens")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Trip t = document.toObject(Trip.class);
+                        t.setId(document.getId());
+                        listAll.add(t);
+                    }
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Trip t = document.toObject(Trip.class);
-                                    t.setId(document.getId());
-                                    listAll.add(t);
-                                }
+                    sortLists();
 
-                                sortLists();
+                    adapter = new CustomAdapterTrip(listAll, getApplicationContext());
+                    listTrips.setAdapter(adapter);
+                } else
+                    toastShow("Erro ao acessar documentos: "+task.getException());
+            }
+        };
 
-                                adapter = new CustomAdapterTrip(listAll, getApplicationContext());
-                                listTrips.setAdapter(adapter);
-                            } else
-                                toastShow("Erro ao acessar documentos: "+task.getException());
-                        }
-                    });
-        } else {
-            toastShow("Erro ao carregar usuário");
-        }
+        dbLink = new DBLink();
+        dbLink.getAllTrips(listenerComplete);
 
         listTrips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

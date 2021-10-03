@@ -18,6 +18,7 @@ import com.application.entities.Passenger;
 import com.application.entities.Trip;
 import com.application.utils.CustomAdapterPackage;
 import com.application.utils.CustomAdapterPassenger;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,9 +33,6 @@ import java.util.Comparator;
 
 public class PackageAddSelect extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore databasePassengers;
-    private FirebaseUser currentUser;
     private ArrayList<PackageTrip> listAll;
     private ArrayList<PackageTrip> listSearched;
     private ListView listPackagesSelect;
@@ -45,6 +43,7 @@ public class PackageAddSelect extends AppCompatActivity {
     private boolean searched;
     private Intent returnIntent;
     private Trip t;
+    private DBLink dbLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,8 @@ public class PackageAddSelect extends AppCompatActivity {
         listPackagesSelect = (ListView) findViewById(R.id.listPackagesSelect);
         editPackageNameSearchSelect = (EditText) findViewById(R.id.editPackageNameSearchSelect);
         buttonSearchPackageSelect = (AppCompatButton) findViewById(R.id.buttonSearchPackageSelect);
+
+        dbLink = new DBLink();
 
         t = (Trip) getIntent().getParcelableExtra("trip");
         if (t == null) {
@@ -67,39 +68,7 @@ public class PackageAddSelect extends AppCompatActivity {
         returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
 
-        mAuth = FirebaseAuth.getInstance();
-        databasePassengers = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-        if (currentUser!=null) {
-            databasePassengers.collection(currentUser.getUid())
-                    .document("dados")
-                    .collection("pacotes")
-                    .whereEqualTo("viagemID",t.getId())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    PackageTrip p = document.toObject(PackageTrip.class);
-                                    p.setId(document.getId());
-                                    listAll.add(p);
-                                }
-
-                                sortLists();
-
-                                adapter = new CustomAdapterPackage(listAll, getApplicationContext());
-                                listPackagesSelect.setAdapter(adapter);
-                                listPackagesSelect.invalidateViews();
-                            } else
-                                toastShow("Erro ao acessar documentos: "+task.getException());
-                        }
-                    });
-        } else {
-            toastShow("Erro ao carregar usuário");
-        }
+        searchPackagesOnDB();
 
         listPackagesSelect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -118,6 +87,35 @@ public class PackageAddSelect extends AppCompatActivity {
                 searchPackage();
             }
         });
+    }
+
+    private void searchPackagesOnDB() {
+
+        OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        PackageTrip p = document.toObject(PackageTrip.class);
+                        p.setId(document.getId());
+                        listAll.add(p);
+                    }
+
+                    sortLists();
+
+                    adapter = new CustomAdapterPackage(listAll, getApplicationContext());
+                    listPackagesSelect.setAdapter(adapter);
+                    listPackagesSelect.invalidateViews();
+                } else
+                    toastShow("Erro ao acessar documentos: "+task.getException());
+
+            }
+        };
+
+        dbLink.getAllPackages(t.getId(), listenerComplete);
+
     }
 
     private void selectPackage(PackageTrip p) {

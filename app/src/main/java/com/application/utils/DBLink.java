@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -130,12 +131,131 @@ public class DBLink {
                 .addOnCompleteListener(listener);
     }
 
+    public void deletePackage(String packId, OnSuccessListener listenerSuccess, OnFailureListener listenerFailure) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pacotes")
+                .document(packId)
+                .delete()
+                .addOnSuccessListener(listenerSuccess)
+                .addOnFailureListener(listenerFailure);
+    }
+
+    public void addPassengerToTrip(Map newDocument, OnCompleteListener listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .add(newDocument)
+                .addOnCompleteListener(listener);
+    }
+
+    public void updatePassengerFromTrip(Map updatedDocument, String pasviagemId, OnCompleteListener<QuerySnapshot> listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .document(pasviagemId)
+                .update(updatedDocument)
+                .addOnCompleteListener(listener);
+    }
+
+    public void deletePassengerFromTrip(String passengerId, String tripId, OnSuccessListener listenerSuccess, OnFailureListener listenerFailure) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .whereEqualTo("passageiro",passengerId)
+                .whereEqualTo("viagem",tripId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                deletePassengerFromTrip(document.getId(), listenerSuccess, listenerFailure);
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(listenerFailure);
+    }
+
+    private void deletePassengerFromTrip(String pasviagemId, OnSuccessListener listenerSuccess, OnFailureListener listenerFailure) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem").document(pasviagemId).delete()
+                .addOnSuccessListener(listenerSuccess)
+                .addOnFailureListener(listenerFailure);
+    }
+
     public void getAllPassengers(OnCompleteListener<QuerySnapshot> listener) {
         database.collection(currentUser.getUid())
-            .document("dados")
-            .collection("passageiros")
-            .get()
-            .addOnCompleteListener(listener);
+                .document("dados")
+                .collection("passageiros")
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public void getAllPassengersFromTrip(String tripId, OnCompleteListener<QuerySnapshot> listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .whereEqualTo("viagem",tripId)
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public void getAllTrips(OnCompleteListener<QuerySnapshot> listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("viagens")
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public void getAllPackages(String tripId, OnCompleteListener<QuerySnapshot> listener) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pacotes")
+                .whereEqualTo("viagemID",tripId)
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public void getPassengerById(String passID, OnCompleteListener listenerComplete) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("passageiros")
+                .document(passID)
+                .get()
+                .addOnCompleteListener(listenerComplete);
+    }
+
+    public void getPasviagem(String passID, String tripId, OnCompleteListener listenerComplete) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .whereEqualTo("viagem", tripId)
+                .whereEqualTo("passageiro", passID)
+                .get()
+                .addOnCompleteListener(listenerComplete);
+    }
+
+    public void getPackageById(String packID, OnCompleteListener listenerComplete) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pacotes")
+                .document(packID)
+                .get()
+                .addOnCompleteListener(listenerComplete);
+    }
+
+    public void getPackageFromCustomerTrip(String passengerId, String tripId, OnCompleteListener listenerComplete) {
+        database.collection(currentUser.getUid())
+                .document("dados")
+                .collection("pasviagem")
+                .whereEqualTo("passageiro",passengerId)
+                .whereEqualTo("viagem",tripId)
+                .get()
+                .addOnCompleteListener(listenerComplete);
     }
 
 }

@@ -11,12 +11,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.entities.PackageTrip;
 import com.application.entities.Passenger;
 import com.application.entities.Trip;
+import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +32,6 @@ import java.util.Map;
 
 public class TripEditPassengerPack extends AppCompatActivity {
 
-    private FirebaseFirestore databasePassengers;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private Passenger p;
     private Trip t;
     private PackageTrip pt;
@@ -47,17 +46,16 @@ public class TripEditPassengerPack extends AppCompatActivity {
     private AppCompatButton buttonEditPackSelectPack;
     private AppCompatButton buttonConfirmPassengerTripPack;
     private AppCompatButton buttonRemovePassengerTripPack;
+    private ProgressBar loadEditPassengerTrip;
     private Intent returnIntent;
+    private DBLink dbLink;
+    private boolean canReturn;
     private final int SELECT_PACK_REQUEST = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_edit_passenger_pack);
-
-        databasePassengers = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
         labelEditPassengerNamePack = (TextView) findViewById(R.id.labelEditPassengerNamePack);
         labelEditTripNamePack = (TextView) findViewById(R.id.labelEditTripNamePack);
@@ -70,6 +68,10 @@ public class TripEditPassengerPack extends AppCompatActivity {
         buttonEditPackSelectPack = (AppCompatButton) findViewById(R.id.buttonEditPackSelectPack);
         buttonRemovePassengerTripPack = (AppCompatButton) findViewById(R.id.buttonRemovePassengerTripPack);
         buttonConfirmPassengerTripPack = (AppCompatButton) findViewById(R.id.buttonConfirmPassengerTripPack);
+        loadEditPassengerTrip = (ProgressBar) findViewById(R.id.loadEditPassengerTrip);
+
+        dbLink = new DBLink();
+        canReturn =  true;
 
         returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
@@ -107,6 +109,12 @@ public class TripEditPassengerPack extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canReturn)
+            super.onBackPressed();
     }
 
     private void updateInfo() {
@@ -183,15 +191,24 @@ public class TripEditPassengerPack extends AppCompatActivity {
         p.setPasviagemValorPago(editEditPassengerPaid.getText().toString().trim());
         dados.put("valorpago",p.getPasviagemValorPago());
 
-        databasePassengers.collection(currentUser.getUid())
-                .document("dados")
-                .collection("pasviagem")
-                .document(p.getPasviagemId())
-                .update(dados);
-        returnIntent.putExtra("pack",pt);
-        returnIntent.putExtra("passenger",p);
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    returnIntent.putExtra("pack",pt);
+                    returnIntent.putExtra("passenger",p);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                } else {
+                    toastShow("Erro ao atualizar: "+task.getException());
+                    changeSaveButton();
+                }
+            }
+        };
+
+        changeSaveButton();
+        dbLink.updatePassengerFromTrip(dados,p.getPasviagemId(),listenerComplete);
+
     }
 
     @Override
@@ -214,6 +231,20 @@ public class TripEditPassengerPack extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(), PackageAddSelect.class);
         i.putExtra("trip",t);
         startActivityForResult(i, SELECT_PACK_REQUEST);
+    }
+
+    private void changeSaveButton() {
+        if (buttonConfirmPassengerTripPack.isEnabled()) {
+            buttonConfirmPassengerTripPack.setEnabled(false);
+            buttonConfirmPassengerTripPack.setBackgroundTintList(this.getResources().getColorStateList(R.color.greyDisabled));
+            canReturn = false;
+            loadEditPassengerTrip.setVisibility(View.VISIBLE);
+        } else {
+            buttonConfirmPassengerTripPack.setEnabled(true);
+            buttonConfirmPassengerTripPack.setBackgroundTintList(this.getResources().getColorStateList(R.color.redAchtung));
+            canReturn = true;
+            loadEditPassengerTrip.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void toastShow (String message) {
