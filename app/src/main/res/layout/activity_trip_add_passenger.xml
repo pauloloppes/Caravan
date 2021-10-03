@@ -157,6 +157,12 @@
                 android:hint="@string/hint_passengerpaidamount"
                 android:inputType="number|numberDecimal" />
 
+            <CheckBox
+                android:id="@+id/checkAddPassengerPaidFull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_paidamountfull" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonConfirmPassengerTrip"
                 style="@style/MainScreenButtonTheme"

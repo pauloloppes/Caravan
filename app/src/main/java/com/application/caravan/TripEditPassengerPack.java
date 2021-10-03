@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class TripEditPassengerPack extends AppCompatActivity {
     private EditText editEditPassengerBoarding;
     private EditText editEditPassengerLanding;
     private EditText editEditPassengerPaid;
+    private CheckBox checkEditPassengerPaidFull;
     private AppCompatButton buttonEditPackSelectPack;
     private AppCompatButton buttonConfirmPassengerTripPack;
     private AppCompatButton buttonRemovePassengerTripPack;
@@ -65,6 +67,7 @@ public class TripEditPassengerPack extends AppCompatActivity {
         editEditPassengerBoarding = (EditText) findViewById(R.id.editEditPassengerBoarding);
         editEditPassengerLanding = (EditText) findViewById(R.id.editEditPassengerLanding);
         editEditPassengerPaid = (EditText) findViewById(R.id.editEditPassengerPaid);
+        checkEditPassengerPaidFull = (CheckBox) findViewById(R.id.checkEditPassengerPaidFull);
         buttonEditPackSelectPack = (AppCompatButton) findViewById(R.id.buttonEditPackSelectPack);
         buttonRemovePassengerTripPack = (AppCompatButton) findViewById(R.id.buttonRemovePassengerTripPack);
         buttonConfirmPassengerTripPack = (AppCompatButton) findViewById(R.id.buttonConfirmPassengerTripPack);
@@ -125,6 +128,7 @@ public class TripEditPassengerPack extends AppCompatActivity {
             editEditPassengerBoarding.setText(p.getPasviagemEmbarque());
             editEditPassengerLanding.setText(p.getPasviagemDesembarque());
             editEditPassengerPaid.setText(p.getPasviagemValorPago());
+            checkEditPassengerPaidFull.setChecked(Boolean.parseBoolean(p.getPasviagemQuitado()));
         }
         else {
             labelEditPassengerNamePack.setText("Passageiro não definido");
@@ -133,6 +137,7 @@ public class TripEditPassengerPack extends AppCompatActivity {
             editEditPassengerBoarding.setText("Embarque: ");
             editEditPassengerLanding.setText("Desembarque: ");
             editEditPassengerPaid.setText("Valor pago: ");
+            checkEditPassengerPaidFull.setChecked(false);
         }
         if (t != null)
             labelEditTripNamePack.setText("Viagem: "+t.getNome());
@@ -190,6 +195,8 @@ public class TripEditPassengerPack extends AppCompatActivity {
         dados.put("desembarque",p.getPasviagemDesembarque());
         p.setPasviagemValorPago(editEditPassengerPaid.getText().toString().trim());
         dados.put("valorpago",p.getPasviagemValorPago());
+        p.setPasviagemQuitado(String.valueOf(checkEditPassengerPaidFull.isChecked()));
+        dados.put("quitado",String.valueOf(checkEditPassengerPaidFull.isChecked()));
 
         OnCompleteListener listenerComplete = new OnCompleteListener<QuerySnapshot>() {
             @Override

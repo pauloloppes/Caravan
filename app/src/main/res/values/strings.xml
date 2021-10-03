@@ -53,6 +53,7 @@
     <string name="label_vehicle">Veículo</string>
     <string name="label_seat">Assento</string>
     <string name="label_paidamount">Valor pago</string>
+    <string name="label_paidamountfull">Totalmente pago</string>
     <string name="label_seatquantity">Quantidade de vagas</string>
     <string name="label_pinscreen">Digite a sua senha de 4 dígitos para entrar no aplicativo.</string>
     <string name="label_pinscreeninit">Tipo</string>

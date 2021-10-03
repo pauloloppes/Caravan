@@ -43,6 +43,7 @@ public class TripEditPassenger extends AppCompatActivity {
     private TextView labelEditBoarding;
     private TextView labelEditLanding;
     private TextView labelEditPaidAmount;
+    private TextView labelEditPaidFull;
     private AppCompatButton buttonChangePackageTrip;
     private AppCompatButton buttonDeletePassengerTrip;
     private ProgressBar loadDeletePassengerTrip;
@@ -64,6 +65,7 @@ public class TripEditPassenger extends AppCompatActivity {
         labelEditBoarding = (TextView) findViewById(R.id.labelEditBoarding);
         labelEditLanding = (TextView) findViewById(R.id.labelEditLanding);
         labelEditPaidAmount = (TextView) findViewById(R.id.labelEditPaidAmount);
+        labelEditPaidFull = (TextView) findViewById(R.id.labelEditPaidFull);
         buttonChangePackageTrip = (AppCompatButton) findViewById(R.id.buttonChangePackageTrip);
         buttonDeletePassengerTrip = (AppCompatButton) findViewById(R.id.buttonDeletePassengerTrip);
         loadDeletePassengerTrip = (ProgressBar) findViewById(R.id.loadDeletePassengerTrip);
@@ -182,6 +184,14 @@ public class TripEditPassenger extends AppCompatActivity {
             labelEditBoarding.setText("Embarque: "+p.getPasviagemEmbarque());
             labelEditLanding.setText("Desembarque: "+p.getPasviagemDesembarque());
             labelEditPaidAmount.setText("Valor pago: "+p.getPasviagemValorPago());
+            if (Boolean.valueOf(p.getPasviagemQuitado())) {
+                labelEditPaidFull.setText("Passageiro pagou totalmente!");
+                labelEditPaidFull.setTextColor(this.getResources().getColorStateList(R.color.greenYes));
+            } else {
+                labelEditPaidFull.setText("Passageiro ainda não pagou totalmente!");
+                labelEditPaidFull.setTextColor(this.getResources().getColorStateList(R.color.redAchtung));
+            }
+
         }
         else {
             labelEditPassengerName.setText("Passageiro não definido");
@@ -190,6 +200,7 @@ public class TripEditPassenger extends AppCompatActivity {
             labelEditBoarding.setText("Embarque: ");
             labelEditLanding.setText("Desembarque: ");
             labelEditPaidAmount.setText("Valor pago: ");
+            labelEditPaidFull.setText("Passageiro ainda não pagou totalmente!");
         }
         if (t != null)
             labelEditTripName.setText("Viagem: "+t.getNome());

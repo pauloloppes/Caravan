@@ -222,7 +222,8 @@ public class TripPassengersList extends AppCompatActivity {
                                 document.get("assento").toString(),
                                 document.get("embarque").toString(),
                                 document.get("desembarque").toString(),
-                                document.get("valorpago").toString()
+                                document.get("valorpago").toString(),
+                                document.get("quitado").toString()
                         );
                     }
 
@@ -254,7 +255,7 @@ public class TripPassengersList extends AppCompatActivity {
 
     }
 
-    private void searchPassengerByID(String pasID, final String dbID, final String vehicle, final String seat, final String boarding, final String landing, final String paidAmount) {
+    private void searchPassengerByID(String pasID, final String dbID, final String vehicle, final String seat, final String boarding, final String landing, final String paidAmount, final String paidFull) {
 
         OnCompleteListener listenerComplete = new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -269,6 +270,7 @@ public class TripPassengersList extends AppCompatActivity {
                     p.setPasviagemEmbarque(boarding);
                     p.setPasviagemDesembarque(landing);
                     p.setPasviagemValorPago(paidAmount);
+                    p.setPasviagemQuitado(paidFull);
                     System.out.println("\t\t"+dbID);
                     listAll.add(p);
                     listPassengersTrip.invalidateViews();

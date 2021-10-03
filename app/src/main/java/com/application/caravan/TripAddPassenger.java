@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class TripAddPassenger extends AppCompatActivity {
     private EditText editAddPassengerBoarding;
     private EditText editAddPassengerLanding;
     private EditText editAddPassengerPaid;
+    private CheckBox checkAddPassengerPaidFull;
     private AppCompatButton buttonAddPassengerSelect;
     private AppCompatButton buttonAddTripSelect;
     private AppCompatButton buttonAddPackSelect;
@@ -68,6 +70,7 @@ public class TripAddPassenger extends AppCompatActivity {
         editAddPassengerBoarding = (EditText) findViewById(R.id.editAddPassengerBoarding);
         editAddPassengerLanding = (EditText) findViewById(R.id.editAddPassengerLanding);
         editAddPassengerPaid = (EditText) findViewById(R.id.editAddPassengerPaid);
+        checkAddPassengerPaidFull = (CheckBox) findViewById(R.id.checkAddPassengerPaidFull);
         buttonAddPassengerSelect = (AppCompatButton) findViewById(R.id.buttonAddPassengerSelect);
         buttonAddTripSelect = (AppCompatButton) findViewById(R.id.buttonAddTripSelect);
         buttonAddPackSelect = (AppCompatButton) findViewById(R.id.buttonAddPackSelect);
@@ -173,6 +176,8 @@ public class TripAddPassenger extends AppCompatActivity {
         dados.put("desembarque",p.getPasviagemDesembarque());
         p.setPasviagemValorPago(editAddPassengerPaid.getText().toString().trim());
         dados.put("valorpago",p.getPasviagemValorPago());
+        p.setPasviagemQuitado(String.valueOf(checkAddPassengerPaidFull.isChecked()));
+        dados.put("quitado",String.valueOf(checkAddPassengerPaidFull.isChecked()));
         if (pck != null) {
             dados.put("pacote",pck.getId());
         }

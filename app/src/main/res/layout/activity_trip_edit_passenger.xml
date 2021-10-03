@@ -80,6 +80,13 @@
             style="@style/DetailsLabelThemeSecondary"
             android:text="" />
 
+        <TextView
+            android:id="@+id/labelEditPaidFull"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonChangePackageTrip"
             style="@style/MainScreenButtonTheme"

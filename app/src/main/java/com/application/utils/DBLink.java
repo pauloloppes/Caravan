@@ -82,6 +82,7 @@ public class DBLink {
         trip.put("retorno_hora", returnHour);
         trip.put("limite", seatLimit);
         trip.put("valor", totalValue);
+        trip.put("valor_arrecadado", "0");
 
         database.collection(currentUser.getUid())
                 .document("dados")

@@ -18,6 +18,7 @@ public class Passenger implements Parcelable {
     private String pasviagemEmbarque;
     private String pasviagemDesembarque;
     private String pasviagemValorPago;
+    private String pasviagemQuitado;
 
     public Passenger(String nome, String identidade, String tipoIdentidade, String dataNascimento, String telefone) {
         this.nome = nome;
@@ -114,6 +115,7 @@ public class Passenger implements Parcelable {
         pasviagemEmbarque = in.readString();
         pasviagemDesembarque = in.readString();
         pasviagemValorPago = in.readString();
+        pasviagemQuitado = in.readString();
     }
 
     @Override
@@ -136,6 +138,7 @@ public class Passenger implements Parcelable {
         dest.writeString(pasviagemEmbarque);
         dest.writeString(pasviagemDesembarque);
         dest.writeString(pasviagemValorPago);
+        dest.writeString(pasviagemQuitado);
     }
 
     @SuppressWarnings("unused")
@@ -197,5 +200,13 @@ public class Passenger implements Parcelable {
 
     public void setPasviagemValorPago(String pasviagemValorPago) {
         this.pasviagemValorPago = pasviagemValorPago;
+    }
+
+    public String getPasviagemQuitado() {
+        return pasviagemQuitado;
+    }
+
+    public void setPasviagemQuitado(String pasviagemQuitado) {
+        this.pasviagemQuitado = pasviagemQuitado;
     }
 }
