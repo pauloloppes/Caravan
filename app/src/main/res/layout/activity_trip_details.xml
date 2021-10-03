@@ -77,6 +77,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/labelTripDetailsTotalValue"
+            style="@style/DetailsLabelThemeSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonTripPassengerList"
             style="@style/MainScreenButtonTheme"

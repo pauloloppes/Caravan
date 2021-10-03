@@ -34,6 +34,7 @@ public class TripDetails extends AppCompatActivity {
     private TextView labelTripDetailsReturnDate;
     private TextView labelTripDetailsReturnTime;
     private TextView labelTripDetailsSeatQuantity;
+    private TextView labelTripDetailsTotalValue;
     private AppCompatButton buttonTripPassengerList;
     private AppCompatButton buttonTripPassengerConfirmation;
     private AppCompatButton buttonTripPackages;
@@ -58,6 +59,7 @@ public class TripDetails extends AppCompatActivity {
         labelTripDetailsReturnDate = (TextView) findViewById(R.id.labelTripDetailsReturnDate);
         labelTripDetailsReturnTime = (TextView) findViewById(R.id.labelTripDetailsReturnTime);
         labelTripDetailsSeatQuantity = (TextView) findViewById(R.id.labelTripDetailsSeatQuantity);
+        labelTripDetailsTotalValue = (TextView) findViewById(R.id.labelTripDetailsTotalValue);
         buttonTripPassengerList = (AppCompatButton) findViewById(R.id.buttonTripPassengerList);
         buttonTripPassengerConfirmation = (AppCompatButton) findViewById(R.id.buttonTripPassengerConfirmation);
         buttonTripPackages = (AppCompatButton) findViewById(R.id.buttonTripPackages);
@@ -81,6 +83,7 @@ public class TripDetails extends AppCompatActivity {
             labelTripDetailsReturnDate.setText("Data/Hora Retorno: "+t.getRetorno_data());
             labelTripDetailsReturnTime.setText(t.getRetorno_hora());
             labelTripDetailsSeatQuantity.setText("Lotação: "+t.getLimite());
+            labelTripDetailsTotalValue.setText("Custo total: "+t.getValor());
         } else {
             labelTripDetailsName.setText("Erro ao carregar viagem");
         }
@@ -164,6 +167,7 @@ public class TripDetails extends AppCompatActivity {
             labelTripDetailsReturnDate.setText("Retorno: "+t.getRetorno_data());
             labelTripDetailsReturnTime.setText(t.getRetorno_hora());
             labelTripDetailsSeatQuantity.setText("Lotação: "+t.getLimite());
+            labelTripDetailsTotalValue.setText("Custo total: "+t.getValor());
         }
     }
 

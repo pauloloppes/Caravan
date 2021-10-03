@@ -33,6 +33,7 @@ public class TripEdit extends AppCompatActivity {
     private EditText editTripDepartureHourEdit;
     private EditText editTripReturnHourEdit;
     private EditText editTripSeatQuantityEdit;
+    private EditText editTripTotalValueEdit;
     private AppCompatButton buttonTripSave;
     private Trip t;
     private ProgressBar loadEditTrip;
@@ -52,6 +53,7 @@ public class TripEdit extends AppCompatActivity {
         editTripDepartureHourEdit = (EditText) findViewById(R.id.editTripDepartureHourEdit);
         editTripReturnHourEdit = (EditText) findViewById(R.id.editTripReturnHourEdit);
         editTripSeatQuantityEdit = (EditText) findViewById(R.id.editTripSeatQuantityEdit);
+        editTripTotalValueEdit = (EditText) findViewById(R.id.editTripTotalValueEdit);
         buttonTripSave = (AppCompatButton) findViewById(R.id.buttonTripSave);
         loadEditTrip = (ProgressBar) findViewById(R.id.loadEditTrip);
 
@@ -78,6 +80,7 @@ public class TripEdit extends AppCompatActivity {
             editTripDepartureHourEdit.setText(t.getPartida_hora().replace(":",""));
             editTripReturnHourEdit.setText(t.getRetorno_hora().replace(":",""));
             editTripSeatQuantityEdit.setText(t.getLimite());
+            editTripTotalValueEdit.setText(t.getValor());
         } else {
             toastShow("Erro ao carregar passageiro");
             finish();
@@ -117,6 +120,10 @@ public class TripEdit extends AppCompatActivity {
         String departureHour = editTripDepartureHourEdit.getText().toString().trim();
         String returnHour = editTripReturnHourEdit.getText().toString().trim();
         String seatQuantity = editTripSeatQuantityEdit.getText().toString().trim();
+        String totalValue = editTripTotalValueEdit.getText().toString().trim();
+        if (totalValue.isEmpty()) {
+            totalValue = "0";
+        }
 
         Map updatedDocument = new HashMap();
 
@@ -147,6 +154,10 @@ public class TripEdit extends AppCompatActivity {
         if (!seatQuantity.equals(t.getLimite())) {
             updatedDocument.put("limite",seatQuantity);
             t.setLimite(seatQuantity);
+        }
+        if (!totalValue.equals(t.getValor())) {
+            updatedDocument.put("valor",totalValue);
+            t.setValor(totalValue);
         }
 
         Intent returnIntent = new Intent();

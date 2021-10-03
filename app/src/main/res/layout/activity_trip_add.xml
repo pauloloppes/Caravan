@@ -146,6 +146,21 @@
                 android:hint="@string/hint_tripseatquantity"
                 android:inputType="number" />
 
+            <TextView
+                android:id="@+id/labelTripTotalValue"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_totalvaluetrip" />
+
+            <EditText
+                android:id="@+id/editTripTotalValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_triptotalvalue"
+                android:inputType="number" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonTripAdd"
                 android:layout_marginTop="10dp"

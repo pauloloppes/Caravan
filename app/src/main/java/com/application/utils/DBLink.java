@@ -72,7 +72,7 @@ public class DBLink {
                 .addOnFailureListener(listenerFailure);
     }
 
-    public void addTrip(String name, String destiny, String departureDate, String departureHour, String returnDate, String returnHour, String seatLimit, OnCompleteListener listener) {
+    public void addTrip(String name, String destiny, String departureDate, String departureHour, String returnDate, String returnHour, String seatLimit, String totalValue, OnCompleteListener listener) {
         Map trip = new HashMap<>();
         trip.put("nome", name);
         trip.put("destino", destiny);
@@ -81,6 +81,7 @@ public class DBLink {
         trip.put("retorno_data", returnDate);
         trip.put("retorno_hora", returnHour);
         trip.put("limite", seatLimit);
+        trip.put("valor", totalValue);
 
         database.collection(currentUser.getUid())
                 .document("dados")

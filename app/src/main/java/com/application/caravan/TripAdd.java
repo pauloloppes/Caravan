@@ -30,6 +30,7 @@ public class TripAdd extends AppCompatActivity {
     private EditText editTripReturnDate;
     private EditText editTripReturnHour;
     private EditText editTripSeatQuantity;
+    private EditText editTripTotalValue;
     private ProgressBar loadAddTrip;
     private AppCompatButton buttonTripAdd;
     private OnCompleteListener listener;
@@ -64,6 +65,7 @@ public class TripAdd extends AppCompatActivity {
         editTripReturnDate = (EditText) findViewById(R.id.editTripReturnDate);
         editTripReturnHour = (EditText) findViewById(R.id.editTripReturnHour);
         editTripSeatQuantity = (EditText) findViewById(R.id.editTripSeatQuantity);
+        editTripTotalValue = (EditText) findViewById(R.id.editTripTotalValue);
         buttonTripAdd = (AppCompatButton) findViewById(R.id.buttonTripAdd);
         loadAddTrip = (ProgressBar) findViewById(R.id.loadAddTrip);
 
@@ -95,10 +97,13 @@ public class TripAdd extends AppCompatActivity {
         String returnDate = editTripReturnDate.getText().toString().trim();
         String returnHour = editTripReturnHour.getText().toString().trim();
         String seatLimit = editTripSeatQuantity.getText().toString().trim();
+        String totalValue = editTripTotalValue.getText().toString().trim();
+        if (totalValue.isEmpty()) {
+            totalValue = "0";
+        }
 
         changeSaveButton();
-        dbLink.addTrip(name,destination,departureDate,departureHour,returnDate,returnHour,seatLimit,listener);
-
+        dbLink.addTrip(name,destination,departureDate,departureHour,returnDate,returnHour,seatLimit,totalValue,listener);
 
     }
 

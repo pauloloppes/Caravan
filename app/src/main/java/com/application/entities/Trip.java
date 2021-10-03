@@ -9,6 +9,7 @@ public class Trip implements Parcelable {
     private String nome;
     private String destino;
     private String limite;
+    private String valor;
     private String partida_data;
     private String partida_hora;
     private String retorno_data;
@@ -18,6 +19,7 @@ public class Trip implements Parcelable {
         this.nome = nome;
         this.destino = destino;
         this.limite = limite;
+        this.valor = valor;
         this.partida_data = partida_data;
         this.partida_hora = partida_hora;
         this.retorno_data = retorno_data;
@@ -61,6 +63,14 @@ public class Trip implements Parcelable {
         this.limite = limite;
     }
 
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
     public String getPartida_data() {
         return partida_data;
     }
@@ -101,6 +111,7 @@ public class Trip implements Parcelable {
         nome = in.readString();
         destino = in.readString();
         limite = in.readString();
+        valor = in.readString();
         partida_data = in.readString();
         partida_hora = in.readString();
         retorno_data = in.readString();
@@ -118,6 +129,7 @@ public class Trip implements Parcelable {
         dest.writeString(nome);
         dest.writeString(destino);
         dest.writeString(limite);
+        dest.writeString(valor);
         dest.writeString(partida_data);
         dest.writeString(partida_hora);
         dest.writeString(retorno_data);

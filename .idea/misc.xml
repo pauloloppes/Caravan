@@ -3,15 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_finance_add.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_add.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_add_select.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_details.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_packages_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_details.xml" value="0.24818840579710144" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_splash.xml" value="0.24818840579710144" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_add.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_add_passenger.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_add_select.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_details.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_edit.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_edit_passenger.xml" value="0.25" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_edit_passenger_pack.xml" value="0.25" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_passengers_confirmation.xml" value="0.27291666666666664" />
