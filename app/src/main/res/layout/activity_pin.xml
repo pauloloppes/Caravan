@@ -85,18 +85,20 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnPin1"
+                        style="@style/MainScreenButtonTheme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
-                        style="@style/MainScreenButtonTheme"
-                        android:text="1" />
+                        android:text="1"
+                        android:textSize="24sp" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnPin4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="4" />
@@ -106,6 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="7" />
@@ -122,6 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="2" />
@@ -131,6 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="5" />
@@ -140,6 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="8" />
@@ -149,6 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="0" />
@@ -165,6 +172,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="3" />
@@ -174,6 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="6" />
@@ -183,6 +192,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="9" />
@@ -192,6 +202,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="24sp"
                         android:backgroundTint="@color/colorPrimary"
                         style="@style/MainScreenButtonTheme"
                         android:text="‹" />
@@ -202,6 +213,7 @@
                 android:id="@+id/btnPinEnter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="24sp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 style="@style/MainScreenButtonTheme"
                 android:text="@string/button_enter" />

@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.application.entities.Passenger;
@@ -33,16 +35,20 @@ public class TripPassengersList extends AppCompatActivity {
 
     private ArrayList<Passenger> listAll;
     private ArrayList<Passenger> listSearched;
+    private ArrayList<Passenger> listDebt;
     private ListView listPassengersTrip;
     private EditText editPassengerNameSearchTrip;
     private AppCompatButton buttonSearchPassengerTrip;
     private AppCompatButton buttonPassengerListAdd;
+    private Switch switchPassengersDebt;
     private CustomAdapterPassenger adapter;
     private CustomAdapterPassenger aSearched;
+    private CustomAdapterPassenger aDebt;
     private final int EDIT_PASSENGER_REQUEST = 1;
     private final int ADD_PASSENGER_REQUEST = 2;
     private Trip t;
     private boolean searched;
+    private boolean debt;
     private DBLink dbLink;
 
     @Override
@@ -54,9 +60,11 @@ public class TripPassengersList extends AppCompatActivity {
         editPassengerNameSearchTrip = (EditText) findViewById(R.id.editPassengerNameSearchTrip);
         buttonSearchPassengerTrip = (AppCompatButton) findViewById(R.id.buttonSearchPassengerTrip);
         buttonPassengerListAdd = (AppCompatButton) findViewById(R.id.buttonPassengerListAdd);
+        switchPassengersDebt = (Switch) findViewById(R.id.switchPassengersDebt);
 
         listAll = new ArrayList<>();
         searched = false;
+        debt = false;
         dbLink = new DBLink();
 
         t = (Trip) getIntent().getParcelableExtra("trip");
@@ -73,6 +81,8 @@ public class TripPassengersList extends AppCompatActivity {
                 Passenger p;
                 if (searched) {
                     p = listSearched.get(i);
+                } else if (debt) {
+                    p = listDebt.get(i);
                 } else {
                     p = listAll.get(i);
                 }
@@ -88,6 +98,7 @@ public class TripPassengersList extends AppCompatActivity {
         buttonSearchPassengerTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("\t\t\tCLICOU NO BUTAO");
                 searchPassenger();
             }
         });
@@ -96,6 +107,13 @@ public class TripPassengersList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addPassenger();
+            }
+        });
+
+        switchPassengersDebt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                setDebtList(b);
             }
         });
 
@@ -143,6 +161,12 @@ public class TripPassengersList extends AppCompatActivity {
                     }
                 }
             }
+
+            if (debt) {
+                if (!Boolean.valueOf(p.getPasviagemQuitado())) {
+                    listDebt.add(p);
+                }
+            }
             sortLists();
             listPassengersTrip.invalidateViews();
         }
@@ -175,6 +199,18 @@ public class TripPassengersList extends AppCompatActivity {
             }
         }
 
+        if (debt && listDebt != null) {
+            boolean notFound = true;
+            for (int i = 0; notFound && i < listDebt.size(); i++) {
+                Passenger pas = listDebt.get(i);
+                if (pas.getId().equals(newId)) {
+                    listDebt.remove(pas);
+                    listDebt.add(p);
+                    notFound = false;
+                }
+            }
+        }
+
         sortLists();
         listPassengersTrip.invalidateViews();
     }
@@ -199,6 +235,17 @@ public class TripPassengersList extends AppCompatActivity {
                 Passenger pas = listSearched.get(i);
                 if (pas.getId().equals(newId)) {
                     listSearched.remove(pas);
+                    notFound = false;
+                }
+            }
+        }
+
+        if (debt && listDebt != null) {
+            boolean notFound = true;
+            for (int i = 0; notFound && i < listDebt.size(); i++) {
+                Passenger pas = listDebt.get(i);
+                if (pas.getId().equals(newId)) {
+                    listDebt.remove(pas);
                     notFound = false;
                 }
             }
@@ -273,6 +320,7 @@ public class TripPassengersList extends AppCompatActivity {
                     p.setPasviagemQuitado(paidFull);
                     System.out.println("\t\t"+dbID);
                     listAll.add(p);
+                    sortLists();
                     listPassengersTrip.invalidateViews();
                 }
             }
@@ -283,20 +331,60 @@ public class TripPassengersList extends AppCompatActivity {
     }
 
     private void searchPassenger() {
+        System.out.println("\t\t\tENTROU NO METODO");
         String name = editPassengerNameSearchTrip.getText().toString().trim().toLowerCase();
         if (name.isEmpty()) {
-            listPassengersTrip.setAdapter(adapter);
             searched = false;
+            if (debt && listDebt != null)
+                setDebtList(true);
+            else
+                listPassengersTrip.setAdapter(adapter);
         } else {
             listSearched = new ArrayList<>();
-            for (Passenger p : listAll) {
-                if (p.getNome().toLowerCase().contains(name)) {
-                    listSearched.add(p);
+            if (debt && listDebt != null) {
+                for (Passenger p : listDebt) {
+                    if (p.getNome().toLowerCase().contains(name)) {
+                        listSearched.add(p);
+                    }
+                }
+            } else {
+                for (Passenger p : listAll) {
+                    if (p.getNome().toLowerCase().contains(name)) {
+                        listSearched.add(p);
+                    }
                 }
             }
             aSearched = new CustomAdapterPassenger(listSearched, getApplicationContext());
             listPassengersTrip.setAdapter(aSearched);
             searched = true;
+        }
+    }
+
+    private void setDebtList(boolean active) {
+        if (active) {
+            listDebt = new ArrayList<>();
+            if (searched && listSearched != null) {
+                for (Passenger p : listSearched) {
+                    if (!Boolean.valueOf(p.getPasviagemQuitado())) {
+                        listDebt.add(p);
+                    }
+                }
+            } else {
+                for (Passenger p : listAll) {
+                    if (!Boolean.valueOf(p.getPasviagemQuitado())) {
+                        listDebt.add(p);
+                    }
+                }
+            }
+            aDebt = new CustomAdapterPassenger(listDebt, getApplicationContext());
+            listPassengersTrip.setAdapter(aDebt);
+            debt = true;
+        } else {
+            debt = false;
+            if (searched && listSearched != null)
+                searchPassenger();
+            else
+                listPassengersTrip.setAdapter(adapter);
         }
     }
 
@@ -312,6 +400,15 @@ public class TripPassengersList extends AppCompatActivity {
 
         if (searched && listSearched != null && listSearched.size() > 1) {
             Collections.sort(listSearched, new Comparator<Passenger>() {
+                @Override
+                public int compare(Passenger p1, Passenger p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
+        }
+
+        if (debt && listDebt != null && listDebt.size() > 1) {
+            Collections.sort(listDebt, new Comparator<Passenger>() {
                 @Override
                 public int compare(Passenger p1, Passenger p2) {
                     return p1.getNome().compareTo(p2.getNome());

@@ -10,16 +10,18 @@ public class Trip implements Parcelable {
     private String destino;
     private String limite;
     private String valor;
+    private String valor_arrecadado;
     private String partida_data;
     private String partida_hora;
     private String retorno_data;
     private String retorno_hora;
 
-    public Trip(String nome, String destino, String limite, String partida_data, String partida_hora, String retorno_data, String retorno_hora) {
+    public Trip(String nome, String destino, String limite, String valor, String valor_arrecadado, String partida_data, String partida_hora, String retorno_data, String retorno_hora) {
         this.nome = nome;
         this.destino = destino;
         this.limite = limite;
         this.valor = valor;
+        this.valor_arrecadado = valor_arrecadado;
         this.partida_data = partida_data;
         this.partida_hora = partida_hora;
         this.retorno_data = retorno_data;
@@ -71,6 +73,14 @@ public class Trip implements Parcelable {
         this.valor = valor;
     }
 
+    public String getValor_arrecadado() {
+        return valor_arrecadado;
+    }
+
+    public void setValor_arrecadado(String valor_arrecadado) {
+        this.valor_arrecadado = valor_arrecadado;
+    }
+
     public String getPartida_data() {
         return partida_data;
     }
@@ -112,6 +122,7 @@ public class Trip implements Parcelable {
         destino = in.readString();
         limite = in.readString();
         valor = in.readString();
+        valor_arrecadado = in.readString();
         partida_data = in.readString();
         partida_hora = in.readString();
         retorno_data = in.readString();
@@ -130,6 +141,7 @@ public class Trip implements Parcelable {
         dest.writeString(destino);
         dest.writeString(limite);
         dest.writeString(valor);
+        dest.writeString(valor_arrecadado);
         dest.writeString(partida_data);
         dest.writeString(partida_hora);
         dest.writeString(retorno_data);

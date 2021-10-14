@@ -37,12 +37,14 @@ public class TripDetails extends AppCompatActivity {
     private TextView labelTripDetailsTotalValue;
     private AppCompatButton buttonTripPassengerList;
     private AppCompatButton buttonTripPassengerConfirmation;
+    private AppCompatButton buttonTripFinance;
     private AppCompatButton buttonTripPackages;
     private AppCompatButton buttonEditTrip;
     private AppCompatButton buttonDeleteTrip;
     private ProgressBar loadDeleteTrip;
     private Intent returnIntent;
     private final int EDIT_TRIP_REQUEST = 1;
+    private final int FINANCE_TRIP_REQUEST = 2;
     private DBLink dbLink;
     private boolean canReturn;
 
@@ -62,6 +64,7 @@ public class TripDetails extends AppCompatActivity {
         labelTripDetailsTotalValue = (TextView) findViewById(R.id.labelTripDetailsTotalValue);
         buttonTripPassengerList = (AppCompatButton) findViewById(R.id.buttonTripPassengerList);
         buttonTripPassengerConfirmation = (AppCompatButton) findViewById(R.id.buttonTripPassengerConfirmation);
+        buttonTripFinance = (AppCompatButton) findViewById(R.id.buttonTripFinance);
         buttonTripPackages = (AppCompatButton) findViewById(R.id.buttonTripPackages);
         buttonEditTrip = (AppCompatButton) findViewById(R.id.buttonEditTrip);
         buttonDeleteTrip = (AppCompatButton) findViewById(R.id.buttonDeleteTrip);
@@ -128,6 +131,17 @@ public class TripDetails extends AppCompatActivity {
             }
         });
 
+        buttonTripFinance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent finance = new Intent(getApplicationContext(), FinanceAdd.class);
+                Bundle e = new Bundle();
+                e.putParcelable("trip",t);
+                finance.putExtras(e);
+                startActivityForResult(finance,FINANCE_TRIP_REQUEST);
+            }
+        });
+
         buttonDeleteTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +163,15 @@ public class TripDetails extends AppCompatActivity {
         if (requestCode == EDIT_TRIP_REQUEST) {
             if (resultCode == RESULT_OK) {
                 if (data.getParcelableExtra("trip")!=null) {
+                    t = data.getParcelableExtra("trip");
+                    returnIntent.putExtra("trip",t);
+                    returnIntent.putExtra("edited",true);
+                    updateInfo();
+                }
+            }
+        } else if (requestCode == FINANCE_TRIP_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data.getBooleanExtra("updated",false)) {
                     t = data.getParcelableExtra("trip");
                     returnIntent.putExtra("trip",t);
                     returnIntent.putExtra("edited",true);
