@@ -104,6 +104,11 @@ public class Settings extends AppCompatActivity {
         } else {
             rdbInitMethodEmail.toggle();
         }
+        if (currentUser.isAnonymous()) {
+            rdbInitMethodEmail.setEnabled(false);
+        } else {
+            rdbInitMethodEmail.setEnabled(true);
+        }
         rdgInitMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

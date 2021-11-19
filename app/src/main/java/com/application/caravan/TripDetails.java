@@ -40,6 +40,7 @@ public class TripDetails extends AppCompatActivity {
     private AppCompatButton buttonTripFinance;
     private AppCompatButton buttonTripPackages;
     private AppCompatButton buttonEditTrip;
+    private AppCompatButton buttonTripGenerateDoc;
     private AppCompatButton buttonDeleteTrip;
     private ProgressBar loadDeleteTrip;
     private Intent returnIntent;
@@ -67,6 +68,7 @@ public class TripDetails extends AppCompatActivity {
         buttonTripFinance = (AppCompatButton) findViewById(R.id.buttonTripFinance);
         buttonTripPackages = (AppCompatButton) findViewById(R.id.buttonTripPackages);
         buttonEditTrip = (AppCompatButton) findViewById(R.id.buttonEditTrip);
+        buttonTripGenerateDoc = (AppCompatButton) findViewById(R.id.buttonTripGenerateDoc);
         buttonDeleteTrip = (AppCompatButton) findViewById(R.id.buttonDeleteTrip);
         loadDeleteTrip = (ProgressBar) findViewById(R.id.loadDeleteTrip);
         returnIntent = new Intent();
@@ -139,6 +141,15 @@ public class TripDetails extends AppCompatActivity {
                 e.putParcelable("trip",t);
                 finance.putExtras(e);
                 startActivityForResult(finance,FINANCE_TRIP_REQUEST);
+            }
+        });
+
+        buttonTripGenerateDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pasDoc = new Intent(getApplicationContext(), PDFBuilder.class);
+                pasDoc.putExtra("trip",t);
+                startActivity(pasDoc);
             }
         });
 

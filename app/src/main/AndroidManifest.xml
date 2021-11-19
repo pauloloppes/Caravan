@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FinanceAdd"></activity>
+        <activity
+            android:name=".PDFViewer"
+            android:exported="false" />
+        <activity
+            android:name=".PDFBuilder"
+            android:exported="false" />
+        <activity android:name=".FinanceAdd" />
         <activity android:name="com.application.utils.CustomAdapterConfirmation" />
         <activity android:name=".TripPassengersConfirmation" />
         <activity android:name=".TripEditPassengerPack" />

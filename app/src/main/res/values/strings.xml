@@ -35,6 +35,7 @@
     <string name="button_deselectAll">Desmarcar todos</string>
     <string name="button_back">Voltar</string>
     <string name="button_refreshvalues">Atualizar valores</string>
+    <string name="button_generatedoc">Lista de passageiros para impressão</string>
 
     <string name="label_trips">Viagens</string>
     <string name="label_passengers">Passageiros</string>

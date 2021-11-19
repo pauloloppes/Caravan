@@ -129,6 +129,15 @@
             android:text="@string/button_editTrip" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonTripGenerateDoc"
+            style="@style/MainScreenButtonTheme"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button_generatedoc" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonDeleteTrip"
             style="@style/MainScreenButtonTheme"
             android:layout_width="match_parent"
