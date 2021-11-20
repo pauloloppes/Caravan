@@ -204,7 +204,7 @@ public class TripList extends AppCompatActivity {
             Collections.sort(listAll, new Comparator<Trip>() {
                 @Override
                 public int compare(Trip t1, Trip t2) {
-                    return t1.getNome().compareTo(t2.getNome());
+                    return t1.getNome().compareToIgnoreCase(t2.getNome());
                 }
             });
         }
@@ -213,7 +213,7 @@ public class TripList extends AppCompatActivity {
             Collections.sort(listSearched, new Comparator<Trip>() {
                 @Override
                 public int compare(Trip t1, Trip t2) {
-                    return t1.getNome().compareTo(t2.getNome());
+                    return t1.getNome().compareToIgnoreCase(t2.getNome());
                 }
             });
         }

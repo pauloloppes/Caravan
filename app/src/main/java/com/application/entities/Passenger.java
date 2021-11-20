@@ -3,6 +3,8 @@ package com.application.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.application.utils.ConfirmationPassengerItemDTO;
+
 public class Passenger implements Parcelable {
 
     private String id;
@@ -209,4 +211,5 @@ public class Passenger implements Parcelable {
     public void setPasviagemQuitado(String pasviagemQuitado) {
         this.pasviagemQuitado = pasviagemQuitado;
     }
+
 }

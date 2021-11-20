@@ -209,7 +209,7 @@ public class PassengerList extends AppCompatActivity {
             Collections.sort(listAll, new Comparator<Passenger>() {
                 @Override
                 public int compare(Passenger p1, Passenger p2) {
-                    return p1.getNome().compareTo(p2.getNome());
+                    return p1.getNome().compareToIgnoreCase(p2.getNome());
                 }
             });
         }
@@ -218,7 +218,7 @@ public class PassengerList extends AppCompatActivity {
             Collections.sort(listSearched, new Comparator<Passenger>() {
                 @Override
                 public int compare(Passenger p1, Passenger p2) {
-                    return p1.getNome().compareTo(p2.getNome());
+                    return p1.getNome().compareToIgnoreCase(p2.getNome());
                 }
             });
         }

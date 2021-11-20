@@ -19,6 +19,7 @@ import com.application.utils.CustomAdapterPassenger;
 import com.application.utils.DBLink;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -159,9 +161,10 @@ public class TripPassengersConfirmation extends AppCompatActivity {
             Collections.sort(initItemList, new Comparator<ConfirmationPassengerItemDTO>() {
                 @Override
                 public int compare(ConfirmationPassengerItemDTO p1, ConfirmationPassengerItemDTO p2) {
-                    return p1.getItemText().compareTo(p2.getItemText());
+                    return p1.getItemText().compareToIgnoreCase(p2.getItemText());
                 }
             });
+
         }
     }
 

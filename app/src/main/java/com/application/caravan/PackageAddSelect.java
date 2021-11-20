@@ -147,7 +147,7 @@ public class PackageAddSelect extends AppCompatActivity {
             Collections.sort(listAll, new Comparator<PackageTrip>() {
                 @Override
                 public int compare(PackageTrip p1, PackageTrip p2) {
-                    return p1.getNome().compareTo(p2.getNome());
+                    return p1.getNome().compareToIgnoreCase(p2.getNome());
                 }
             });
         }
@@ -156,7 +156,7 @@ public class PackageAddSelect extends AppCompatActivity {
             Collections.sort(listSearched, new Comparator<PackageTrip>() {
                 @Override
                 public int compare(PackageTrip p1, PackageTrip p2) {
-                    return p1.getNome().compareTo(p2.getNome());
+                    return p1.getNome().compareToIgnoreCase(p2.getNome());
                 }
             });
         }
