@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -91,20 +92,28 @@ public class TripAdd extends AppCompatActivity {
 
     private void addTrip() {
         String name = editTripName.getText().toString().trim();
-        String destination = editTripDestination.getText().toString().trim();
-        String departureDate = editTripDepartureDate.getText().toString().trim();
-        String departureHour = editTripDepartureHour.getText().toString().trim();
-        String returnDate = editTripReturnDate.getText().toString().trim();
-        String returnHour = editTripReturnHour.getText().toString().trim();
-        String seatLimit = editTripSeatQuantity.getText().toString().trim();
-        String totalValue = editTripTotalValue.getText().toString().trim();
-        if (totalValue.isEmpty()) {
-            totalValue = "0";
+
+        if (name.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nome está vazio")
+                    .setMessage("Campo 'Nome' é obrigatório.")
+                    .setNegativeButton("Ok",null)
+                    .show();
+        } else {
+            String destination = editTripDestination.getText().toString().trim();
+            String departureDate = editTripDepartureDate.getText().toString().trim();
+            String departureHour = editTripDepartureHour.getText().toString().trim();
+            String returnDate = editTripReturnDate.getText().toString().trim();
+            String returnHour = editTripReturnHour.getText().toString().trim();
+            String seatLimit = editTripSeatQuantity.getText().toString().trim();
+            String totalValue = editTripTotalValue.getText().toString().trim();
+            if (totalValue.isEmpty()) {
+                totalValue = "0";
+            }
+
+            changeSaveButton();
+            dbLink.addTrip(name,destination,departureDate,departureHour,returnDate,returnHour,seatLimit,totalValue,listener);
         }
-
-        changeSaveButton();
-        dbLink.addTrip(name,destination,departureDate,departureHour,returnDate,returnHour,seatLimit,totalValue,listener);
-
     }
 
     private void changeSaveButton() {

@@ -9,8 +9,12 @@
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_add.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_add_select.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_details.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_package_edit.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_packages_list.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_add.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_add_select.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_details.xml" value="0.24818840579710144" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_edit.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_passenger_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_pdfbuilder.xml" value="0.12916666666666668" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_pdfviewer.xml" value="0.13958333333333334" />
@@ -24,8 +28,13 @@
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_edit.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_edit_passenger.xml" value="0.25" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_edit_passenger_pack.xml" value="0.25" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_passengers_confirmation.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/activity_trip_passengers_list.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/confirmation_list_row.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/package_list_row.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/passenger_list_row.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/pcoelho/AndroidStudioProjects/Caravan2/app/src/main/res/layout/trip_list_row.xml" value="0.33" />
       </map>
     </option>
   </component>

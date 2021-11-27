@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -120,42 +121,50 @@ public class PassengerEdit extends AppCompatActivity {
     private void savePassenger() {
 
         String name = editPassengerNameEdit.getText().toString().trim();
-        String birthdate = editPassengerBirthEdit.getText().toString().trim();
-        String identity = editPassengerIdentityEdit.getText().toString().trim();
-        String idType = spinnerPassengerIdTypeEdit.getSelectedItem().toString();
-        String phone = editPassengerPhoneEdit.getText().toString().trim();
-        String address = editPassengerAddressEdit.getText().toString().trim();
 
-        Map updatedDocument = new HashMap();
+        if (name.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nome está vazio")
+                    .setMessage("Campo 'Nome' é obrigatório.")
+                    .setNegativeButton("Ok",null)
+                    .show();
+        } else {
+            String birthdate = editPassengerBirthEdit.getText().toString().trim();
+            String identity = editPassengerIdentityEdit.getText().toString().trim();
+            String idType = spinnerPassengerIdTypeEdit.getSelectedItem().toString();
+            String phone = editPassengerPhoneEdit.getText().toString().trim();
+            String address = editPassengerAddressEdit.getText().toString().trim();
 
-        if (!name.equals(p.getNome())) {
-            updatedDocument.put("nome",name);
-            p.setNome(name);
-        }
-        if (!birthdate.equals(p.getDataNascimento())) {
-            updatedDocument.put("dataNascimento",birthdate);
-            p.setDataNascimento(birthdate);
-        }
-        if (!identity.equals(p.getIdentidade())) {
-            updatedDocument.put("identidade",identity);
-            p.setIdentidade(identity);
-        }
-        if (!idType.equals(p.getTipoIdentidade())) {
-            updatedDocument.put("tipoIdentidade",idType);
-            p.setTipoIdentidade(idType);
-        }
-        if (!phone.equals(p.getTelefone())) {
-            updatedDocument.put("telefone",phone);
-            p.setTelefone(phone);
-        }
-        if (!address.equals(p.getEndereco())) {
-            updatedDocument.put("endereco",address);
-            p.setEndereco(address);
-        }
+            Map updatedDocument = new HashMap();
 
-        changeSaveButton();
-        dbLink.updatePassenger(updatedDocument,p.getId(),listener);
+            if (!name.equals(p.getNome())) {
+                updatedDocument.put("nome",name);
+                p.setNome(name);
+            }
+            if (!birthdate.equals(p.getDataNascimento())) {
+                updatedDocument.put("dataNascimento",birthdate);
+                p.setDataNascimento(birthdate);
+            }
+            if (!identity.equals(p.getIdentidade())) {
+                updatedDocument.put("identidade",identity);
+                p.setIdentidade(identity);
+            }
+            if (!idType.equals(p.getTipoIdentidade())) {
+                updatedDocument.put("tipoIdentidade",idType);
+                p.setTipoIdentidade(idType);
+            }
+            if (!phone.equals(p.getTelefone())) {
+                updatedDocument.put("telefone",phone);
+                p.setTelefone(phone);
+            }
+            if (!address.equals(p.getEndereco())) {
+                updatedDocument.put("endereco",address);
+                p.setEndereco(address);
+            }
 
+            changeSaveButton();
+            dbLink.updatePassenger(updatedDocument,p.getId(),listener);
+        }
     }
 
     private void changeSaveButton() {

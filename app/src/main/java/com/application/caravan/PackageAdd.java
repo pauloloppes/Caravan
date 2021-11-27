@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -111,11 +112,20 @@ public class PackageAdd extends AppCompatActivity {
 
     private void addPackage() {
         String name = editPackageName.getText().toString().trim();
-        String price = editPackagePrice.getText().toString().trim();
-        String description = editPackageDescription.getText().toString().trim();
-        p = new PackageTrip("",name,price,description,t.getId());
-        changeSaveButton();
-        dbLink.addPackage(name,price,description,t.getId(),listener);
+
+        if (name.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nome está vazio")
+                    .setMessage("Campo 'Nome' é obrigatório.")
+                    .setNegativeButton("Ok",null)
+                    .show();
+        } else {
+            String price = editPackagePrice.getText().toString().trim();
+            String description = editPackageDescription.getText().toString().trim();
+            p = new PackageTrip("",name,price,description,t.getId());
+            changeSaveButton();
+            dbLink.addPackage(name,price,description,t.getId(),listener);
+        }
     }
 
     private void setReturn() {

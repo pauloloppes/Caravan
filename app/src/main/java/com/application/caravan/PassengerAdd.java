@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -100,14 +102,22 @@ public class PassengerAdd extends AppCompatActivity {
     private void addPassenger() {
 
         String name = editPassengerName.getText().toString().trim();
-        String birth = editPassengerBirth.getText().toString().trim();
-        String identity = editPassengerIdentity.getText().toString().trim();
-        String idType = spinnerPassengerIdType.getSelectedItem().toString();
-        String phone = editPassengerPhone.getText().toString().trim();
-        String address = editPassengerAddress.getText().toString().trim();
+        if (name.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nome está vazio")
+                    .setMessage("Campo 'Nome' é obrigatório.")
+                    .setNegativeButton("Ok",null)
+                    .show();
+        } else {
+            String birth = editPassengerBirth.getText().toString().trim();
+            String identity = editPassengerIdentity.getText().toString().trim();
+            String idType = spinnerPassengerIdType.getSelectedItem().toString();
+            String phone = editPassengerPhone.getText().toString().trim();
+            String address = editPassengerAddress.getText().toString().trim();
 
-        changeSaveButton();
-        dbLink.addPassenger(name,birth,identity,idType,phone,address,listener);
+            changeSaveButton();
+            dbLink.addPassenger(name,birth,identity,idType,phone,address,listener);
+        }
 
     }
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -114,57 +115,65 @@ public class TripEdit extends AppCompatActivity {
     private void saveTrip() {
 
         String name = editTripNameEdit.getText().toString().trim();
-        String destination = editTripDestinationEdit.getText().toString().trim();
-        String departureDate = editTripDepartureDateEdit.getText().toString().trim();
-        String returnDate = editTripReturnDateEdit.getText().toString().trim();
-        String departureHour = editTripDepartureHourEdit.getText().toString().trim();
-        String returnHour = editTripReturnHourEdit.getText().toString().trim();
-        String seatQuantity = editTripSeatQuantityEdit.getText().toString().trim();
-        String totalValue = editTripTotalValueEdit.getText().toString().trim();
-        if (totalValue.isEmpty()) {
-            totalValue = "0";
-        }
+        if (name.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nome está vazio")
+                    .setMessage("Campo 'Nome' é obrigatório.")
+                    .setNegativeButton("Ok",null)
+                    .show();
+        } else {
+            String destination = editTripDestinationEdit.getText().toString().trim();
+            String departureDate = editTripDepartureDateEdit.getText().toString().trim();
+            String returnDate = editTripReturnDateEdit.getText().toString().trim();
+            String departureHour = editTripDepartureHourEdit.getText().toString().trim();
+            String returnHour = editTripReturnHourEdit.getText().toString().trim();
+            String seatQuantity = editTripSeatQuantityEdit.getText().toString().trim();
+            String totalValue = editTripTotalValueEdit.getText().toString().trim();
+            if (totalValue.isEmpty()) {
+                totalValue = "0";
+            }
 
-        Map updatedDocument = new HashMap();
+            Map updatedDocument = new HashMap();
 
-        if (!name.equals(t.getNome())) {
-            updatedDocument.put("nome",name);
-            t.setNome(name);
-        }
-        if (!destination.equals(t.getDestino())) {
-            updatedDocument.put("destino",destination);
-            t.setDestino(destination);
-        }
-        if (!departureDate.equals(t.getPartida_data())) {
-            updatedDocument.put("partida_data",departureDate);
-            t.setPartida_data(departureDate);
-        }
-        if (!returnDate.equals(t.getRetorno_data())) {
-            updatedDocument.put("retorno_data",returnDate);
-            t.setRetorno_data(returnDate);
-        }
-        if (!departureHour.equals(t.getPartida_hora())) {
-            updatedDocument.put("partida_hora",departureHour);
-            t.setPartida_hora(departureHour);
-        }
-        if (!returnHour.equals(t.getRetorno_hora())) {
-            updatedDocument.put("retorno_hora",returnHour);
-            t.setRetorno_hora(returnHour);
-        }
-        if (!seatQuantity.equals(t.getLimite())) {
-            updatedDocument.put("limite",seatQuantity);
-            t.setLimite(seatQuantity);
-        }
-        if (!totalValue.equals(t.getValor())) {
-            updatedDocument.put("valor",totalValue);
-            t.setValor(totalValue);
-        }
+            if (!name.equals(t.getNome())) {
+                updatedDocument.put("nome",name);
+                t.setNome(name);
+            }
+            if (!destination.equals(t.getDestino())) {
+                updatedDocument.put("destino",destination);
+                t.setDestino(destination);
+            }
+            if (!departureDate.equals(t.getPartida_data())) {
+                updatedDocument.put("partida_data",departureDate);
+                t.setPartida_data(departureDate);
+            }
+            if (!returnDate.equals(t.getRetorno_data())) {
+                updatedDocument.put("retorno_data",returnDate);
+                t.setRetorno_data(returnDate);
+            }
+            if (!departureHour.equals(t.getPartida_hora())) {
+                updatedDocument.put("partida_hora",departureHour);
+                t.setPartida_hora(departureHour);
+            }
+            if (!returnHour.equals(t.getRetorno_hora())) {
+                updatedDocument.put("retorno_hora",returnHour);
+                t.setRetorno_hora(returnHour);
+            }
+            if (!seatQuantity.equals(t.getLimite())) {
+                updatedDocument.put("limite",seatQuantity);
+                t.setLimite(seatQuantity);
+            }
+            if (!totalValue.equals(t.getValor())) {
+                updatedDocument.put("valor",totalValue);
+                t.setValor(totalValue);
+            }
 
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("trip",t);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("trip",t);
 
-        changeSaveButton();
-        dbLink.updateTrip(updatedDocument,t.getId(),listener);
+            changeSaveButton();
+            dbLink.updateTrip(updatedDocument,t.getId(),listener);
+        }
 
     }
 

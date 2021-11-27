@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -118,27 +119,37 @@ public class PackageEdit extends AppCompatActivity {
     }
 
     private void savePackage() {
-        Map updatedPack = new HashMap<>();
         String name = editPackageNameEdit.getText().toString().trim();
-        String price = editPackagePriceEdit.getText().toString().trim();
-        String description = editPackageDescriptionEdit.getText().toString().trim();
 
-        if (!name.equals(p.getNome())) {
-            updatedPack.put("nome",name);
-            p.setNome(name);
-        }
-        if (!price.equals(p.getPreco())) {
-            updatedPack.put("preco",price);
-            p.setPreco(price);
-        }
-        if (!description.equals(p.getDescricao())) {
-            updatedPack.put("descricao",description);
-            p.setDescricao(description);
+        if (name.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nome está vazio")
+                    .setMessage("Campo 'Nome' é obrigatório.")
+                    .setNegativeButton("Ok",null)
+                    .show();
+        } else {
+            Map updatedPack = new HashMap<>();
+            String price = editPackagePriceEdit.getText().toString().trim();
+            String description = editPackageDescriptionEdit.getText().toString().trim();
+
+            if (!name.equals(p.getNome())) {
+                updatedPack.put("nome",name);
+                p.setNome(name);
+            }
+            if (!price.equals(p.getPreco())) {
+                updatedPack.put("preco",price);
+                p.setPreco(price);
+            }
+            if (!description.equals(p.getDescricao())) {
+                updatedPack.put("descricao",description);
+                p.setDescricao(description);
+            }
+
+            returnIntent.putExtra("pack",p);
+            changeSaveButton();
+            dbLink.updatePackage(updatedPack, p.getId(), listener);
         }
 
-        returnIntent.putExtra("pack",p);
-        changeSaveButton();
-        dbLink.updatePackage(updatedPack, p.getId(), listener);
     }
 
     private void setReturn() {
