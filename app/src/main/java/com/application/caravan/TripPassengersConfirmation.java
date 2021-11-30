@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.entities.Passenger;
@@ -36,12 +38,19 @@ import java.util.List;
 public class TripPassengersConfirmation extends AppCompatActivity {
 
     private Trip t;
+    private TextView labelConfirmationMarked;
+    private TextView labelConfirmationUnmarked;
+    private TextView labelConfirmationPercentage;
+    private ProgressBar barConfirmationPercentage;
     private AppCompatButton buttonSelectAll;
     private AppCompatButton buttonDeselectAll;
     private AppCompatButton buttonConfirmationBack;
     private final List<ConfirmationPassengerItemDTO> initItemList = new ArrayList<ConfirmationPassengerItemDTO>();
     private final CustomAdapterConfirmation listViewDataAdapter = new CustomAdapterConfirmation(this, initItemList);
     private DBLink dbLink;
+    private int totalPas;
+    private int checked;
+    private int unchecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +65,16 @@ public class TripPassengersConfirmation extends AppCompatActivity {
 
         dbLink = new DBLink();
 
+
         // Get listview checkbox.
         final ListView listViewWithCheckbox = (ListView)findViewById(R.id.listConfirmation);
         buttonSelectAll = (AppCompatButton)findViewById(R.id.buttonSelectAll);
         buttonDeselectAll = (AppCompatButton)findViewById(R.id.buttonDeselectAll);
         buttonConfirmationBack = (AppCompatButton)findViewById(R.id.buttonConfirmationBack);
+        labelConfirmationMarked = (TextView) findViewById(R.id.labelConfirmationMarked);
+        labelConfirmationPercentage = (TextView) findViewById(R.id.labelConfirmationPercentage);
+        labelConfirmationUnmarked = (TextView) findViewById(R.id.labelConfirmationUnmarked);
+        barConfirmationPercentage = (ProgressBar) findViewById(R.id.barConfirmationPercentage);
         searchPassengersOnDB(listViewWithCheckbox);
 
         // Initiate listview data.
@@ -91,11 +105,17 @@ public class TripPassengersConfirmation extends AppCompatActivity {
                 {
                     itemCheckbox.setChecked(false);
                     itemDto.setChecked(false);
+                    checked-=1;
+                    unchecked+=1;
                 }else
                 {
                     itemCheckbox.setChecked(true);
                     itemDto.setChecked(true);
+                    checked+=1;
+                    unchecked-=1;
                 }
+
+                updateScreen();
 
                 //Toast.makeText(getApplicationContext(), "select item text : " + itemDto.getItemText(), Toast.LENGTH_SHORT).show();
             }
@@ -123,6 +143,22 @@ public class TripPassengersConfirmation extends AppCompatActivity {
         });
     }
 
+    private void enableScreen() {
+
+        setAllPassengers(false);
+        checked = 0;
+        unchecked = totalPas;
+
+    }
+
+    private void updateScreen() {
+        labelConfirmationMarked.setText("Presentes: "+checked);
+        labelConfirmationUnmarked.setText("Ausentes: "+unchecked);
+        int percentage = (int) Math.ceil(((double) checked / (double) totalPas) * 100);
+        labelConfirmationPercentage.setText("Porcentagem de presentes: "+percentage+"%");
+        barConfirmationPercentage.setProgress(percentage);
+    }
+
     private void setAllPassengers(boolean status) {
         int size = initItemList.size();
         for(int i=0;i<size;i++)
@@ -130,6 +166,14 @@ public class TripPassengersConfirmation extends AppCompatActivity {
             ConfirmationPassengerItemDTO dto = initItemList.get(i);
             dto.setChecked(status);
         }
+        if (status) {
+            checked = totalPas;
+            unchecked = 0;
+        } else {
+            checked = 0;
+            unchecked = totalPas;
+        }
+        updateScreen();
 
         listViewDataAdapter.notifyDataSetChanged();
     }
@@ -140,6 +184,8 @@ public class TripPassengersConfirmation extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+
+                    totalPas = task.getResult().size();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         searchPassengerByID(document.get("passageiro").toString(), listViewWithCheckbox);
@@ -181,6 +227,10 @@ public class TripPassengersConfirmation extends AppCompatActivity {
                     dto.setItemText(p.getNome());
                     initItemList.add(dto);
                     sortLists();
+                    updateScreen();
+                    if (initItemList.size() == totalPas) {
+                        enableScreen();
+                    }
                     listViewWithCheckbox.invalidateViews();
                 }
             }
